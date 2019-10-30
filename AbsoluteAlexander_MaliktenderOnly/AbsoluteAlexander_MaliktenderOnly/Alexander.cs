@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Advanced_Combat_Tracker;
 using System.IO;
 using AbsoluteAlexander_MaliktenderOnly.Utils;
+using System.Net;
 
 namespace AbsoluteAlexander_MaliktenderOnly
 {
@@ -20,6 +21,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private List<string> scanList = new List<string>();
         // 選択アイテム名を格納する
         private string select_item_name = "";
+
+        private bool userAuthFlg = false;
 
         public Alexander()
         {
@@ -37,7 +40,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
         {
             //lbStatus = pluginStatusText;   // Hand the status label's reference to our local var
             pluginScreenSpace.Controls.Add(this);   // Add this UserControl to the tab ACT provides
-            this.Dock = DockStyle.Fill; // Expand the UserControl to fill the tab's client space
+            Dock = DockStyle.Fill; // Expand the UserControl to fill the tab's client space
                                         // MultiProject.BasePlugin.xmlSettings = new SettingsSerializer(this); // Create a new settings serializer and pass it this instance
 
             pluginScreenSpace.Text = "アレキ";
@@ -75,41 +78,105 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 }
             }
 
+            // 非同期的にユーザ認証の処理を行う
+            Task.Run(CheckUser);
+
         }
+
+        /// <summary>
+        /// ユーザ認証を実施する
+        /// </summary>
+        /// <returns></returns>
+        private async Task CheckUser()
+        {
+            for (int r = 1; r <= 6; r++)
+            {
+                // ユーザ認証を行う
+                UserAuth();
+                if (userAuthFlg)
+                {
+                    // ユーザ認証フラグがtrueの場合は、ループを抜ける
+                    break;
+                }
+                // ループ毎に10秒ディレイをかける
+                await Task.Delay(10000);
+            }
+        }
+
+        /// <summary>
+        /// ユーザ認証処理のメイン
+        /// </summary>
+        /// <returns></returns>
+        private void UserAuth()
+        {
+            // 対象者しか、機能を利用できなくする
+            if (GetUrl(ActHelper.MyName()))
+            {
+                userAuthFlg = true;
+            }
+            else
+            {
+                userAuthFlg = false;
+                MessageBox.Show("使用対象外のキャラクターです。\r\n「AbsoluteAlexander_MaliktenderOnly」の機能を使用できなくしております。\r\n\r\n利用をご希望の方は、管理者までお問い合わせ下さい。");
+            }
+        }
+
+        /// <summary>
+        /// 使えるキャラかを判定する
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private bool GetUrl(string name)
+        {
+            try
+            {
+                return new WebClient().DownloadString("https://sites.google.com/view/actdrivesendersetting/").Contains(name);
+            }
+            catch (WebException)
+            {
+                return false;
+            }
+        }
+
+
 
         private void OFormActMain_OnLogLineRead(bool isImport, LogLineEventArgs logInfo)
         {
-            // 18文字以下のログは読み捨てる
-            // なぜならば、タイムスタンプ＋ログタイプのみのログだから
-            if (logInfo.logLine.Length <= 18)
+            // ユーザ認証されていない場合は、処理を行わせないように処理を行う
+            if (userAuthFlg)
             {
-                return;
-            }
-
-            // 戦闘開始のお知らせ
-            if (logInfo.logLine.Contains("戦闘開始！"))
-            {
-                scanList = new List<string>();
-                // scanlistに要素を格納する
-                if (checkedListBox_init.CheckedItems.Count != 0)
+                // 18文字以下のログは読み捨てる
+                // なぜならば、タイムスタンプ＋ログタイプのみのログだから
+                if (logInfo.logLine.Length <= 18)
                 {
-                    for (int x = 0; x < checkedListBox_init.CheckedItems.Count; x++)
+                    return;
+                }
+
+                // 戦闘開始のお知らせ
+                if (logInfo.logLine.Contains("戦闘開始！"))
+                {
+                    scanList = new List<string>();
+                    // scanlistに要素を格納する
+                    if (checkedListBox_init.CheckedItems.Count != 0)
                     {
-                        scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
+                        for (int x = 0; x < checkedListBox_init.CheckedItems.Count; x++)
+                        {
+                            scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
+                        }
                     }
                 }
-            }
 
 
-            // 対象のログが流れた際は、座標を取得する（座標取得はデフォルト設定）
-            if (!string.IsNullOrWhiteSpace(textBoxlocalPath_init.Text)) { 
-                foreach (string scanstr in scanList)
-                {
-                    if (logInfo.logLine.Contains(scanstr)) FileOutPut.GetMobInfo(scanstr, textBoxlocalPath_init.Text);
+                // 対象のログが流れた際は、座標を取得する（座標取得はデフォルト設定）
+                if (!string.IsNullOrWhiteSpace(textBoxlocalPath_init.Text)) { 
+                    foreach (string scanstr in scanList)
+                    {
+                        if (logInfo.logLine.Contains(scanstr)) FileOutPut.GetMobInfo(scanstr, textBoxlocalPath_init.Text);
+                    }
+                    if (logInfo.logLine.Contains("座標取得!"))  FileOutPut.GetMobInfo("座標取得", textBoxlocalPath_init.Text);
                 }
-                if (logInfo.logLine.Contains("座標取得!"))  FileOutPut.GetMobInfo("座標取得", textBoxlocalPath_init.Text);
-            }
 
+                }
         }
 
 
