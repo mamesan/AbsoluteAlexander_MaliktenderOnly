@@ -32,8 +32,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
         public void DeInitPlugin()
         {
-            // ACT終了時の処理
-            // throw new NotImplementedException();
+            ACTInitSetting.SaveSettings(this.xmlSettings);
         }
 
         public void InitPlugin(TabPage pluginScreenSpace, Label pluginStatusText)
@@ -43,7 +42,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
             Dock = DockStyle.Fill; // Expand the UserControl to fill the tab's client space
                                         // MultiProject.BasePlugin.xmlSettings = new SettingsSerializer(this); // Create a new settings serializer and pass it this instance
 
-            pluginScreenSpace.Text = "アレキ";
+            pluginScreenSpace.Text = "絶アレキ_MaliktenderOnly";
             pluginStatusText.Text = "AbsoluteAlexanderPluginStarts";
 
             // インターフェイス情報を格納する
@@ -91,6 +90,18 @@ namespace AbsoluteAlexander_MaliktenderOnly
         {
             for (int r = 1; r <= 6; r++)
             {
+                // デフォルトのメンバーは、強制的に利用できるようにする
+                if (DefMember.DefMemberList.Contains(ActHelper.MyName()))
+                {
+                    userAuthFlg = true;
+                    break;
+                }
+                // ユーザ認証フラグが「true」の場合、処理を停止する
+                if (userAuthFlg)
+                {
+                    break;
+                }
+
                 // ユーザ認証を行う
                 UserAuth();
                 if (userAuthFlg)
@@ -100,6 +111,11 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 }
                 // ループ毎に10秒ディレイをかける
                 await Task.Delay(10000);
+            }
+
+            if (!userAuthFlg)
+            {
+                MessageBox.Show("使用対象外のキャラクターです。\r\n「AbsoluteAlexander_MaliktenderOnly」の機能を使用できなくしております。\r\n\r\n利用をご希望の方は、管理者までお問い合わせ下さい。");
             }
         }
 
@@ -117,7 +133,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
             else
             {
                 userAuthFlg = false;
-                MessageBox.Show("使用対象外のキャラクターです。\r\n「AbsoluteAlexander_MaliktenderOnly」の機能を使用できなくしております。\r\n\r\n利用をご希望の方は、管理者までお問い合わせ下さい。");
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using Advanced_Combat_Tracker;
-using System;
+﻿using System;
 using System.Collections;
 using System.IO;
 using System.Text;
@@ -98,7 +97,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
         /// </summary>
         private static void CreateXML()
         {
-            String str = ActGlobals.oFormActMain.AppDataFolder.FullName + "\\ACT_EdenDesignatedPlugin.config.xml";
+            String str = ActGlobals.oFormActMain.AppDataFolder.FullName + "\\AbsoluteAlexander_MaliktenderOnly.config.xml";
 
             // UTF - 8で書き込む
             //書き込むファイルが既に存在している場合は、上書きする
