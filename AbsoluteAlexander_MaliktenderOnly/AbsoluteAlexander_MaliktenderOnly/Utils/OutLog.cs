@@ -33,9 +33,9 @@ namespace AbsoluteAlexander_MaliktenderOnly
         /// </summary>
         /// <param name="msg">メッセージ</param>
         /// <remarks></remarks>
-        public static void WriteTraceLog(String msg)
+        public static void WriteTraceLog(String msg, String FolderPath, String FileName)
         {
-            WriteTraceLog(msg, null);
+            WriteTraceLog(msg, FolderPath, FileName, null);
         }
 
         /// <summary>
@@ -44,29 +44,32 @@ namespace AbsoluteAlexander_MaliktenderOnly
         /// <param name="msg">メッセージ</param>
         /// <param name="ex">Exception(無指定の場合はメッセージのみ出力)</param>
         /// <remarks></remarks>
-        private static void WriteTraceLog(String msg, Exception ex)
+        private static void WriteTraceLog(String msg, String FolderPath, String FileName, Exception ex)
         {
             try
             {
                 // ログフォルダ名作成
-                DateTime dt = DateTime.Now;
                 // ここで、logの出力先を管理している
-                String logFolder = AppDomain.CurrentDomain.BaseDirectory + "Log";
+                String logFolder = @FolderPath + "Log";
 
 
                 // ログフォルダ名作成
                 Directory.CreateDirectory(logFolder);
 
                 // ログファイル名作成
-                String logFile = logFolder + "\\TraceLog" + dt.ToString("dd") + ".log";
+                String logFile = logFolder + "\\" + FileName + ".log";
 
                 // ログ出力文字列作成
+                /*
                 String logStr;
-                logStr = dt.ToString("yyyy/MM/dd HH:mm:ss") + "\t" + msg;
+                logStr = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "\t" + msg;
                 if (ex != null)
                 {
                     logStr = logStr + "\n" + ex.ToString();
                 }
+                */
+
+                String logStr = msg;
 
                 // Shift-JISでログ出力
                 StreamWriter sw = null;

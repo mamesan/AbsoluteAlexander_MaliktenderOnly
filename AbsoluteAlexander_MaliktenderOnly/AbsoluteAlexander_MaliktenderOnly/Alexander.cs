@@ -11,6 +11,7 @@ using Advanced_Combat_Tracker;
 using System.IO;
 using AbsoluteAlexander_MaliktenderOnly.Utils;
 using System.Net;
+using System.Threading;
 
 namespace AbsoluteAlexander_MaliktenderOnly
 {
@@ -23,6 +24,13 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private string select_item_name = "";
 
         private bool userAuthFlg = false;
+
+        private bool logoutFlg = false;
+        // 戦闘終了時のフラグ
+        private static DateTime lastWipeOutDateTime = DateTime.Now;
+        private bool wipflg = false;
+        private string dateStr = "";
+
 
         public Alexander()
         {
@@ -79,6 +87,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
             // 非同期的にユーザ認証の処理を行う
             Task.Run(CheckUser);
+            // ワイプチェック
+            // Task.Run(WipeOutCheck);
 
         }
 
@@ -153,7 +163,52 @@ namespace AbsoluteAlexander_MaliktenderOnly
             }
         }
 
+        /// <summary>
+        /// ワイプを判定する
+        /// </summary>
+        /// <returns></returns>
+        public void WipeOutCheck()
+        {
+            while (true)
+            {
+                // 1秒待機
+                Thread.Sleep(100);
+                // 15秒間は次の処理を行わない
+                if ((DateTime.Now - lastWipeOutDateTime).TotalSeconds >= 15.0)
+                {
+                    List<Combatant> ptList = ActHelper.GetPTList();
+                    int ptcnt = ptList.Count;
+                    int checlptcnt = 0;
 
+                    foreach (Combatant combatant in ptList)
+                    {
+                        if (combatant.CurrentHP == 0)
+                        {
+                            checlptcnt++;
+                        }
+                    }
+                    // 全員のHPが0の場合、ワイプ判定を行う
+                    if (checlptcnt == ptcnt)
+                    {
+                        lastWipeOutDateTime = DateTime.Now;
+                        ActInvoker.Invoke(() => ActGlobals.oFormActMain.EndCombat(true));
+                        wipflg = true;
+
+                        Task.Run(() =>
+                        {
+                            // wipeoutログを発生させる
+                            Thread.Sleep(TimeSpan.FromSeconds(1.5));
+                            string[] wipe = { "TimeLinePlugin_戦闘終了", "FF14" };
+                            ActHelper.LogParser.RaiseLog(DateTime.Now, wipe);
+                        });
+                    }
+                    else
+                    {
+                        wipflg = false;
+                    }
+                }
+            }
+        }
 
         private void OFormActMain_OnLogLineRead(bool isImport, LogLineEventArgs logInfo)
         {
@@ -170,6 +225,14 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 // 戦闘開始のお知らせ
                 if (logInfo.logLine.Contains("戦闘開始！"))
                 {
+                    // log出力フラグを立てる
+                    if (checkBox_logout_flg_init.Checked)
+                    {
+                        logoutFlg = true;
+                        dateStr = DateTime.Now.ToString("mmdd HH:MM");
+                    }
+
+
                     scanList = new List<string>();
                     // scanlistに要素を格納する
                     if (checkedListBox_init.CheckedItems.Count != 0)
@@ -179,6 +242,12 @@ namespace AbsoluteAlexander_MaliktenderOnly
                             scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
                         }
                     }
+                }
+
+                // log出力フラグ用の処理
+                if (logoutFlg)
+                {
+                    OutLog.WriteTraceLog(logInfo.logLine , textBoxlocalPath_init.Text, dateStr + "_battle");
                 }
 
 
@@ -191,7 +260,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     if (logInfo.logLine.Contains("座標取得!"))  FileOutPut.GetMobInfo("座標取得", textBoxlocalPath_init.Text);
                 }
 
-                }
+            }
         }
 
 

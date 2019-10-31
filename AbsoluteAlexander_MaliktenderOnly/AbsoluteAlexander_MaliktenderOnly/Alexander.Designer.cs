@@ -38,13 +38,31 @@
             this.textBoxlocalPath_init = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.checkBoxkakusei4層use_check_init = new System.Windows.Forms.CheckBox();
+            this.listBox_倍率_init = new System.Windows.Forms.ComboBox();
+            this.button1_表示位置確認 = new System.Windows.Forms.Button();
+            this.checkBox_terop_check_init = new System.Windows.Forms.CheckBox();
+            this.listBox_倍率_text_init = new System.Windows.Forms.TextBox();
+            this.textBox_ボタン切り替え用隠し = new System.Windows.Forms.TextBox();
+            this.textBox_terop_Y_init = new System.Windows.Forms.TextBox();
+            this.textBox_terop_X_init = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox_h2_init = new System.Windows.Forms.TextBox();
             this.checkBox_d4_init = new System.Windows.Forms.CheckBox();
+            this.textBox_dps4_init = new System.Windows.Forms.TextBox();
             this.checkBox_d3_init = new System.Windows.Forms.CheckBox();
+            this.textBox_dps3_init = new System.Windows.Forms.TextBox();
             this.checkBox_d2_init = new System.Windows.Forms.CheckBox();
+            this.textBox_tnk2_init = new System.Windows.Forms.TextBox();
             this.checkBox_d1_init = new System.Windows.Forms.CheckBox();
+            this.textBox_tnk1_init = new System.Windows.Forms.TextBox();
+            this.textBox_dps2_init = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.textBox_dps1_init = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.textBox_h1_init = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -59,24 +77,7 @@
             this.radioButton_dps1_init = new System.Windows.Forms.RadioButton();
             this.radioButton_tnk2_init = new System.Windows.Forms.RadioButton();
             this.radioButton_tnk1_init = new System.Windows.Forms.RadioButton();
-            this.textBox_h2_init = new System.Windows.Forms.TextBox();
-            this.textBox_dps4_init = new System.Windows.Forms.TextBox();
-            this.textBox_dps3_init = new System.Windows.Forms.TextBox();
-            this.textBox_tnk2_init = new System.Windows.Forms.TextBox();
-            this.textBox_tnk1_init = new System.Windows.Forms.TextBox();
-            this.textBox_dps2_init = new System.Windows.Forms.TextBox();
-            this.textBox_dps1_init = new System.Windows.Forms.TextBox();
-            this.textBox_h1_init = new System.Windows.Forms.TextBox();
-            this.listBox_倍率_init = new System.Windows.Forms.ComboBox();
-            this.button1_表示位置確認 = new System.Windows.Forms.Button();
-            this.checkBox_terop_check_init = new System.Windows.Forms.CheckBox();
-            this.listBox_倍率_text_init = new System.Windows.Forms.TextBox();
-            this.textBox_ボタン切り替え用隠し = new System.Windows.Forms.TextBox();
-            this.textBox_terop_Y_init = new System.Windows.Forms.TextBox();
-            this.textBox_terop_X_init = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.checkBoxkakusei4層use_check_init = new System.Windows.Forms.CheckBox();
+            this.checkBox_logout_flg_init = new System.Windows.Forms.CheckBox();
             this.対象人設定用.SuspendLayout();
             this.管理.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -108,6 +109,7 @@
             // 管理
             // 
             this.管理.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.管理.Controls.Add(this.checkBox_logout_flg_init);
             this.管理.Controls.Add(this.textBox_list);
             this.管理.Controls.Add(this.button_delete);
             this.管理.Controls.Add(this.button_add);
@@ -197,6 +199,129 @@
             this.tabPage2.Text = "対象人";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // checkBoxkakusei4層use_check_init
+            // 
+            this.checkBoxkakusei4層use_check_init.AutoSize = true;
+            this.checkBoxkakusei4層use_check_init.Checked = true;
+            this.checkBoxkakusei4層use_check_init.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxkakusei4層use_check_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.checkBoxkakusei4層use_check_init.Location = new System.Drawing.Point(6, 46);
+            this.checkBoxkakusei4層use_check_init.Name = "checkBoxkakusei4層use_check_init";
+            this.checkBoxkakusei4層use_check_init.Size = new System.Drawing.Size(231, 23);
+            this.checkBoxkakusei4層use_check_init.TabIndex = 42;
+            this.checkBoxkakusei4層use_check_init.Text = "覚醒編4層全機能ご利用チェック";
+            this.checkBoxkakusei4層use_check_init.UseVisualStyleBackColor = true;
+            // 
+            // listBox_倍率_init
+            // 
+            this.listBox_倍率_init.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.listBox_倍率_init.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.listBox_倍率_init.FormattingEnabled = true;
+            this.listBox_倍率_init.Items.AddRange(new object[] {
+            "1倍",
+            "1.1倍",
+            "1.2倍",
+            "1.3倍",
+            "1.4倍",
+            "1.5倍",
+            "1.6倍",
+            "1.7倍",
+            "1.8倍",
+            "1.9倍",
+            "2.0倍",
+            "3.0倍",
+            "4.0倍",
+            "5.0倍",
+            "10.0倍",
+            "50.0倍",
+            "100.0倍"});
+            this.listBox_倍率_init.Location = new System.Drawing.Point(547, 537);
+            this.listBox_倍率_init.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.listBox_倍率_init.Name = "listBox_倍率_init";
+            this.listBox_倍率_init.Size = new System.Drawing.Size(90, 23);
+            this.listBox_倍率_init.TabIndex = 41;
+            // 
+            // button1_表示位置確認
+            // 
+            this.button1_表示位置確認.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.button1_表示位置確認.Location = new System.Drawing.Point(515, 577);
+            this.button1_表示位置確認.Name = "button1_表示位置確認";
+            this.button1_表示位置確認.Size = new System.Drawing.Size(127, 42);
+            this.button1_表示位置確認.TabIndex = 40;
+            this.button1_表示位置確認.Text = "表示位置確認";
+            this.button1_表示位置確認.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_terop_check_init
+            // 
+            this.checkBox_terop_check_init.AutoSize = true;
+            this.checkBox_terop_check_init.Checked = true;
+            this.checkBox_terop_check_init.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_terop_check_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.checkBox_terop_check_init.Location = new System.Drawing.Point(375, 471);
+            this.checkBox_terop_check_init.Name = "checkBox_terop_check_init";
+            this.checkBox_terop_check_init.Size = new System.Drawing.Size(186, 23);
+            this.checkBox_terop_check_init.TabIndex = 39;
+            this.checkBox_terop_check_init.Text = "画像案内、ご利用チェック";
+            this.checkBox_terop_check_init.UseVisualStyleBackColor = true;
+            // 
+            // listBox_倍率_text_init
+            // 
+            this.listBox_倍率_text_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.listBox_倍率_text_init.Location = new System.Drawing.Point(627, 502);
+            this.listBox_倍率_text_init.Name = "listBox_倍率_text_init";
+            this.listBox_倍率_text_init.Size = new System.Drawing.Size(10, 27);
+            this.listBox_倍率_text_init.TabIndex = 35;
+            this.listBox_倍率_text_init.Text = "1倍";
+            this.listBox_倍率_text_init.Visible = false;
+            // 
+            // textBox_ボタン切り替え用隠し
+            // 
+            this.textBox_ボタン切り替え用隠し.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.textBox_ボタン切り替え用隠し.Location = new System.Drawing.Point(371, 592);
+            this.textBox_ボタン切り替え用隠し.Name = "textBox_ボタン切り替え用隠し";
+            this.textBox_ボタン切り替え用隠し.Size = new System.Drawing.Size(100, 27);
+            this.textBox_ボタン切り替え用隠し.TabIndex = 36;
+            this.textBox_ボタン切り替え用隠し.Text = "表示位置確認";
+            this.textBox_ボタン切り替え用隠し.Visible = false;
+            // 
+            // textBox_terop_Y_init
+            // 
+            this.textBox_terop_Y_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.textBox_terop_Y_init.Location = new System.Drawing.Point(440, 537);
+            this.textBox_terop_Y_init.Name = "textBox_terop_Y_init";
+            this.textBox_terop_Y_init.Size = new System.Drawing.Size(100, 27);
+            this.textBox_terop_Y_init.TabIndex = 37;
+            this.textBox_terop_Y_init.Text = "100";
+            // 
+            // textBox_terop_X_init
+            // 
+            this.textBox_terop_X_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.textBox_terop_X_init.Location = new System.Drawing.Point(440, 505);
+            this.textBox_terop_X_init.Name = "textBox_terop_X_init";
+            this.textBox_terop_X_init.Size = new System.Drawing.Size(100, 27);
+            this.textBox_terop_X_init.TabIndex = 38;
+            this.textBox_terop_X_init.Text = "100";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.label14.Location = new System.Drawing.Point(369, 540);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(65, 19);
+            this.label14.TabIndex = 33;
+            this.label14.Text = "Y座標：";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.label13.Location = new System.Drawing.Point(369, 508);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(65, 19);
+            this.label13.TabIndex = 34;
+            this.label13.Text = "X座標：";
+            // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
@@ -235,6 +360,15 @@
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             // 
+            // textBox_h2_init
+            // 
+            this.textBox_h2_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.textBox_h2_init.Location = new System.Drawing.Point(70, 269);
+            this.textBox_h2_init.Name = "textBox_h2_init";
+            this.textBox_h2_init.Size = new System.Drawing.Size(274, 27);
+            this.textBox_h2_init.TabIndex = 15;
+            this.textBox_h2_init.Text = "Mame San";
+            // 
             // checkBox_d4_init
             // 
             this.checkBox_d4_init.AutoSize = true;
@@ -247,6 +381,15 @@
             this.checkBox_d4_init.TabIndex = 4;
             this.checkBox_d4_init.Text = "遠隔だったらチェックを入れる";
             this.checkBox_d4_init.UseVisualStyleBackColor = true;
+            // 
+            // textBox_dps4_init
+            // 
+            this.textBox_dps4_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.textBox_dps4_init.Location = new System.Drawing.Point(70, 203);
+            this.textBox_dps4_init.Name = "textBox_dps4_init";
+            this.textBox_dps4_init.Size = new System.Drawing.Size(274, 27);
+            this.textBox_dps4_init.TabIndex = 16;
+            this.textBox_dps4_init.Text = "Ren Aizen";
             // 
             // checkBox_d3_init
             // 
@@ -261,6 +404,15 @@
             this.checkBox_d3_init.Text = "遠隔だったらチェックを入れる";
             this.checkBox_d3_init.UseVisualStyleBackColor = true;
             // 
+            // textBox_dps3_init
+            // 
+            this.textBox_dps3_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.textBox_dps3_init.Location = new System.Drawing.Point(70, 170);
+            this.textBox_dps3_init.Name = "textBox_dps3_init";
+            this.textBox_dps3_init.Size = new System.Drawing.Size(274, 27);
+            this.textBox_dps3_init.TabIndex = 17;
+            this.textBox_dps3_init.Text = "Laguna Loire\'";
+            // 
             // checkBox_d2_init
             // 
             this.checkBox_d2_init.AutoSize = true;
@@ -271,6 +423,15 @@
             this.checkBox_d2_init.TabIndex = 4;
             this.checkBox_d2_init.Text = "遠隔だったらチェックを入れる";
             this.checkBox_d2_init.UseVisualStyleBackColor = true;
+            // 
+            // textBox_tnk2_init
+            // 
+            this.textBox_tnk2_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.textBox_tnk2_init.Location = new System.Drawing.Point(70, 71);
+            this.textBox_tnk2_init.Name = "textBox_tnk2_init";
+            this.textBox_tnk2_init.Size = new System.Drawing.Size(274, 27);
+            this.textBox_tnk2_init.TabIndex = 18;
+            this.textBox_tnk2_init.Text = "Toki Tokinoa";
             // 
             // checkBox_d1_init
             // 
@@ -283,6 +444,24 @@
             this.checkBox_d1_init.Text = "遠隔だったらチェックを入れる";
             this.checkBox_d1_init.UseVisualStyleBackColor = true;
             // 
+            // textBox_tnk1_init
+            // 
+            this.textBox_tnk1_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.textBox_tnk1_init.Location = new System.Drawing.Point(70, 38);
+            this.textBox_tnk1_init.Name = "textBox_tnk1_init";
+            this.textBox_tnk1_init.Size = new System.Drawing.Size(274, 27);
+            this.textBox_tnk1_init.TabIndex = 19;
+            this.textBox_tnk1_init.Text = "Ray Willpolis";
+            // 
+            // textBox_dps2_init
+            // 
+            this.textBox_dps2_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.textBox_dps2_init.Location = new System.Drawing.Point(70, 137);
+            this.textBox_dps2_init.Name = "textBox_dps2_init";
+            this.textBox_dps2_init.Size = new System.Drawing.Size(274, 27);
+            this.textBox_dps2_init.TabIndex = 20;
+            this.textBox_dps2_init.Text = "Fifflearn Cook";
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -293,6 +472,15 @@
             this.label9.TabIndex = 3;
             this.label9.Text = "ヒラ2";
             // 
+            // textBox_dps1_init
+            // 
+            this.textBox_dps1_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.textBox_dps1_init.Location = new System.Drawing.Point(70, 104);
+            this.textBox_dps1_init.Name = "textBox_dps1_init";
+            this.textBox_dps1_init.Size = new System.Drawing.Size(274, 27);
+            this.textBox_dps1_init.TabIndex = 21;
+            this.textBox_dps1_init.Text = "Ashe Highwind";
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -302,6 +490,15 @@
             this.label8.Size = new System.Drawing.Size(41, 19);
             this.label8.TabIndex = 3;
             this.label8.Text = "ヒラ1";
+            // 
+            // textBox_h1_init
+            // 
+            this.textBox_h1_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.textBox_h1_init.Location = new System.Drawing.Point(70, 236);
+            this.textBox_h1_init.Name = "textBox_h1_init";
+            this.textBox_h1_init.Size = new System.Drawing.Size(274, 27);
+            this.textBox_h1_init.TabIndex = 22;
+            this.textBox_h1_init.Text = "Hina Spring";
             // 
             // label7
             // 
@@ -437,200 +634,18 @@
             this.radioButton_tnk1_init.TabStop = true;
             this.radioButton_tnk1_init.UseVisualStyleBackColor = true;
             // 
-            // textBox_h2_init
+            // checkBox_logout_flg_init
             // 
-            this.textBox_h2_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.textBox_h2_init.Location = new System.Drawing.Point(70, 269);
-            this.textBox_h2_init.Name = "textBox_h2_init";
-            this.textBox_h2_init.Size = new System.Drawing.Size(274, 27);
-            this.textBox_h2_init.TabIndex = 15;
-            this.textBox_h2_init.Text = "Mame San";
-            // 
-            // textBox_dps4_init
-            // 
-            this.textBox_dps4_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.textBox_dps4_init.Location = new System.Drawing.Point(70, 203);
-            this.textBox_dps4_init.Name = "textBox_dps4_init";
-            this.textBox_dps4_init.Size = new System.Drawing.Size(274, 27);
-            this.textBox_dps4_init.TabIndex = 16;
-            this.textBox_dps4_init.Text = "Ren Aizen";
-            // 
-            // textBox_dps3_init
-            // 
-            this.textBox_dps3_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.textBox_dps3_init.Location = new System.Drawing.Point(70, 170);
-            this.textBox_dps3_init.Name = "textBox_dps3_init";
-            this.textBox_dps3_init.Size = new System.Drawing.Size(274, 27);
-            this.textBox_dps3_init.TabIndex = 17;
-            this.textBox_dps3_init.Text = "Laguna Loire\'";
-            // 
-            // textBox_tnk2_init
-            // 
-            this.textBox_tnk2_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.textBox_tnk2_init.Location = new System.Drawing.Point(70, 71);
-            this.textBox_tnk2_init.Name = "textBox_tnk2_init";
-            this.textBox_tnk2_init.Size = new System.Drawing.Size(274, 27);
-            this.textBox_tnk2_init.TabIndex = 18;
-            this.textBox_tnk2_init.Text = "Toki Tokinoa";
-            // 
-            // textBox_tnk1_init
-            // 
-            this.textBox_tnk1_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.textBox_tnk1_init.Location = new System.Drawing.Point(70, 38);
-            this.textBox_tnk1_init.Name = "textBox_tnk1_init";
-            this.textBox_tnk1_init.Size = new System.Drawing.Size(274, 27);
-            this.textBox_tnk1_init.TabIndex = 19;
-            this.textBox_tnk1_init.Text = "Ray Willpolis";
-            // 
-            // textBox_dps2_init
-            // 
-            this.textBox_dps2_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.textBox_dps2_init.Location = new System.Drawing.Point(70, 137);
-            this.textBox_dps2_init.Name = "textBox_dps2_init";
-            this.textBox_dps2_init.Size = new System.Drawing.Size(274, 27);
-            this.textBox_dps2_init.TabIndex = 20;
-            this.textBox_dps2_init.Text = "Fifflearn Cook";
-            // 
-            // textBox_dps1_init
-            // 
-            this.textBox_dps1_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.textBox_dps1_init.Location = new System.Drawing.Point(70, 104);
-            this.textBox_dps1_init.Name = "textBox_dps1_init";
-            this.textBox_dps1_init.Size = new System.Drawing.Size(274, 27);
-            this.textBox_dps1_init.TabIndex = 21;
-            this.textBox_dps1_init.Text = "Ashe Highwind";
-            // 
-            // textBox_h1_init
-            // 
-            this.textBox_h1_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.textBox_h1_init.Location = new System.Drawing.Point(70, 236);
-            this.textBox_h1_init.Name = "textBox_h1_init";
-            this.textBox_h1_init.Size = new System.Drawing.Size(274, 27);
-            this.textBox_h1_init.TabIndex = 22;
-            this.textBox_h1_init.Text = "Hina Spring";
-            // 
-            // listBox_倍率_init
-            // 
-            this.listBox_倍率_init.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.listBox_倍率_init.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.listBox_倍率_init.FormattingEnabled = true;
-            this.listBox_倍率_init.Items.AddRange(new object[] {
-            "1倍",
-            "1.1倍",
-            "1.2倍",
-            "1.3倍",
-            "1.4倍",
-            "1.5倍",
-            "1.6倍",
-            "1.7倍",
-            "1.8倍",
-            "1.9倍",
-            "2.0倍",
-            "3.0倍",
-            "4.0倍",
-            "5.0倍",
-            "10.0倍",
-            "50.0倍",
-            "100.0倍"});
-            this.listBox_倍率_init.Location = new System.Drawing.Point(547, 537);
-            this.listBox_倍率_init.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.listBox_倍率_init.Name = "listBox_倍率_init";
-            this.listBox_倍率_init.Size = new System.Drawing.Size(90, 23);
-            this.listBox_倍率_init.TabIndex = 41;
-            // 
-            // button1_表示位置確認
-            // 
-            this.button1_表示位置確認.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.button1_表示位置確認.Location = new System.Drawing.Point(515, 577);
-            this.button1_表示位置確認.Name = "button1_表示位置確認";
-            this.button1_表示位置確認.Size = new System.Drawing.Size(127, 42);
-            this.button1_表示位置確認.TabIndex = 40;
-            this.button1_表示位置確認.Text = "表示位置確認";
-            this.button1_表示位置確認.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_terop_check_init
-            // 
-            this.checkBox_terop_check_init.AutoSize = true;
-            this.checkBox_terop_check_init.Checked = true;
-            this.checkBox_terop_check_init.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_terop_check_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.checkBox_terop_check_init.Location = new System.Drawing.Point(375, 471);
-            this.checkBox_terop_check_init.Name = "checkBox_terop_check_init";
-            this.checkBox_terop_check_init.Size = new System.Drawing.Size(186, 23);
-            this.checkBox_terop_check_init.TabIndex = 39;
-            this.checkBox_terop_check_init.Text = "画像案内、ご利用チェック";
-            this.checkBox_terop_check_init.UseVisualStyleBackColor = true;
-            // 
-            // listBox_倍率_text_init
-            // 
-            this.listBox_倍率_text_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.listBox_倍率_text_init.Location = new System.Drawing.Point(627, 502);
-            this.listBox_倍率_text_init.Name = "listBox_倍率_text_init";
-            this.listBox_倍率_text_init.Size = new System.Drawing.Size(10, 27);
-            this.listBox_倍率_text_init.TabIndex = 35;
-            this.listBox_倍率_text_init.Text = "1倍";
-            this.listBox_倍率_text_init.Visible = false;
-            // 
-            // textBox_ボタン切り替え用隠し
-            // 
-            this.textBox_ボタン切り替え用隠し.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.textBox_ボタン切り替え用隠し.Location = new System.Drawing.Point(371, 592);
-            this.textBox_ボタン切り替え用隠し.Name = "textBox_ボタン切り替え用隠し";
-            this.textBox_ボタン切り替え用隠し.Size = new System.Drawing.Size(100, 27);
-            this.textBox_ボタン切り替え用隠し.TabIndex = 36;
-            this.textBox_ボタン切り替え用隠し.Text = "表示位置確認";
-            this.textBox_ボタン切り替え用隠し.Visible = false;
-            // 
-            // textBox_terop_Y_init
-            // 
-            this.textBox_terop_Y_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.textBox_terop_Y_init.Location = new System.Drawing.Point(440, 537);
-            this.textBox_terop_Y_init.Name = "textBox_terop_Y_init";
-            this.textBox_terop_Y_init.Size = new System.Drawing.Size(100, 27);
-            this.textBox_terop_Y_init.TabIndex = 37;
-            this.textBox_terop_Y_init.Text = "100";
-            // 
-            // textBox_terop_X_init
-            // 
-            this.textBox_terop_X_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.textBox_terop_X_init.Location = new System.Drawing.Point(440, 505);
-            this.textBox_terop_X_init.Name = "textBox_terop_X_init";
-            this.textBox_terop_X_init.Size = new System.Drawing.Size(100, 27);
-            this.textBox_terop_X_init.TabIndex = 38;
-            this.textBox_terop_X_init.Text = "100";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.label14.Location = new System.Drawing.Point(369, 540);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(65, 19);
-            this.label14.TabIndex = 33;
-            this.label14.Text = "Y座標：";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.label13.Location = new System.Drawing.Point(369, 508);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(65, 19);
-            this.label13.TabIndex = 34;
-            this.label13.Text = "X座標：";
-            // 
-            // checkBoxkakusei4層use_check_init
-            // 
-            this.checkBoxkakusei4層use_check_init.AutoSize = true;
-            this.checkBoxkakusei4層use_check_init.Checked = true;
-            this.checkBoxkakusei4層use_check_init.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxkakusei4層use_check_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.checkBoxkakusei4層use_check_init.Location = new System.Drawing.Point(6, 46);
-            this.checkBoxkakusei4層use_check_init.Name = "checkBoxkakusei4層use_check_init";
-            this.checkBoxkakusei4層use_check_init.Size = new System.Drawing.Size(231, 23);
-            this.checkBoxkakusei4層use_check_init.TabIndex = 42;
-            this.checkBoxkakusei4層use_check_init.Text = "覚醒編4層全機能ご利用チェック";
-            this.checkBoxkakusei4層use_check_init.UseVisualStyleBackColor = true;
+            this.checkBox_logout_flg_init.AutoSize = true;
+            this.checkBox_logout_flg_init.Checked = true;
+            this.checkBox_logout_flg_init.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_logout_flg_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.checkBox_logout_flg_init.Location = new System.Drawing.Point(29, 10);
+            this.checkBox_logout_flg_init.Name = "checkBox_logout_flg_init";
+            this.checkBox_logout_flg_init.Size = new System.Drawing.Size(132, 23);
+            this.checkBox_logout_flg_init.TabIndex = 43;
+            this.checkBox_logout_flg_init.Text = "log出力サポート";
+            this.checkBox_logout_flg_init.UseVisualStyleBackColor = true;
             // 
             // Alexander
             // 
@@ -701,5 +716,6 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.CheckBox checkBoxkakusei4層use_check_init;
+        private System.Windows.Forms.CheckBox checkBox_logout_flg_init;
     }
 }

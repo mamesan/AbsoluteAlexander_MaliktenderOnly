@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActHelper.cs" />
+    <Compile Include="ActInvoker.cs" />
     <Compile Include="Terops123.cs">
       <SubType>Form</SubType>
     </Compile>
