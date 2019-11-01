@@ -8,26 +8,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
     class OutLog
     {
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            StackTrace stt = new StackTrace(false);
-            String cls = stt.GetFrame(0).GetMethod().ReflectedType.FullName;
-            String mth = stt.GetFrame(0).GetMethod().Name;
-
-            try
-            {
-                WriteTraceLog(cls + "." + mth + "開始");
-                // ゼロ割り算Exceptionを発生させる
-                int a = 0;
-                a = 1 / a;
-                WriteTraceLog(cls + "." + mth + "終了");
-            }
-            catch (Exception ex)
-            {
-                WriteTraceLog(cls + "." + mth + "でエラーが発生しました", ex);
-            }
-        }
-
         /// <summary>
         /// ログ出力
         /// </summary>

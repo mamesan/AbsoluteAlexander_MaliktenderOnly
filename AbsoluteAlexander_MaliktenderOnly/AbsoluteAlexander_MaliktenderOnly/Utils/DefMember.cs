@@ -12,9 +12,9 @@
                 "Ashe Highwind",
                 "Hina Spring",
                 "Mame San",
-                "C'c Lemon",
-                "Sisya Mo",
-                "Sasi Mi"
+                //"Sisya Mo",
+                //"Sasi Mi",
+                "C'c Lemon"
             };
     }
 }

@@ -45,6 +45,9 @@
         AST = 33,
         SAM = 34,
         RDM = 35,
+        BLU = 36,
+        GNB = 37,
+        DNC = 38,
     }
 
     /// <summary>
@@ -108,6 +111,9 @@
             new Job(JobIds.AST, JobRoles.Healer),
             new Job(JobIds.SAM, JobRoles.MeleeDPS),
             new Job(JobIds.RDM, JobRoles.MagicDPS),
+            new Job(JobIds.BLU, JobRoles.MagicDPS),
+            new Job(JobIds.DNC, JobRoles.RangeDPS),
+            new Job(JobIds.GNB, JobRoles.Tank)
         };
 
         private readonly static Job UnkownJob = new Job(0, JobRoles.Unknown);
