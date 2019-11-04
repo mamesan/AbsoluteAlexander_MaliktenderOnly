@@ -11,7 +11,7 @@ namespace AbsoluteAlexander_MaliktenderOnly.Utils
         /// <summary>
         /// Mob情報を取得する
         /// </summary>
-        public static void GetMobInfo(string FileName , string FileOutPutPath)
+        public static void GetMobInfo(string FileName, string FileOutPutPath)
         {
 
             dynamic list = ActHelper.GetCombatantList();
@@ -81,7 +81,7 @@ namespace AbsoluteAlexander_MaliktenderOnly.Utils
             // ファイルの存在チェックを実施し、存在しない名前になるまで連番作成を行う
             int i = 1;
 
-            string Path = FileOutPath + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + FileName;
+            string Path = FileOutPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + FileName;
             while (File.Exists(Path + i + ".txt"))
             {
                 i++;

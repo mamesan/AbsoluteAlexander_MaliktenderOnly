@@ -28,8 +28,15 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private bool logoutFlg = false;
         // 戦闘終了時のフラグ
         private static DateTime lastWipeOutDateTime = DateTime.Now;
-        private bool wipflg = false;
         private string dateStr = "";
+
+
+        private Terops123 terops123 = new Terops123();
+        private Size terops123Size = new Size();
+        private Size terops123pictureBox1Size = new Size();
+        private Size terops123pictureBox2Size = new Size();
+        private Size terops123pictureBox3Size = new Size();
+        private Size terops123pictureBox4Size = new Size();
 
 
         public Alexander()
@@ -48,7 +55,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
             //lbStatus = pluginStatusText;   // Hand the status label's reference to our local var
             pluginScreenSpace.Controls.Add(this);   // Add this UserControl to the tab ACT provides
             Dock = DockStyle.Fill; // Expand the UserControl to fill the tab's client space
-                                        // MultiProject.BasePlugin.xmlSettings = new SettingsSerializer(this); // Create a new settings serializer and pass it this instance
+                                   // MultiProject.BasePlugin.xmlSettings = new SettingsSerializer(this); // Create a new settings serializer and pass it this instance
 
             pluginScreenSpace.Text = "絶アレキ_MaliktenderOnly";
             pluginStatusText.Text = "AbsoluteAlexanderPluginStarts";
@@ -192,7 +199,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     {
                         lastWipeOutDateTime = DateTime.Now;
                         ActInvoker.Invoke(() => ActGlobals.oFormActMain.EndCombat(true));
-                        wipflg = true;
+                        //wipflg = true;
 
                         Task.Run(() =>
                         {
@@ -204,12 +211,17 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     }
                     else
                     {
-                        wipflg = false;
+                        //wipflg = false;
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// logを読むイベントを発生させる
+        /// </summary>
+        /// <param name="isImport"></param>
+        /// <param name="logInfo"></param>
         private void OFormActMain_OnLogLineRead(bool isImport, LogLineEventArgs logInfo)
         {
             // ユーザ認証されていない場合は、処理を行わせないように処理を行う
@@ -229,7 +241,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     if (checkBox_logout_flg_init.Checked)
                     {
                         logoutFlg = true;
-                        dateStr = DateTime.Now.ToString("mmdd HH:MM");
+                        dateStr = DateTime.Now.ToString("mmddHHMM");
                     }
 
 
@@ -247,29 +259,24 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 // log出力フラグ用の処理
                 if (logoutFlg)
                 {
-                    OutLog.WriteTraceLog(logInfo.logLine , textBoxlocalPath_init.Text, dateStr + "_battle");
+                    OutLog.WriteTraceLog(logInfo.logLine, textBoxlocalPath_init.Text, dateStr + "_battle");
                 }
 
 
                 // 対象のログが流れた際は、座標を取得する（座標取得はデフォルト設定）
-                if (!string.IsNullOrWhiteSpace(textBoxlocalPath_init.Text)) { 
+                if (!string.IsNullOrWhiteSpace(textBoxlocalPath_init.Text))
+                {
                     foreach (string scanstr in scanList)
                     {
                         if (logInfo.logLine.Contains(scanstr)) FileOutPut.GetMobInfo(scanstr, textBoxlocalPath_init.Text);
                     }
-                    if (logInfo.logLine.Contains("座標取得!"))  FileOutPut.GetMobInfo("座標取得", textBoxlocalPath_init.Text);
+                    if (logInfo.logLine.Contains("座標取得!")) FileOutPut.GetMobInfo("座標取得", textBoxlocalPath_init.Text);
                 }
 
             }
         }
 
-
-        /// <summary>
-        /// addボタン押下時のイベント
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button_add_Click(object sender, EventArgs e)
+        private void button_add_Click_1(object sender, EventArgs e)
         {
             // まず記載の文字を格納する
             string addtext = textBox_list.Text;
@@ -289,24 +296,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 }
             }
         }
-        /// <summary>
-        /// deleteボタン押下時のイベント
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button_delete_Click(object sender, EventArgs e)
-        {
-            // アイテムが何も選択されていなかった場合は、処理を中断する
-            if (select_item_name == "") return;
-            // アイテムを削除する
-            checkedListBox_init.Items.Remove(select_item_name);
-        }
-        /// <summary>
-        /// アイテムが選択された時のイベント
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void checkedListBox_init_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void checkedListBox_init_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             // アイテムが0件だった場合、処理を中断する
             if (checkedListBox_init.Items.Count == 0) return;
@@ -321,6 +312,93 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 {
                     scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
                 }
+            }
+        }
+
+        private void button_delete_Click_1(object sender, EventArgs e)
+        {
+            // アイテムが何も選択されていなかった場合は、処理を中断する
+            if (select_item_name == "") return;
+            // アイテムを削除する
+            checkedListBox_init.Items.Remove(select_item_name);
+            // scanlistに要素を格納する
+            if (checkedListBox_init.CheckedItems.Count != 0)
+            {
+                for (int x = 0; x < checkedListBox_init.CheckedItems.Count; x++)
+                {
+                    scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
+                }
+            }
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (textBox_ボタン切り替え用隠し.Text == "表示位置確認")
+            {
+                int X = textBox_terop_X_init.Text == "" ? 100 : int.Parse(textBox_terop_X_init.Text);
+                int Y = textBox_terop_Y_init.Text == "" ? 100 : int.Parse(textBox_terop_Y_init.Text);
+                Point point = new Point(X, Y);
+                // 位置を指定してしまう
+                terops123.Location = point;
+
+                terops123.Show();
+
+                textBox_ボタン切り替え用隠し.Text = "表示確認終了";
+                button1_表示位置確認.Text = "表示確認終了";
+            }
+            else
+            {
+                terops123.Hide();
+
+                textBox_ボタン切り替え用隠し.Text = "表示位置確認";
+                button1_表示位置確認.Text = "表示位置確認";
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listBox_倍率_text_init.Text = listBox_倍率_init.Text;
+
+            double bairitsu = double.Parse(listBox_倍率_text_init.Text.ToString().Replace("倍", ""));
+
+            terops123.Size = new Size((int)(terops123Size.Width * bairitsu), (int)(terops123Size.Height * bairitsu));
+            terops123.pictureBox1.Size = new Size((int)(terops123pictureBox1Size.Width * bairitsu), (int)(terops123pictureBox1Size.Height * bairitsu));
+            terops123.pictureBox2.Size = new Size((int)(terops123pictureBox2Size.Width * bairitsu), (int)(terops123pictureBox2Size.Height * bairitsu));
+            terops123.pictureBox3.Size = new Size((int)(terops123pictureBox3Size.Width * bairitsu), (int)(terops123pictureBox3Size.Height * bairitsu));
+            terops123.pictureBox4.Size = new Size((int)(terops123pictureBox4Size.Width * bairitsu), (int)(terops123pictureBox4Size.Height * bairitsu));
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int X = textBox_terop_X_init.Text == "" ? 100 : int.Parse(textBox_terop_X_init.Text);
+                int Y = textBox_terop_Y_init.Text == "" ? 100 : int.Parse(textBox_terop_Y_init.Text);
+                Point point = new Point(X, Y);
+                // 位置を指定してしまう
+                terops123.Location = point;
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int X = textBox_terop_X_init.Text == "" ? 100 : int.Parse(textBox_terop_X_init.Text);
+                int Y = textBox_terop_Y_init.Text == "" ? 100 : int.Parse(textBox_terop_Y_init.Text);
+                Point point = new Point(X, Y);
+                // 位置を指定してしまう
+                terops123.Location = point;
+            }
+            catch
+            {
+
             }
         }
     }
