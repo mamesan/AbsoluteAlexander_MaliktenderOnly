@@ -273,6 +273,76 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     if (logInfo.logLine.Contains("座標取得!")) FileOutPut.GetMobInfo("座標取得", textBoxlocalPath_init.Text);
                 }
 
+                // 空なら何もしない
+                if (!string.IsNullOrWhiteSpace(textBox_only_init.Text))
+                {
+                    if (logInfo.logLine.Contains(textBox_only_init.Text))
+                    {
+                        // mob情報を取得する
+                        dynamic list = ActHelper.GetCombatantList();
+
+                        List<CombertBean> CombertBeanList = new List<CombertBean>();
+
+                        foreach (dynamic item in list.ToArray())
+                        {
+                            if (item == null)
+                            {
+                                continue;
+                            }
+
+                            var combatant = new Combatant();
+                            combatant.Name = (string)item.Name;
+                            combatant.ID = (uint)item.ID;
+                            combatant.Job = (int)item.Job;
+                            combatant.IsCasting = (bool)item.IsCasting;
+                            combatant.OwnerID = (uint)item.OwnerID;
+                            combatant.type = (byte)item.type;
+                            combatant.Level = (int)item.Level;
+                            combatant.CurrentHP = (int)item.CurrentHP;
+                            combatant.MaxHP = (int)item.MaxHP;
+                            combatant.PosX = (float)item.PosX;
+                            combatant.PosY = (float)item.PosY;
+                            combatant.PosZ = (float)item.PosZ;
+
+                            CombertBean combertBean = new CombertBean();
+                            combertBean.Name = combatant.Name.ToString();
+                            combertBean.ID = combatant.ID;
+                            combertBean.MaxHp = combatant.MaxMP;
+                            combertBean.CurrentHP = combatant.CurrentHP;
+                            combertBean.Job = combatant.Job;
+                            combertBean.IsCasting = combatant.IsCasting;
+                            combertBean.OwnerID = combatant.OwnerID;
+                            combertBean.type = combatant.type;
+                            combertBean.Level = combatant.Level;
+                            combertBean.X = combatant.PosX.ToString();
+                            combertBean.Y = combatant.PosY.ToString();
+                            combertBean.Z = combatant.PosZ.ToString();
+
+                            CombertBeanList.Add(combertBean);
+                        }
+                        string OutPutString = "";
+                        string 改行 = "\r\n";
+                        foreach (CombertBean combertBean in CombertBeanList)
+                        {
+                            OutPutString += "ID：" + combertBean.ID + 改行;
+                            OutPutString += "名前：" + combertBean.Name + 改行;
+                            OutPutString += "X：" + combertBean.X + 改行;
+                            OutPutString += "Y：" + combertBean.Y + 改行;
+                            OutPutString += "Z：" + combertBean.Z + 改行;
+                            OutPutString += "Job：" + Job.Instance.GetJobName(combertBean.Job) + 改行;
+                            OutPutString += "MaxHp：" + combertBean.MaxHp + 改行;
+                            OutPutString += "CurrentHP：" + combertBean.CurrentHP + 改行;
+                            OutPutString += "IsCasting：" + combertBean.IsCasting + 改行;
+                            OutPutString += "OwnerID：" + combertBean.OwnerID + 改行;
+                            OutPutString += "type：" + combertBean.type + 改行;
+                            OutPutString += "Level：" + combertBean.Level + 改行;
+                            OutPutString += 改行;
+                        }
+
+                        textBox1_only_cond.Text = OutPutString;
+                    }
+                }
+
             }
         }
 
