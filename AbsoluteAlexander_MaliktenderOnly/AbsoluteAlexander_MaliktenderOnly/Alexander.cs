@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Advanced_Combat_Tracker;
-using System.IO;
+using FFXIV_ACT_Plugin.Common;
 using AbsoluteAlexander_MaliktenderOnly.Utils;
 using System.Net;
 using System.Threading;
@@ -25,18 +25,18 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private string select_item_name = "";
 
         private bool userAuthFlg = false;
-
+        private bool initButtoleFlg = false;
         private bool logoutFlg = false;
         // 戦闘終了時のフラグ
         private bool combatFlg = false;
         private static DateTime lastWipeOutDateTime = DateTime.Now;
         private string dateStr = "";
 
-        TabPageManager _tabPageManager = null;
+        private static IDataSubscription DataSubscription { get; set; }
 
-        List<string> AbiList = new List<string>();
-        List<Combatant> PtList = new List<Combatant>();
-        List<string> Moblist = new List<string>();
+        private List<string> AbiList = new List<string>();
+        private List<Combatant> PtList = new List<Combatant>();
+        private List<string> Moblist = new List<string>();
         private int time = 0;
 
         // Terops123 初期化
@@ -111,11 +111,15 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // ログを取得するイベントを生成する
             ActGlobals.oFormActMain.OnLogLineRead += OFormActMain_OnLogLineRead;
 
-            //TabPageManagerオブジェクトの作成
-            _tabPageManager = new TabPageManager(対象人設定用);
-            _tabPageManager.ChangeTabPageVisible(1, false);
-
-            checkBox_kanrisya_init.Checked = false;
+            // コンボボックスの初期値を設定
+            if (listBox_倍率_init.SelectedIndex == -1)
+            {
+                listBox_倍率_init.SelectedIndex = 0;
+            }
+            if (comboBox1_リフト_init.SelectedIndex == -1)
+            {
+                comboBox1_リフト_init.SelectedIndex = 0;
+            }
 
             scanList = new List<string>();
             // scanlistに要素を格納する
@@ -126,6 +130,9 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
                 }
             }
+
+            // 戦闘開始をチェックする
+            ActGlobals.oFormActMain.OnCombatStart += OFormActMain_OnCombatStart;
 
             // 戦闘終了をキャッチする
             ActGlobals.oFormActMain.OnCombatEnd += OFormActMain_OnCombatEnd;
@@ -153,12 +160,15 @@ namespace AbsoluteAlexander_MaliktenderOnly
         // --------------------------------------- init処理 ---------------------------------------
 
 
-　　　　// 戦闘開始前init
+        // 戦闘開始前init
         /// <summary>
         /// 戦闘前設定等の処理を全て初期化する処理
         /// </summary>
         private void battleInitSetting()
         {
+            // initを走らせた判定を行う
+            initButtoleFlg = true;
+
             // 戦闘開始フラグ
             combatFlg = true;
 
@@ -216,6 +226,9 @@ namespace AbsoluteAlexander_MaliktenderOnly
         /// </summary>
         private void battoleEndInitSetting()
         {
+            // 停止処理initを走らせた判定を行う
+            initButtoleFlg = false;
+
             // 戦闘開始フラグ
             combatFlg = false;
 
@@ -259,7 +272,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     break;
                 }
                 // ループ毎に10秒ディレイをかける
-                await Task.Delay(10000);
+                await Task.Delay(1000);
             }
 
             if (!userAuthFlg)
@@ -273,7 +286,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
         /// </summary>
         public async Task ButtoleTimer()
         {
-            time = 0;
             while (combatFlg)
             {
                 await Task.Delay(1000);
@@ -291,15 +303,29 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // 対象者しか、機能を利用できなくする
             if (GetUrl(checkName) || DefMember.DefMemberList.Contains(checkName))
             {
-                // 管理権限用
-                if (KanriMem.KanriMemList.Contains(checkName))
+                try
                 {
-                    _tabPageManager.ChangeTabPageVisible(1, true);
-                    checkBox_kanrisya_init.Checked = true;
-                }
-                button2_認証.Visible = false;
-                userAuthFlg = true;
+                    // 管理権限用
+                    if (KanriMem.KanriMemList.Contains(checkName))
+                    {
+                        checkBox_kanrisya_init.Checked = true;
+                        checkBox_kanrisya_init.Visible = true;
 
+                    }
+                    else
+                    {
+                        checkBox_kanrisya_init.Checked = false;
+                        checkBox_kanrisya_init.Visible = false;
+                    }
+                    button2_認証.Visible = false;
+                    userAuthFlg = true;
+                    // モブ情報をキャッチする
+                    ActHelper.DataSubscription.CombatantAdded += DataSubscription_CombatantAdded;
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e);
+                }
             }
             else
             {
@@ -373,6 +399,15 @@ namespace AbsoluteAlexander_MaliktenderOnly
         }
 
         /// <summary>
+        /// 戦闘開始時のイベント
+        /// </summary>
+        /// <param name="isImport"></param>
+        /// <param name="encounterInfo"></param>
+        private void OFormActMain_OnCombatStart(bool isImport, CombatToggleEventArgs encounterInfo)
+        {
+            combatFlg = true;
+        }
+        /// <summary>
         /// 戦闘終了時のイベント
         /// </summary>
         /// <param name="isImport"></param>
@@ -380,6 +415,22 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private void OFormActMain_OnCombatEnd(bool isImport, CombatToggleEventArgs encounterInfo)
         {
             combatFlg = false;
+        }
+
+        /// <summary>
+        /// mob情報をキャッチする
+        /// </summary>
+        /// <param name="Combatant"></param>
+        private void DataSubscription_CombatantAdded(object Combatant)
+        {
+            FFXIV_ACT_Plugin.Common.Models.Combatant combatant = (FFXIV_ACT_Plugin.Common.Models.Combatant)Combatant;
+            string MobName = combatant.Name;
+            if (!Moblist.Contains(MobName)
+                && combatant.type == 2
+                && combatant.OwnerID == 0)
+            {
+                Moblist.Add(MobName);
+            }
         }
 
         // ------------------------------------------------- 以下、log出力イベントエリア -------------------------------------------------
@@ -403,8 +454,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
                 // -------------------------- 戦闘開始時の処理 --------------------------
                 // 戦闘開始のお知らせ
-                //if (logInfo.logLine.Contains("戦闘開始！"))
-                if (combatFlg)
+                if (combatFlg && !initButtoleFlg)
                 {
                     // 戦闘前の初期処理
                     battleInitSetting();
@@ -416,7 +466,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
                 // -------------------------- 戦闘終了時の処理 --------------------------
                 // 戦闘終了時
-                if (!combatFlg)
+                if (!combatFlg && initButtoleFlg)
                 {
                     // 戦闘終了時の共通初期化処理
                     battoleEndInitSetting();
@@ -426,13 +476,13 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
 
                 // -------------------------- アビリティファイルの出力処理 --------------------------
-                if (combatFlg && checkBox1_TimeLine_init.Checked)
+                if (combatFlg && checkBox1_Abi_init.Checked)
                 {
                     string log = logInfo.logLine;
                     // 味方の名前+の「が付いている場合、処理にかける
                     foreach (Combatant combatant in PtList)
                     {
-                        if (log.Contains(combatant.Name) && log.Contains("の「"))
+                        if (log.Contains(combatant.Name) && log.Contains("の「") && !log.Contains("が切れた"))
                         {
                             foreach (string skil in AbiList)
                             {
@@ -440,16 +490,20 @@ namespace AbsoluteAlexander_MaliktenderOnly
                                 if (log.Contains(combatant.Name + "の「" + skil + "」"))
                                 {
                                     OutLog.WriteTraceLog(time + " " + combatant.Name + "の「" + skil + "」", textBoxlocalPath_init.Text, dateStr + "_AbilityTimeLine");
+                                    break;
                                 }
                             }
                         }
                     }
+                }
                 // -------------------------- アビリティファイルの出力処理 --------------------------
 
 
-
                 // -------------------------- MobTimeLineファイルの出力処理 --------------------------
-                // 技名のみ取得するようにする
+                if (combatFlg && checkBox1_TimeLine_init.Checked)
+                {
+                    string log = logInfo.logLine;
+                    // 技名のみ取得するようにする
                     foreach (string mobName in Moblist)
                     {
                         // 取得するlogを厳選する
@@ -476,7 +530,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
                             // 10文字以下の場合は書き込まない
                             if (str.Length > 15)
                             {
-                                OutLog.WriteTraceLog(logInfo.logLine, textBoxlocalPath_init.Text, dateStr + "_MobTimeLine");
+                                OutLog.WriteTraceLog(str, textBoxlocalPath_init.Text, dateStr + "_MobTimeLine");
+                                break;
                             }
                         }
                     }
@@ -639,8 +694,12 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // 倍率を呼び出す
-            BairituSetting1234();
+            try
+            {
+                // 倍率を呼び出す
+                BairituSetting1234();
+            }
+            catch { }
         }
 
         private void BairituSetting1234()
@@ -663,7 +722,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 terops123.Location = SettingPoint(textBox_terop_X_init, textBox_terop_Y_init);
             }
             catch
-            {}
+            { }
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
@@ -673,10 +732,10 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 terops123.Location = SettingPoint(textBox_terop_X_init, textBox_terop_Y_init);
             }
             catch
-            {}
+            { }
         }
 
-        private Point SettingPoint(TextBox textBoxX , TextBox textBoxY)
+        private Point SettingPoint(TextBox textBoxX, TextBox textBoxY)
         {
             int X = textBoxX.Text == "" ? 100 : int.Parse(textBoxX.Text);
             int Y = textBoxY.Text == "" ? 100 : int.Parse(textBoxY.Text);
@@ -705,7 +764,11 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
         private void comboBox1_リフト_init_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BairituSettingABCD();
+            try
+            {
+                BairituSettingABCD();
+            }
+            catch { }
         }
         private void BairituSettingABCD()
         {
@@ -719,7 +782,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
             teropsABCD.pictureBoxC.Size = new Size((int)(teropsABCDpictureBoxCSize.Width * bairitsu), (int)(teropsABCDpictureBoxCSize.Height * bairitsu));
             teropsABCD.pictureBoxD.Size = new Size((int)(teropsABCDpictureBoxDSize.Width * bairitsu), (int)(teropsABCDpictureBoxDSize.Height * bairitsu));
 
-    }
+        }
 
         private void button1_リフト_init_Click(object sender, EventArgs e)
         {

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AbsoluteAlexander_MaliktenderOnly.CreateTimeLine
 {
@@ -18,7 +19,7 @@ namespace AbsoluteAlexander_MaliktenderOnly.CreateTimeLine
             List<string> AbiList = new List<string>();
             try
             {
-                string path = Directory.GetCurrentDirectory();
+                string path = "D:\\Actor_v2.0.4.2\\ACT";
 
                 StreamReader sr = new StreamReader(Path.Combine(@path + "\\lib\\AbiList.txt"), Encoding.GetEncoding("UTF-8"));
 

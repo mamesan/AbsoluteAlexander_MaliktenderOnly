@@ -12,17 +12,17 @@
             "Ashe Highwind",
             "Hina Spring",
             "Mame San",
-            //"Sisya Mo",
+            "Sisya Mo",
             //"Sasi Mi",
             "C'c Lemon"
         };
     }
-    class KanriMem 
+    class KanriMem
     {
         public static readonly string[] KanriMemList =
         {
             "Mame San",
-            //"Sisya Mo",
+            "Sisya Mo"
             //"Sasi Mi"
         };
     }

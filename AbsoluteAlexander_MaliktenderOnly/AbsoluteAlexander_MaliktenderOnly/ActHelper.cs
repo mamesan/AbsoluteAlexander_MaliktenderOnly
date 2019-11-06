@@ -13,7 +13,7 @@
         private static object lockObject = new object();
         private static dynamic plugin;
         private static IDataRepository DataRepository { get; set; }
-        private static IDataSubscription DataSubscription { get; set; }
+        public static IDataSubscription DataSubscription { get; set; }
         public PrimaryPlayerDelegate OnPrimaryPlayerChanged { get; set; }
         public PartyListChangedDelegate OnPartyListChanged { get; set; }
         public ZoneChangedDelegate OnZoneChanged { get; set; }
@@ -43,10 +43,7 @@
                 if (plugin != null)
                 {
                     DataRepository = plugin.DataRepository;
-
-                    // この辺り要確認事項ですね。
                     DataSubscription = plugin.DataSubscription;
-                    DataSubscription.CombatantAdded += DataSubscription_CombatantAdded;
 
                     var ff14PluginConfig = DataRepository.GetCurrentFFXIVProcess();
 
@@ -62,12 +59,6 @@
                     return false;
                 }
             }
-        }
-
-        private static void DataSubscription_CombatantAdded(object Combatant)
-        {
-
-            Console.WriteLine(Combatant);
         }
 
         public static Combatant GetCombatantPlayer()

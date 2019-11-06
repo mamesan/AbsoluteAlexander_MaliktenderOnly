@@ -31,7 +31,9 @@
             this.対象人設定用 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.管理 = new System.Windows.Forms.TabPage();
+            this.button2_認証 = new System.Windows.Forms.Button();
             this.textBox1_only_cond = new System.Windows.Forms.TextBox();
+            this.checkBox1_TimeLine_init = new System.Windows.Forms.CheckBox();
             this.checkBox_kanrisya_init = new System.Windows.Forms.CheckBox();
             this.checkBox_logout_flg_init = new System.Windows.Forms.CheckBox();
             this.textBox_only_init = new System.Windows.Forms.TextBox();
@@ -109,9 +111,7 @@
             this.radioButton_dps1_init = new System.Windows.Forms.RadioButton();
             this.radioButton_tnk2_init = new System.Windows.Forms.RadioButton();
             this.radioButton_tnk1_init = new System.Windows.Forms.RadioButton();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2_認証 = new System.Windows.Forms.Button();
-            this.checkBox1_TimeLine_init = new System.Windows.Forms.CheckBox();
+            this.checkBox1_Abi_init = new System.Windows.Forms.CheckBox();
             this.対象人設定用.SuspendLayout();
             this.管理.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -145,8 +145,8 @@
             // 
             this.管理.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.管理.Controls.Add(this.button2_認証);
-            this.管理.Controls.Add(this.button1);
             this.管理.Controls.Add(this.textBox1_only_cond);
+            this.管理.Controls.Add(this.checkBox1_Abi_init);
             this.管理.Controls.Add(this.checkBox1_TimeLine_init);
             this.管理.Controls.Add(this.checkBox_kanrisya_init);
             this.管理.Controls.Add(this.checkBox_logout_flg_init);
@@ -164,6 +164,16 @@
             this.管理.TabIndex = 1;
             this.管理.Text = "管理";
             // 
+            // button2_認証
+            // 
+            this.button2_認証.Location = new System.Drawing.Point(461, 674);
+            this.button2_認証.Name = "button2_認証";
+            this.button2_認証.Size = new System.Drawing.Size(204, 75);
+            this.button2_認証.TabIndex = 45;
+            this.button2_認証.Text = "認証ボタン ";
+            this.button2_認証.UseVisualStyleBackColor = true;
+            this.button2_認証.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // textBox1_only_cond
             // 
             this.textBox1_only_cond.Location = new System.Drawing.Point(33, 471);
@@ -171,6 +181,17 @@
             this.textBox1_only_cond.Name = "textBox1_only_cond";
             this.textBox1_only_cond.Size = new System.Drawing.Size(399, 278);
             this.textBox1_only_cond.TabIndex = 44;
+            // 
+            // checkBox1_TimeLine_init
+            // 
+            this.checkBox1_TimeLine_init.AutoSize = true;
+            this.checkBox1_TimeLine_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.checkBox1_TimeLine_init.Location = new System.Drawing.Point(323, 10);
+            this.checkBox1_TimeLine_init.Name = "checkBox1_TimeLine_init";
+            this.checkBox1_TimeLine_init.Size = new System.Drawing.Size(136, 23);
+            this.checkBox1_TimeLine_init.TabIndex = 43;
+            this.checkBox1_TimeLine_init.Text = "TimeLineフラグ";
+            this.checkBox1_TimeLine_init.UseVisualStyleBackColor = true;
             // 
             // checkBox_kanrisya_init
             // 
@@ -500,6 +521,7 @@
             this.comboBox1_リフト_init.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1_リフト_init.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.comboBox1_リフト_init.FormattingEnabled = true;
+            this.comboBox1_リフト_init.ImeMode = System.Windows.Forms.ImeMode.Disable;
             this.comboBox1_リフト_init.Items.AddRange(new object[] {
             "1倍",
             "1.1倍",
@@ -514,10 +536,7 @@
             "2.0倍",
             "3.0倍",
             "4.0倍",
-            "5.0倍",
-            "10.0倍",
-            "50.0倍",
-            "100.0倍"});
+            "5.0倍"});
             this.comboBox1_リフト_init.Location = new System.Drawing.Point(191, 215);
             this.comboBox1_リフト_init.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBox1_リフト_init.Name = "comboBox1_リフト_init";
@@ -594,10 +613,7 @@
             "2.0倍",
             "3.0倍",
             "4.0倍",
-            "5.0倍",
-            "10.0倍",
-            "50.0倍",
-            "100.0倍"});
+            "5.0倍"});
             this.listBox_倍率_init.Location = new System.Drawing.Point(191, 73);
             this.listBox_倍率_init.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.listBox_倍率_init.Name = "listBox_倍率_init";
@@ -1080,37 +1096,16 @@
             this.radioButton_tnk1_init.TabStop = true;
             this.radioButton_tnk1_init.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // checkBox1_Abi_init
             // 
-            this.button1.Location = new System.Drawing.Point(505, 471);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(204, 75);
-            this.button1.TabIndex = 45;
-            this.button1.Text = "テスト用ボタン play";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // button2_認証
-            // 
-            this.button2_認証.Location = new System.Drawing.Point(505, 334);
-            this.button2_認証.Name = "button2_認証";
-            this.button2_認証.Size = new System.Drawing.Size(204, 75);
-            this.button2_認証.TabIndex = 45;
-            this.button2_認証.Text = "テスト用ボタン 認証";
-            this.button2_認証.UseVisualStyleBackColor = true;
-            this.button2_認証.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // checkBox1_TimeLine_init
-            // 
-            this.checkBox1_TimeLine_init.AutoSize = true;
-            this.checkBox1_TimeLine_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.checkBox1_TimeLine_init.Location = new System.Drawing.Point(323, 10);
-            this.checkBox1_TimeLine_init.Name = "checkBox1_TimeLine_init";
-            this.checkBox1_TimeLine_init.Size = new System.Drawing.Size(136, 23);
-            this.checkBox1_TimeLine_init.TabIndex = 43;
-            this.checkBox1_TimeLine_init.Text = "TimeLineフラグ";
-            this.checkBox1_TimeLine_init.UseVisualStyleBackColor = true;
-            this.checkBox1_TimeLine_init.Visible = false;
+            this.checkBox1_Abi_init.AutoSize = true;
+            this.checkBox1_Abi_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.checkBox1_Abi_init.Location = new System.Drawing.Point(465, 10);
+            this.checkBox1_Abi_init.Name = "checkBox1_Abi_init";
+            this.checkBox1_Abi_init.Size = new System.Drawing.Size(121, 23);
+            this.checkBox1_Abi_init.TabIndex = 43;
+            this.checkBox1_Abi_init.Text = "アビリティフラグ";
+            this.checkBox1_Abi_init.UseVisualStyleBackColor = true;
             // 
             // Alexander
             // 
@@ -1215,8 +1210,8 @@
         private System.Windows.Forms.TextBox textBox_only_init;
         private System.Windows.Forms.TextBox textBox1_only_cond;
         private System.Windows.Forms.CheckBox checkBox_kanrisya_init;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2_認証;
         private System.Windows.Forms.CheckBox checkBox1_TimeLine_init;
+        private System.Windows.Forms.CheckBox checkBox1_Abi_init;
     }
 }
