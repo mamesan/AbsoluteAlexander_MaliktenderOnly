@@ -13,6 +13,12 @@
         private static object lockObject = new object();
         private static dynamic plugin;
         private static IDataRepository DataRepository { get; set; }
+        private static IDataSubscription DataSubscription { get; set; }
+        public PrimaryPlayerDelegate OnPrimaryPlayerChanged { get; set; }
+        public PartyListChangedDelegate OnPartyListChanged { get; set; }
+        public ZoneChangedDelegate OnZoneChanged { get; set; }
+        public CombatantAddedDelegate CombatantAdded { get; set; }
+
 
         public static bool Initialize()
         {
@@ -37,6 +43,9 @@
                 if (plugin != null)
                 {
                     DataRepository = plugin.DataRepository;
+
+                    // この辺り要確認事項ですね。
+                    DataSubscription = plugin.DataSubscription;
 
                     var ff14PluginConfig = DataRepository.GetCurrentFFXIVProcess();
 
@@ -310,6 +319,35 @@
             }
             return result;
         }
+
+        /// <summary>
+        /// mobリストを作成する
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> CreatemobList()
+        {
+            dynamic list = ActHelper.GetCombatantList();
+
+            List<string> createMobList = new List<string>();
+
+            foreach (dynamic item in list.ToArray())
+            {
+                if (item == null)
+                {
+                    continue;
+                }
+                if ((byte)item.type == 2 && (uint)item.OwnerID == 0)
+                {
+                    // 重複しないようにする
+                    if (!createMobList.Contains((string)item.Name))
+                    {
+                        createMobList.Add((string)item.Name);
+                    }
+                }
+            }
+            return createMobList;
+        }
+
     }
 
     public class Combatant

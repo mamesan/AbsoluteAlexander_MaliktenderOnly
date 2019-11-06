@@ -32,6 +32,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.管理 = new System.Windows.Forms.TabPage();
             this.textBox1_only_cond = new System.Windows.Forms.TextBox();
+            this.checkBox_kanrisya_init = new System.Windows.Forms.CheckBox();
             this.checkBox_logout_flg_init = new System.Windows.Forms.CheckBox();
             this.textBox_only_init = new System.Windows.Forms.TextBox();
             this.textBox_list = new System.Windows.Forms.TextBox();
@@ -108,7 +109,9 @@
             this.radioButton_dps1_init = new System.Windows.Forms.RadioButton();
             this.radioButton_tnk2_init = new System.Windows.Forms.RadioButton();
             this.radioButton_tnk1_init = new System.Windows.Forms.RadioButton();
-            this.checkBox_kanrisya_init = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2_認証 = new System.Windows.Forms.Button();
+            this.checkBox1_TimeLine_init = new System.Windows.Forms.CheckBox();
             this.対象人設定用.SuspendLayout();
             this.管理.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -141,7 +144,10 @@
             // 管理
             // 
             this.管理.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.管理.Controls.Add(this.button2_認証);
+            this.管理.Controls.Add(this.button1);
             this.管理.Controls.Add(this.textBox1_only_cond);
+            this.管理.Controls.Add(this.checkBox1_TimeLine_init);
             this.管理.Controls.Add(this.checkBox_kanrisya_init);
             this.管理.Controls.Add(this.checkBox_logout_flg_init);
             this.管理.Controls.Add(this.textBox_only_init);
@@ -165,6 +171,18 @@
             this.textBox1_only_cond.Name = "textBox1_only_cond";
             this.textBox1_only_cond.Size = new System.Drawing.Size(399, 278);
             this.textBox1_only_cond.TabIndex = 44;
+            // 
+            // checkBox_kanrisya_init
+            // 
+            this.checkBox_kanrisya_init.AutoSize = true;
+            this.checkBox_kanrisya_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.checkBox_kanrisya_init.Location = new System.Drawing.Point(190, 10);
+            this.checkBox_kanrisya_init.Name = "checkBox_kanrisya_init";
+            this.checkBox_kanrisya_init.Size = new System.Drawing.Size(109, 23);
+            this.checkBox_kanrisya_init.TabIndex = 43;
+            this.checkBox_kanrisya_init.Text = "管理者フラグ";
+            this.checkBox_kanrisya_init.UseVisualStyleBackColor = true;
+            this.checkBox_kanrisya_init.Visible = false;
             // 
             // checkBox_logout_flg_init
             // 
@@ -1062,17 +1080,37 @@
             this.radioButton_tnk1_init.TabStop = true;
             this.radioButton_tnk1_init.UseVisualStyleBackColor = true;
             // 
-            // checkBox_kanrisya_init
+            // button1
             // 
-            this.checkBox_kanrisya_init.AutoSize = true;
-            this.checkBox_kanrisya_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.checkBox_kanrisya_init.Location = new System.Drawing.Point(190, 10);
-            this.checkBox_kanrisya_init.Name = "checkBox_kanrisya_init";
-            this.checkBox_kanrisya_init.Size = new System.Drawing.Size(109, 23);
-            this.checkBox_kanrisya_init.TabIndex = 43;
-            this.checkBox_kanrisya_init.Text = "管理者フラグ";
-            this.checkBox_kanrisya_init.UseVisualStyleBackColor = true;
-            this.checkBox_kanrisya_init.Visible = false;
+            this.button1.Location = new System.Drawing.Point(505, 471);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(204, 75);
+            this.button1.TabIndex = 45;
+            this.button1.Text = "テスト用ボタン play";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // button2_認証
+            // 
+            this.button2_認証.Location = new System.Drawing.Point(505, 334);
+            this.button2_認証.Name = "button2_認証";
+            this.button2_認証.Size = new System.Drawing.Size(204, 75);
+            this.button2_認証.TabIndex = 45;
+            this.button2_認証.Text = "テスト用ボタン 認証";
+            this.button2_認証.UseVisualStyleBackColor = true;
+            this.button2_認証.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // checkBox1_TimeLine_init
+            // 
+            this.checkBox1_TimeLine_init.AutoSize = true;
+            this.checkBox1_TimeLine_init.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.checkBox1_TimeLine_init.Location = new System.Drawing.Point(323, 10);
+            this.checkBox1_TimeLine_init.Name = "checkBox1_TimeLine_init";
+            this.checkBox1_TimeLine_init.Size = new System.Drawing.Size(136, 23);
+            this.checkBox1_TimeLine_init.TabIndex = 43;
+            this.checkBox1_TimeLine_init.Text = "TimeLineフラグ";
+            this.checkBox1_TimeLine_init.UseVisualStyleBackColor = true;
+            this.checkBox1_TimeLine_init.Visible = false;
             // 
             // Alexander
             // 
@@ -1177,5 +1215,8 @@
         private System.Windows.Forms.TextBox textBox_only_init;
         private System.Windows.Forms.TextBox textBox1_only_cond;
         private System.Windows.Forms.CheckBox checkBox_kanrisya_init;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2_認証;
+        private System.Windows.Forms.CheckBox checkBox1_TimeLine_init;
     }
 }

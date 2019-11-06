@@ -12,6 +12,7 @@ using System.IO;
 using AbsoluteAlexander_MaliktenderOnly.Utils;
 using System.Net;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace AbsoluteAlexander_MaliktenderOnly
 {
@@ -32,6 +33,11 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private string dateStr = "";
 
         TabPageManager _tabPageManager = null;
+
+        List<string> AbiList = new List<string>();
+        List<Combatant> PtList = new List<Combatant>();
+        List<string> Moblist = new List<string>();
+        private int time = 0;
 
         // Terops123 初期化
         private Terops123 terops123 = new Terops123();
@@ -156,8 +162,24 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // 戦闘開始フラグ
             combatFlg = true;
 
+            // アビリティの一覧を取得する
+            AbiList = CreateTimeLine.ReadFile.AbiList_create();
+
+            PtList = ActHelper.GetPTList();
+
+            // mobListを取得する
+            Moblist = ActHelper.CreatemobList();
+
+            // 戦闘が開始したら、タイマーを起動する
+            time = 0;
+            Task.Run(ButtoleTimer);
+
+            // 戦闘開始時の時間を記憶する
+            dateStr = DateTime.Now.ToString("mmddHHMM");
+
             // フォームの初期処理
             InitForm();
+
 
 
 
@@ -175,7 +197,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 if (checkBox_logout_flg_init.Checked)
                 {
                     logoutFlg = true;
-                    dateStr = DateTime.Now.ToString("mmddHHMM");
                 }
 
                 // scanlistに要素を格納する（座標取得用）
@@ -230,18 +251,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
         {
             for (int r = 1; r <= 6; r++)
             {
-                // デフォルトのメンバーは、強制的に利用できるようにする
-                if (DefMember.DefMemberList.Contains(ActHelper.MyName()))
-                {
-                    userAuthFlg = true;
-                    break;
-                }
-                // ユーザ認証フラグが「true」の場合、処理を停止する
-                if (userAuthFlg)
-                {
-                    break;
-                }
-
                 // ユーザ認証を行う
                 UserAuth();
                 if (userAuthFlg)
@@ -260,6 +269,19 @@ namespace AbsoluteAlexander_MaliktenderOnly
         }
 
         /// <summary>
+        /// Timer処理
+        /// </summary>
+        public async Task ButtoleTimer()
+        {
+            time = 0;
+            while (combatFlg)
+            {
+                await Task.Delay(1000);
+                time++;
+            }
+        }
+
+        /// <summary>
         /// ユーザ認証処理のメイン
         /// </summary>
         /// <returns></returns>
@@ -267,18 +289,21 @@ namespace AbsoluteAlexander_MaliktenderOnly
         {
             string checkName = ActHelper.MyName();
             // 対象者しか、機能を利用できなくする
-            if (GetUrl(checkName))
+            if (GetUrl(checkName) || DefMember.DefMemberList.Contains(checkName))
             {
-                userAuthFlg = true;
                 // 管理権限用
                 if (KanriMem.KanriMemList.Contains(checkName))
                 {
                     _tabPageManager.ChangeTabPageVisible(1, true);
                     checkBox_kanrisya_init.Checked = true;
                 }
+                button2_認証.Visible = false;
+                userAuthFlg = true;
+
             }
             else
             {
+                button2_認証.Visible = true;
                 userAuthFlg = false;
             }
         }
@@ -400,6 +425,70 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
 
 
+                // -------------------------- アビリティファイルの出力処理 --------------------------
+                if (combatFlg && checkBox1_TimeLine_init.Checked)
+                {
+                    string log = logInfo.logLine;
+                    // 味方の名前+の「が付いている場合、処理にかける
+                    foreach (Combatant combatant in PtList)
+                    {
+                        if (log.Contains(combatant.Name) && log.Contains("の「"))
+                        {
+                            foreach (string skil in AbiList)
+                            {
+                                // 味方のアビlogの場合、logを出力する
+                                if (log.Contains(combatant.Name + "の「" + skil + "」"))
+                                {
+                                    OutLog.WriteTraceLog(time + " " + combatant.Name + "の「" + skil + "」", textBoxlocalPath_init.Text, dateStr + "_AbilityTimeLine");
+                                }
+                            }
+                        }
+                    }
+                // -------------------------- アビリティファイルの出力処理 --------------------------
+
+
+
+                // -------------------------- MobTimeLineファイルの出力処理 --------------------------
+                // 技名のみ取得するようにする
+                    foreach (string mobName in Moblist)
+                    {
+                        // 取得するlogを厳選する
+                        if (log.Contains(mobName)
+                        && (log.Contains("」の構え。")
+                        || log.Contains(":Unknown")
+                        || log.Contains("」を唱えた。")))
+                        {
+                            // 技名のみ取得するようにする
+                            // Unknownは、前回のログと重複していなければ全てタイムラインに記載をする
+                            string tmp = log.Substring(18, log.Length - 18);
+
+                            string str = CreatetimeLine(tmp);
+                            // logが、構えの場合sync を行う
+                            if (log.Contains("」の構え。"))
+                            {
+                                str += " sync /" + mobName + "は" + CreatetimeLine_wName(tmp) + "の構え。/ window 5,5";
+                            }
+                            else if (log.Contains("」を唱えた。"))
+                            {
+                                str += " sync /" + mobName + "は" + CreatetimeLine_wName(tmp) + "を唱えた。/ window 5,5";
+                            }
+                            // 指定されたアビリティに該当した場合、logを出力する
+                            // 10文字以下の場合は書き込まない
+                            if (str.Length > 15)
+                            {
+                                OutLog.WriteTraceLog(logInfo.logLine, textBoxlocalPath_init.Text, dateStr + "_MobTimeLine");
+                            }
+                        }
+                    }
+                }
+                // -------------------------- MobTimeLineファイルの出力処理 --------------------------
+
+
+                // テスト用
+                if (logInfo.logLine.Contains("wipeout"))
+                {
+                    FileOutPut.GetMobInfo("wipeout", textBoxlocalPath_init.Text);
+                }
 
 
 
@@ -441,6 +530,32 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
 
         // ------------------------------------------------- 以下、log出力外イベントエリア -------------------------------------------------
+
+        /// <summary>
+        /// タイムラインを生成するメソッド
+        /// </summary>
+        /// <returns></returns>
+        private string CreatetimeLine_wName(string str)
+        {
+            return Regex.Match(str, "\\「.*?\\」").Value;
+        }
+
+        /// <summary>
+        /// タイムラインを生成するメソッド
+        /// </summary>
+        /// <returns></returns>
+        private string CreatetimeLine(string str)
+        {
+            // logがUnknown系の場合、そのまま返却する
+            if (str.Contains("Unknown"))
+            {
+                return time + " " + "\"" + str + "\"";
+            }
+            else
+            {
+                return time + " " + @"""" + Regex.Match(str, "\\「.*?\\」").Value.Replace("「", "").Replace("」", "") + @"""";
+            }
+        }
 
         private void button_add_Click_1(object sender, EventArgs e)
         {
@@ -627,6 +742,21 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
                 textBox1_リフト_init.Text = "表示位置確認";
                 button1_リフト_init.Text = "表示位置確認";
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            // 認証処理を実施する
+            UserAuth();
+
+            if (!userAuthFlg)
+            {
+                MessageBox.Show("使用対象外のキャラクターです。\r\n「AbsoluteAlexander_MaliktenderOnly」の機能を使用できなくしております。\r\n\r\n利用をご希望の方は、管理者までお問い合わせ下さい。");
+            }
+            else
+            {
+                MessageBox.Show("認証に成功しました。");
             }
         }
     }

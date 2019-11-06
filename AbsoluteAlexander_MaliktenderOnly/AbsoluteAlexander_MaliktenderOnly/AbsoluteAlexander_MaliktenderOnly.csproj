@@ -32,7 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Advanced Combat Tracker">
+    <Reference Include="Advanced Combat Tracker, Version=3.4.4.264, Culture=neutral, PublicKeyToken=a946b61e93d97868, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Advanced Combat Tracker.exe</HintPath>
     </Reference>
     <Reference Include="FFXIV_ACT_Plugin.Common, Version=2.0.2.2, Culture=neutral, processorArchitecture=MSIL">
@@ -53,6 +54,7 @@
   <ItemGroup>
     <Compile Include="ActHelper.cs" />
     <Compile Include="ActInvoker.cs" />
+    <Compile Include="CreateTimeLine\ReadFile.cs" />
     <Compile Include="TabPageManager.cs" />
     <Compile Include="Terops123.cs">
       <SubType>Form</SubType>
@@ -91,6 +93,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lib\AbiList.txt" />
+    <Content Include="lib\Advanced Combat Tracker.exe" />
     <Content Include="lib\FFXIV_ACT_Plugin.Common.dll" />
   </ItemGroup>
   <ItemGroup>
