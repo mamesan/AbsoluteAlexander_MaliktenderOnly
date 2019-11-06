@@ -46,6 +46,7 @@
 
                     // この辺り要確認事項ですね。
                     DataSubscription = plugin.DataSubscription;
+                    DataSubscription.CombatantAdded += DataSubscription_CombatantAdded;
 
                     var ff14PluginConfig = DataRepository.GetCurrentFFXIVProcess();
 
@@ -61,6 +62,12 @@
                     return false;
                 }
             }
+        }
+
+        private static void DataSubscription_CombatantAdded(object Combatant)
+        {
+
+            Console.WriteLine(Combatant);
         }
 
         public static Combatant GetCombatantPlayer()
