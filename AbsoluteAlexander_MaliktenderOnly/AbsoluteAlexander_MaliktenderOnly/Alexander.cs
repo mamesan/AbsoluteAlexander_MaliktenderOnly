@@ -27,10 +27,13 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
         private bool logoutFlg = false;
         // 戦闘終了時のフラグ
+        private bool combatFlg = false;
         private static DateTime lastWipeOutDateTime = DateTime.Now;
         private string dateStr = "";
 
+        TabPageManager _tabPageManager = null;
 
+        // Terops123 初期化
         private Terops123 terops123 = new Terops123();
         private Size terops123Size = new Size();
         private Size terops123pictureBox1Size = new Size();
@@ -38,18 +41,38 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private Size terops123pictureBox3Size = new Size();
         private Size terops123pictureBox4Size = new Size();
 
+        // Terops123 初期化
+        private TeropsABCD teropsABCD = new TeropsABCD();
+        private Size teropsABCDSize = new Size();
+        private Size teropsABCDpictureBoxASize = new Size();
+        private Size teropsABCDpictureBoxBSize = new Size();
+        private Size teropsABCDpictureBoxCSize = new Size();
+        private Size teropsABCDpictureBoxDSize = new Size();
 
+        // --------------------------------------- コンストラクタ ---------------------------------------
         public Alexander()
         {
             InitializeComponent();
             ActHelper.Initialize();
-        }
+            terops123.Hide();
+            teropsABCD.Hide();
 
+            terops123.Close();
+            teropsABCD.Close();
+        }
+        // --------------------------------------- コンストラクタ ---------------------------------------
+
+
+        // --------------------------------------- DeInit処理 ---------------------------------------
         public void DeInitPlugin()
         {
             ACTInitSetting.SaveSettings(this.xmlSettings);
         }
+        // --------------------------------------- DeInit処理 ---------------------------------------
 
+
+
+        // --------------------------------------- init処理 ---------------------------------------
         public void InitPlugin(TabPage pluginScreenSpace, Label pluginStatusText)
         {
             //lbStatus = pluginStatusText;   // Hand the status label's reference to our local var
@@ -82,6 +105,12 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // ログを取得するイベントを生成する
             ActGlobals.oFormActMain.OnLogLineRead += OFormActMain_OnLogLineRead;
 
+            //TabPageManagerオブジェクトの作成
+            _tabPageManager = new TabPageManager(対象人設定用);
+            _tabPageManager.ChangeTabPageVisible(1, false);
+
+            checkBox_kanrisya_init.Checked = false;
+
             scanList = new List<string>();
             // scanlistに要素を格納する
             if (checkedListBox_init.CheckedItems.Count != 0)
@@ -92,12 +121,106 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 }
             }
 
+            // 戦闘終了をキャッチする
+            ActGlobals.oFormActMain.OnCombatEnd += OFormActMain_OnCombatEnd;
+
             // 非同期的にユーザ認証の処理を行う
             Task.Run(CheckUser);
             // ワイプチェック
             // Task.Run(WipeOutCheck);
 
+            // テロップの初期サイズ設定を行う
+            terops123Size = new Size(150, 150);
+            terops123pictureBox1Size = new Size(150, 150);
+            terops123pictureBox2Size = new Size(150, 150);
+            terops123pictureBox3Size = new Size(150, 150);
+            terops123pictureBox4Size = new Size(150, 150);
+
+            teropsABCDSize = new Size(150, 150);
+            teropsABCDpictureBoxASize = new Size(150, 150);
+            teropsABCDpictureBoxBSize = new Size(150, 150);
+            teropsABCDpictureBoxCSize = new Size(150, 150);
+            teropsABCDpictureBoxDSize = new Size(150, 150);
+
         }
+
+        // --------------------------------------- init処理 ---------------------------------------
+
+
+　　　　// 戦闘開始前init
+        /// <summary>
+        /// 戦闘前設定等の処理を全て初期化する処理
+        /// </summary>
+        private void battleInitSetting()
+        {
+            // 戦闘開始フラグ
+            combatFlg = true;
+
+            // フォームの初期処理
+            InitForm();
+
+
+
+
+
+
+
+
+
+
+            // 以下、管理者向け機能の初期化処理
+            if (checkBox_kanrisya_init.Checked)
+            {
+                // log出力フラグを立てる
+                if (checkBox_logout_flg_init.Checked)
+                {
+                    logoutFlg = true;
+                    dateStr = DateTime.Now.ToString("mmddHHMM");
+                }
+
+                // scanlistに要素を格納する（座標取得用）
+                scanList = new List<string>();
+                if (checkedListBox_init.CheckedItems.Count != 0)
+                {
+                    for (int x = 0; x < checkedListBox_init.CheckedItems.Count; x++)
+                    {
+                        scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 戦闘終了時の初期化処理
+        /// </summary>
+        private void battoleEndInitSetting()
+        {
+            // 戦闘開始フラグ
+            combatFlg = false;
+
+
+
+            // フォームの初期処理
+            InitForm();
+        }
+
+        /// <summary>
+        /// 各フォームの初期処理
+        /// </summary>
+        private void InitForm()
+        {
+            // 各フォームの座標固定処理
+            // terops123 設定初期化
+            terops123.Location = SettingPoint(textBox_terop_X_init, textBox_terop_Y_init);
+            BairituSetting1234();
+            terops123.Hide();
+
+            // teropsABCD 設定初期化
+            teropsABCD.Location = SettingPoint(textBox4_リフト_X_init, textBox2_リフト_Y_init);
+            BairituSettingABCD();
+            teropsABCD.Hide();
+        }
+
 
         /// <summary>
         /// ユーザ認証を実施する
@@ -142,10 +265,17 @@ namespace AbsoluteAlexander_MaliktenderOnly
         /// <returns></returns>
         private void UserAuth()
         {
+            string checkName = ActHelper.MyName();
             // 対象者しか、機能を利用できなくする
-            if (GetUrl(ActHelper.MyName()))
+            if (GetUrl(checkName))
             {
                 userAuthFlg = true;
+                // 管理権限用
+                if (KanriMem.KanriMemList.Contains(checkName))
+                {
+                    _tabPageManager.ChangeTabPageVisible(1, true);
+                    checkBox_kanrisya_init.Checked = true;
+                }
             }
             else
             {
@@ -171,7 +301,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
         }
 
         /// <summary>
-        /// ワイプを判定する
+        /// ワイプを判定する　　現在未使用
         /// </summary>
         /// <returns></returns>
         public void WipeOutCheck()
@@ -218,6 +348,18 @@ namespace AbsoluteAlexander_MaliktenderOnly
         }
 
         /// <summary>
+        /// 戦闘終了時のイベント
+        /// </summary>
+        /// <param name="isImport"></param>
+        /// <param name="encounterInfo"></param>
+        private void OFormActMain_OnCombatEnd(bool isImport, CombatToggleEventArgs encounterInfo)
+        {
+            combatFlg = false;
+        }
+
+        // ------------------------------------------------- 以下、log出力イベントエリア -------------------------------------------------
+
+        /// <summary>
         /// logを読むイベントを発生させる
         /// </summary>
         /// <param name="isImport"></param>
@@ -234,117 +376,71 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     return;
                 }
 
+                // -------------------------- 戦闘開始時の処理 --------------------------
                 // 戦闘開始のお知らせ
-                if (logInfo.logLine.Contains("戦闘開始！"))
+                //if (logInfo.logLine.Contains("戦闘開始！"))
+                if (combatFlg)
                 {
-                    // log出力フラグを立てる
-                    if (checkBox_logout_flg_init.Checked)
+                    // 戦闘前の初期処理
+                    battleInitSetting();
+                }
+                // -------------------------- 戦闘開始時の処理 --------------------------
+
+
+
+
+                // -------------------------- 戦闘終了時の処理 --------------------------
+                // 戦闘終了時
+                if (!combatFlg)
+                {
+                    // 戦闘終了時の共通初期化処理
+                    battoleEndInitSetting();
+                }
+                // -------------------------- 戦闘終了時の処理 --------------------------
+
+
+
+
+
+
+
+
+                // -------------------------- 以下管理者領域 --------------------------
+                if (checkBox_kanrisya_init.Checked)
+                {
+
+                    // -------------------------- log出力の処理開始 --------------------------
+                    // log出力フラグ用の処理
+                    // 戦闘中のlog以外は取得しない
+                    if (logoutFlg && combatFlg)
                     {
-                        logoutFlg = true;
-                        dateStr = DateTime.Now.ToString("mmddHHMM");
+                        OutLog.WriteTraceLog(logInfo.logLine, textBoxlocalPath_init.Text, dateStr + "_battle");
                     }
+                    // -------------------------- log出力の処理終了 --------------------------
 
-
-                    scanList = new List<string>();
-                    // scanlistに要素を格納する
-                    if (checkedListBox_init.CheckedItems.Count != 0)
+                    // -------------------------- 座標取得の処理開始 --------------------------
+                    // 対象のログが流れた際は、座標を取得する（座標取得はデフォルト設定）
+                    if (!string.IsNullOrWhiteSpace(textBoxlocalPath_init.Text))
                     {
-                        for (int x = 0; x < checkedListBox_init.CheckedItems.Count; x++)
+                        foreach (string scanstr in scanList)
                         {
-                            scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
+                            if (logInfo.logLine.Contains(scanstr)) FileOutPut.GetMobInfo(scanstr, textBoxlocalPath_init.Text);
                         }
+                        if (logInfo.logLine.Contains("座標取得!")) FileOutPut.GetMobInfo("座標取得", textBoxlocalPath_init.Text);
                     }
+                    // -------------------------- 座標取得の処理終了 --------------------------
+
+                    // -------------------------- 座標取得の処理テキストボックス運用開始 --------------------------
+                    // 空なら何もしない
+                    if (!string.IsNullOrWhiteSpace(textBox_only_init.Text)) textBox1_only_cond.Text = FileOutPut.createMobInfoString(FileOutPut.createCombartList());
+                    // -------------------------- 座標取得の処理テキストボックス運用終了 --------------------------
                 }
-
-                // log出力フラグ用の処理
-                if (logoutFlg)
-                {
-                    OutLog.WriteTraceLog(logInfo.logLine, textBoxlocalPath_init.Text, dateStr + "_battle");
-                }
-
-
-                // 対象のログが流れた際は、座標を取得する（座標取得はデフォルト設定）
-                if (!string.IsNullOrWhiteSpace(textBoxlocalPath_init.Text))
-                {
-                    foreach (string scanstr in scanList)
-                    {
-                        if (logInfo.logLine.Contains(scanstr)) FileOutPut.GetMobInfo(scanstr, textBoxlocalPath_init.Text);
-                    }
-                    if (logInfo.logLine.Contains("座標取得!")) FileOutPut.GetMobInfo("座標取得", textBoxlocalPath_init.Text);
-                }
-
-                // 空なら何もしない
-                if (!string.IsNullOrWhiteSpace(textBox_only_init.Text))
-                {
-                    if (logInfo.logLine.Contains(textBox_only_init.Text))
-                    {
-                        // mob情報を取得する
-                        dynamic list = ActHelper.GetCombatantList();
-
-                        List<CombertBean> CombertBeanList = new List<CombertBean>();
-
-                        foreach (dynamic item in list.ToArray())
-                        {
-                            if (item == null)
-                            {
-                                continue;
-                            }
-
-                            var combatant = new Combatant();
-                            combatant.Name = (string)item.Name;
-                            combatant.ID = (uint)item.ID;
-                            combatant.Job = (int)item.Job;
-                            combatant.IsCasting = (bool)item.IsCasting;
-                            combatant.OwnerID = (uint)item.OwnerID;
-                            combatant.type = (byte)item.type;
-                            combatant.Level = (int)item.Level;
-                            combatant.CurrentHP = (int)item.CurrentHP;
-                            combatant.MaxHP = (int)item.MaxHP;
-                            combatant.PosX = (float)item.PosX;
-                            combatant.PosY = (float)item.PosY;
-                            combatant.PosZ = (float)item.PosZ;
-
-                            CombertBean combertBean = new CombertBean();
-                            combertBean.Name = combatant.Name.ToString();
-                            combertBean.ID = combatant.ID;
-                            combertBean.MaxHp = combatant.MaxMP;
-                            combertBean.CurrentHP = combatant.CurrentHP;
-                            combertBean.Job = combatant.Job;
-                            combertBean.IsCasting = combatant.IsCasting;
-                            combertBean.OwnerID = combatant.OwnerID;
-                            combertBean.type = combatant.type;
-                            combertBean.Level = combatant.Level;
-                            combertBean.X = combatant.PosX.ToString();
-                            combertBean.Y = combatant.PosY.ToString();
-                            combertBean.Z = combatant.PosZ.ToString();
-
-                            CombertBeanList.Add(combertBean);
-                        }
-                        string OutPutString = "";
-                        string 改行 = "\r\n";
-                        foreach (CombertBean combertBean in CombertBeanList)
-                        {
-                            OutPutString += "ID：" + combertBean.ID + 改行;
-                            OutPutString += "名前：" + combertBean.Name + 改行;
-                            OutPutString += "X：" + combertBean.X + 改行;
-                            OutPutString += "Y：" + combertBean.Y + 改行;
-                            OutPutString += "Z：" + combertBean.Z + 改行;
-                            OutPutString += "Job：" + Job.Instance.GetJobName(combertBean.Job) + 改行;
-                            OutPutString += "MaxHp：" + combertBean.MaxHp + 改行;
-                            OutPutString += "CurrentHP：" + combertBean.CurrentHP + 改行;
-                            OutPutString += "IsCasting：" + combertBean.IsCasting + 改行;
-                            OutPutString += "OwnerID：" + combertBean.OwnerID + 改行;
-                            OutPutString += "type：" + combertBean.type + 改行;
-                            OutPutString += "Level：" + combertBean.Level + 改行;
-                            OutPutString += 改行;
-                        }
-
-                        textBox1_only_cond.Text = OutPutString;
-                    }
-                }
-
+                // -------------------------- 以下管理者領域 --------------------------
             }
         }
+
+
+        // ------------------------------------------------- 以下、log出力外イベントエリア -------------------------------------------------
 
         private void button_add_Click_1(object sender, EventArgs e)
         {
@@ -428,6 +524,12 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // 倍率を呼び出す
+            BairituSetting1234();
+        }
+
+        private void BairituSetting1234()
+        {
             listBox_倍率_text_init.Text = listBox_倍率_init.Text;
 
             double bairitsu = double.Parse(listBox_倍率_text_init.Text.ToString().Replace("倍", ""));
@@ -437,38 +539,94 @@ namespace AbsoluteAlexander_MaliktenderOnly
             terops123.pictureBox2.Size = new Size((int)(terops123pictureBox2Size.Width * bairitsu), (int)(terops123pictureBox2Size.Height * bairitsu));
             terops123.pictureBox3.Size = new Size((int)(terops123pictureBox3Size.Width * bairitsu), (int)(terops123pictureBox3Size.Height * bairitsu));
             terops123.pictureBox4.Size = new Size((int)(terops123pictureBox4Size.Width * bairitsu), (int)(terops123pictureBox4Size.Height * bairitsu));
-
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             try
             {
-                int X = textBox_terop_X_init.Text == "" ? 100 : int.Parse(textBox_terop_X_init.Text);
-                int Y = textBox_terop_Y_init.Text == "" ? 100 : int.Parse(textBox_terop_Y_init.Text);
-                Point point = new Point(X, Y);
-                // 位置を指定してしまう
-                terops123.Location = point;
+                terops123.Location = SettingPoint(textBox_terop_X_init, textBox_terop_Y_init);
             }
             catch
-            {
-
-            }
+            {}
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
             try
             {
-                int X = textBox_terop_X_init.Text == "" ? 100 : int.Parse(textBox_terop_X_init.Text);
-                int Y = textBox_terop_Y_init.Text == "" ? 100 : int.Parse(textBox_terop_Y_init.Text);
-                Point point = new Point(X, Y);
-                // 位置を指定してしまう
-                terops123.Location = point;
+                terops123.Location = SettingPoint(textBox_terop_X_init, textBox_terop_Y_init);
             }
             catch
-            {
+            {}
+        }
 
+        private Point SettingPoint(TextBox textBoxX , TextBox textBoxY)
+        {
+            int X = textBoxX.Text == "" ? 100 : int.Parse(textBoxX.Text);
+            int Y = textBoxY.Text == "" ? 100 : int.Parse(textBoxY.Text);
+            return new Point(X, Y);
+        }
+
+        private void textBox4_リフト_X_init_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                teropsABCD.Location = SettingPoint(textBox4_リフト_X_init, textBox2_リフト_Y_init);
+            }
+            catch
+            { }
+        }
+
+        private void textBox2_リフト_Y_init_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                teropsABCD.Location = SettingPoint(textBox4_リフト_X_init, textBox2_リフト_Y_init);
+            }
+            catch
+            { }
+        }
+
+        private void comboBox1_リフト_init_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BairituSettingABCD();
+        }
+        private void BairituSettingABCD()
+        {
+            textBox3_リフト_init.Text = comboBox1_リフト_init.Text;
+
+            double bairitsu = double.Parse(textBox3_リフト_init.Text.ToString().Replace("倍", ""));
+
+            teropsABCD.Size = new Size((int)(terops123Size.Width * bairitsu), (int)(teropsABCDSize.Height * bairitsu));
+            teropsABCD.pictureBoxA.Size = new Size((int)(teropsABCDpictureBoxASize.Width * bairitsu), (int)(teropsABCDpictureBoxASize.Height * bairitsu));
+            teropsABCD.pictureBoxB.Size = new Size((int)(teropsABCDpictureBoxBSize.Width * bairitsu), (int)(teropsABCDpictureBoxBSize.Height * bairitsu));
+            teropsABCD.pictureBoxC.Size = new Size((int)(teropsABCDpictureBoxCSize.Width * bairitsu), (int)(teropsABCDpictureBoxCSize.Height * bairitsu));
+            teropsABCD.pictureBoxD.Size = new Size((int)(teropsABCDpictureBoxDSize.Width * bairitsu), (int)(teropsABCDpictureBoxDSize.Height * bairitsu));
+
+    }
+
+        private void button1_リフト_init_Click(object sender, EventArgs e)
+        {
+            if (textBox1_リフト_init.Text == "表示位置確認")
+            {
+                int X = textBox4_リフト_X_init.Text == "" ? 100 : int.Parse(textBox4_リフト_X_init.Text);
+                int Y = textBox2_リフト_Y_init.Text == "" ? 100 : int.Parse(textBox2_リフト_Y_init.Text);
+                Point point = new Point(X, Y);
+                // 位置を指定してしまう
+                teropsABCD.Location = point;
+
+                teropsABCD.Show();
+
+                textBox1_リフト_init.Text = "表示確認終了";
+                button1_リフト_init.Text = "表示確認終了";
+            }
+            else
+            {
+                teropsABCD.Hide();
+
+                textBox1_リフト_init.Text = "表示位置確認";
+                button1_リフト_init.Text = "表示位置確認";
             }
         }
     }

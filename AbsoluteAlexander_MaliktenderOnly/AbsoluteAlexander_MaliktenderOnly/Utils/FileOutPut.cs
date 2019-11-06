@@ -13,6 +13,90 @@ namespace AbsoluteAlexander_MaliktenderOnly.Utils
         /// </summary>
         public static void GetMobInfo(string FileName, string FileOutPutPath)
         {
+            // ファイルを出力する
+            FilePush(createCombartList(), FileName, FileOutPutPath);
+
+        }
+        /// <summary>
+        /// ログを出力するメソッド
+        /// </summary>
+        /// <param name="MobName"></param>
+        /// <param name="MaxHp"></param>
+        /// <param name="CurrentHP"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        private static void FilePush(List<CombertBean> CombertBeanList, string FileName, string FileOutPutPath)
+        {
+            string FileOutPath = @FileOutPutPath;
+            // ファイル出力先を作成する
+            if (!(FileOutPath.Substring(FileOutPath.Length - 1)).Equals("\\"))
+            {
+                FileOutPath = FileOutPath + "\\";
+            }
+
+
+            // ファイルの存在チェックを実施し、存在しない名前になるまで連番作成を行う
+            int i = 1;
+
+            string Path = FileOutPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + FileName;
+            while (File.Exists(Path + i + ".txt"))
+            {
+                i++;
+            }
+            Path = Path + i + ".txt";
+
+            string OutPutString = createMobInfoString(CombertBeanList);
+
+            // UTF - 8で書き込む
+            //書き込むファイルが既に存在している場合は、上書きする
+            StreamWriter sw = new StreamWriter(
+                @Path,
+                false,
+                Encoding.GetEncoding("UTF-8"));
+            //内容を書き込む
+            sw.Write(OutPutString);
+            //閉じる
+            sw.Close();
+        }
+        /// <summary>
+        /// 指定したパスにディレクトリが存在しない場合
+        /// すべてのディレクトリとサブディレクトリを作成します
+        /// </summary>
+        private static DirectoryInfo SafeCreateDirectory(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                return null;
+            }
+            return Directory.CreateDirectory(path);
+        }
+
+        public static string createMobInfoString(List<CombertBean> CombertBeanList)
+        {
+            string OutPutString = "";
+            string 改行 = "\r\n";
+
+            foreach (CombertBean combertBean in CombertBeanList)
+            {
+                OutPutString += "ID：" + combertBean.ID + 改行;
+                OutPutString += "名前：" + combertBean.Name + 改行;
+                OutPutString += "X：" + combertBean.X + 改行;
+                OutPutString += "Y：" + combertBean.Y + 改行;
+                OutPutString += "Z：" + combertBean.Z + 改行;
+                OutPutString += "Job：" + Job.Instance.GetJobName(combertBean.Job) + 改行;
+                OutPutString += "MaxHp：" + combertBean.MaxHp + 改行;
+                OutPutString += "CurrentHP：" + combertBean.CurrentHP + 改行;
+                OutPutString += "IsCasting：" + combertBean.IsCasting + 改行;
+                OutPutString += "OwnerID：" + combertBean.OwnerID + 改行;
+                OutPutString += "type：" + combertBean.type + 改行;
+                OutPutString += "Level：" + combertBean.Level + 改行;
+                OutPutString += 改行;
+            }
+            return OutPutString;
+        }
+
+        public static List<CombertBean> createCombartList()
+        {
 
             dynamic list = ActHelper.GetCombatantList();
 
@@ -55,82 +139,9 @@ namespace AbsoluteAlexander_MaliktenderOnly.Utils
 
                 CombertBeanList.Add(combertBean);
             }
-
-            // ファイルを出力する
-            FilePush(CombertBeanList, FileName, FileOutPutPath);
-
+            return CombertBeanList;
         }
-        /// <summary>
-        /// ログを出力するメソッド
-        /// </summary>
-        /// <param name="MobName"></param>
-        /// <param name="MaxHp"></param>
-        /// <param name="CurrentHP"></param>
-        /// <param name="X"></param>
-        /// <param name="Y"></param>
-        private static void FilePush(List<CombertBean> CombertBeanList, string FileName, string FileOutPutPath)
-        {
-            string FileOutPath = @FileOutPutPath;
-            // ファイル出力先を作成する
-            if (!(FileOutPath.Substring(FileOutPath.Length - 1)).Equals("\\"))
-            {
-                FileOutPath = FileOutPath + "\\";
-            }
 
-
-            // ファイルの存在チェックを実施し、存在しない名前になるまで連番作成を行う
-            int i = 1;
-
-            string Path = FileOutPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + FileName;
-            while (File.Exists(Path + i + ".txt"))
-            {
-                i++;
-            }
-            Path = Path + i + ".txt";
-
-            string OutPutString = "";
-            string 改行 = "\r\n";
-
-            foreach (CombertBean combertBean in CombertBeanList)
-            {
-                OutPutString += "ID：" + combertBean.ID + 改行;
-                OutPutString += "名前：" + combertBean.Name + 改行;
-                OutPutString += "X：" + combertBean.X + 改行;
-                OutPutString += "Y：" + combertBean.Y + 改行;
-                OutPutString += "Z：" + combertBean.Z + 改行;
-                OutPutString += "Job：" + Job.Instance.GetJobName(combertBean.Job) + 改行;
-                OutPutString += "MaxHp：" + combertBean.MaxHp + 改行;
-                OutPutString += "CurrentHP：" + combertBean.CurrentHP + 改行;
-                OutPutString += "IsCasting：" + combertBean.IsCasting + 改行;
-                OutPutString += "OwnerID：" + combertBean.OwnerID + 改行;
-                OutPutString += "type：" + combertBean.type + 改行;
-                OutPutString += "Level：" + combertBean.Level + 改行;
-                OutPutString += 改行;
-            }
-
-            // UTF - 8で書き込む
-            //書き込むファイルが既に存在している場合は、上書きする
-            StreamWriter sw = new StreamWriter(
-                @Path,
-                false,
-                Encoding.GetEncoding("UTF-8"));
-            //内容を書き込む
-            sw.Write(OutPutString);
-            //閉じる
-            sw.Close();
-        }
-        /// <summary>
-        /// 指定したパスにディレクトリが存在しない場合
-        /// すべてのディレクトリとサブディレクトリを作成します
-        /// </summary>
-        private static DirectoryInfo SafeCreateDirectory(string path)
-        {
-            if (Directory.Exists(path))
-            {
-                return null;
-            }
-            return Directory.CreateDirectory(path);
-        }
     }
     class CombertBean
     {
