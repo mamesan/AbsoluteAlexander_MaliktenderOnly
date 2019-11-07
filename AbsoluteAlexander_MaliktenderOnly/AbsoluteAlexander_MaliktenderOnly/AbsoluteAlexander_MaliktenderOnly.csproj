@@ -55,7 +55,6 @@
     <Compile Include="ActHelper.cs" />
     <Compile Include="ActInvoker.cs" />
     <Compile Include="CreateTimeLine\ReadFile.cs" />
-    <Compile Include="TabPageManager.cs" />
     <Compile Include="Terops123.cs">
       <SubType>Form</SubType>
     </Compile>

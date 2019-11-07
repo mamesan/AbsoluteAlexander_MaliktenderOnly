@@ -74,7 +74,6 @@
                 }
 
                 object[] list = DataRepository.GetCombatantList().ToArray();
-                dynamic list2 = DataRepository.GetCombatantList();
                 if (list.Length > 0)
                 {
                     var item = (dynamic)list[0];

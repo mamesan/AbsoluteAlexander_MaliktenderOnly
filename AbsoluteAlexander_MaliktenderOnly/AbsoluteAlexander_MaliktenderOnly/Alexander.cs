@@ -19,25 +19,26 @@ namespace AbsoluteAlexander_MaliktenderOnly
     public partial class Alexander : UserControl, IActPluginV1
     {
         private SettingsSerializer xmlSettings;
-        // チェックの入った物をすべて格納しておく
-        private List<string> scanList = new List<string>();
-        // 選択アイテム名を格納する
-        private string select_item_name = "";
+        //　Mob監視用
+        private static IDataSubscription DataSubscription { get; set; }
 
+        // フラグ管理
         private bool userAuthFlg = false;
         private bool initButtoleFlg = false;
         private bool logoutFlg = false;
-        // 戦闘終了時のフラグ
         private bool combatFlg = false;
-        private static DateTime lastWipeOutDateTime = DateTime.Now;
-        private string dateStr = "";
 
-        private static IDataSubscription DataSubscription { get; set; }
-
-        private List<string> AbiList = new List<string>();
-        private List<Combatant> PtList = new List<Combatant>();
-        private List<string> Moblist = new List<string>();
+        // 一般フィールド
         private int time = 0;
+        private string dateStr = "";
+        private string select_item_name = "";
+
+        // リスト管理
+        private List<string> scanList = new List<string>();
+        private List<string> AbiList = new List<string>();
+        private List<string> Moblist = new List<string>();
+        private List<Combatant> PtList = new List<Combatant>();
+
 
         // Terops123 初期化
         private Terops123 terops123 = new Terops123();
@@ -60,11 +61,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
         {
             InitializeComponent();
             ActHelper.Initialize();
-            terops123.Hide();
-            teropsABCD.Hide();
-
-            terops123.Close();
-            teropsABCD.Close();
         }
         // --------------------------------------- コンストラクタ ---------------------------------------
 
@@ -73,6 +69,11 @@ namespace AbsoluteAlexander_MaliktenderOnly
         public void DeInitPlugin()
         {
             ACTInitSetting.SaveSettings(this.xmlSettings);
+            terops123.Hide();
+            teropsABCD.Hide();
+
+            terops123.Close();
+            teropsABCD.Close();
         }
         // --------------------------------------- DeInit処理 ---------------------------------------
 
@@ -108,8 +109,10 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // 設定ファイルを読み込む
             ACTInitSetting.LoadSettings(xmlSettings);
 
-            // ログを取得するイベントを生成する
-            ActGlobals.oFormActMain.OnLogLineRead += OFormActMain_OnLogLineRead;
+            // アビリティリストが存在していない場合は、ダウンロードを実施する
+            ACTInitSetting.CheckAbiText();
+
+
 
             // コンボボックスの初期値を設定
             if (listBox_倍率_init.SelectedIndex == -1)
@@ -130,6 +133,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
                 }
             }
+            // ログを取得するイベントを生成する
+            ActGlobals.oFormActMain.OnLogLineRead += OFormActMain_OnLogLineRead;
 
             // 戦闘開始をチェックする
             ActGlobals.oFormActMain.OnCombatStart += OFormActMain_OnCombatStart;
@@ -139,8 +144,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
             // 非同期的にユーザ認証の処理を行う
             Task.Run(CheckUser);
-            // ワイプチェック
-            // Task.Run(WipeOutCheck);
 
             // テロップの初期サイズ設定を行う
             terops123Size = new Size(150, 150);
@@ -154,7 +157,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
             teropsABCDpictureBoxBSize = new Size(150, 150);
             teropsABCDpictureBoxCSize = new Size(150, 150);
             teropsABCDpictureBoxDSize = new Size(150, 150);
-
+            // フォームの初期処理
+            InitForm();
         }
 
         // --------------------------------------- init処理 ---------------------------------------
@@ -185,7 +189,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
             Task.Run(ButtoleTimer);
 
             // 戦闘開始時の時間を記憶する
-            dateStr = DateTime.Now.ToString("mmddHHMM");
+            dateStr = DateTime.Now.ToString("yyyyMMddhhmmss");
 
             // フォームの初期処理
             InitForm();
@@ -277,7 +281,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
             if (!userAuthFlg)
             {
-                MessageBox.Show("使用対象外のキャラクターです。\r\n「AbsoluteAlexander_MaliktenderOnly」の機能を使用できなくしております。\r\n\r\n利用をご希望の方は、管理者までお問い合わせ下さい。");
+                MessageBox.Show("使用対象外のキャラクターです。\r\n「AbsoluteAlexander_MaliktenderOnly」の機能を使用できなくしております。\r\n\r\n利用をご希望の方は、作成者までお問い合わせ下さい。");
             }
         }
 
@@ -310,12 +314,15 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     {
                         checkBox_kanrisya_init.Checked = true;
                         checkBox_kanrisya_init.Visible = true;
+                        checkBox_logout_flg_init.Visible = true;
 
                     }
                     else
                     {
                         checkBox_kanrisya_init.Checked = false;
                         checkBox_kanrisya_init.Visible = false;
+                        checkBox_logout_flg_init.Visible = false;
+                        checkBox_logout_flg_init.Checked = false;
                     }
                     button2_認証.Visible = false;
                     userAuthFlg = true;
@@ -348,53 +355,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
             catch (WebException)
             {
                 return false;
-            }
-        }
-
-        /// <summary>
-        /// ワイプを判定する　　現在未使用
-        /// </summary>
-        /// <returns></returns>
-        public void WipeOutCheck()
-        {
-            while (true)
-            {
-                // 1秒待機
-                Thread.Sleep(100);
-                // 15秒間は次の処理を行わない
-                if ((DateTime.Now - lastWipeOutDateTime).TotalSeconds >= 15.0)
-                {
-                    List<Combatant> ptList = ActHelper.GetPTList();
-                    int ptcnt = ptList.Count;
-                    int checlptcnt = 0;
-
-                    foreach (Combatant combatant in ptList)
-                    {
-                        if (combatant.CurrentHP == 0)
-                        {
-                            checlptcnt++;
-                        }
-                    }
-                    // 全員のHPが0の場合、ワイプ判定を行う
-                    if (checlptcnt == ptcnt)
-                    {
-                        lastWipeOutDateTime = DateTime.Now;
-                        ActInvoker.Invoke(() => ActGlobals.oFormActMain.EndCombat(true));
-                        //wipflg = true;
-
-                        Task.Run(() =>
-                        {
-                            // wipeoutログを発生させる
-                            Thread.Sleep(TimeSpan.FromSeconds(1.5));
-                            string[] wipe = { "TimeLinePlugin_戦闘終了", "FF14" };
-                            ActHelper.LogParser.RaiseLog(DateTime.Now, wipe);
-                        });
-                    }
-                    else
-                    {
-                        //wipflg = false;
-                    }
-                }
             }
         }
 
@@ -526,7 +486,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
                             {
                                 str += " sync /" + mobName + "は" + CreatetimeLine_wName(tmp) + "を唱えた。/ window 5,5";
                             }
-                            // 指定されたアビリティに該当した場合、logを出力する
                             // 10文字以下の場合は書き込まない
                             if (str.Length > 15)
                             {
@@ -537,16 +496,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     }
                 }
                 // -------------------------- MobTimeLineファイルの出力処理 --------------------------
-
-
-                // テスト用
-                if (logInfo.logLine.Contains("wipeout"))
-                {
-                    FileOutPut.GetMobInfo("wipeout", textBoxlocalPath_init.Text);
-                }
-
-
-
 
 
                 // -------------------------- 以下管理者領域 --------------------------

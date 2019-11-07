@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -122,6 +123,20 @@ namespace AbsoluteAlexander_MaliktenderOnly
             xWriter.WriteEndDocument(); // Tie up loose ends (shouldn't be any)
             xWriter.Flush();    // Flush the file buffer to disk
 
+        }
+        /// <summary>
+        /// アビリティリストが存在するかチェックを行う
+        /// なければGithubよりダウンロードを行う
+        /// </summary>
+        public static void CheckAbiText()
+        {
+            string AbiTxtFilePath = Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "Config\\");
+            if (!File.Exists(AbiTxtFilePath + "AbiList.txt"))
+            {
+                WebClient wc = new WebClient();
+                wc.DownloadFile("https://raw.githubusercontent.com/mamesan/AbsoluteAlexander_MaliktenderOnly/master/AbsoluteAlexander_MaliktenderOnly/AbsoluteAlexander_MaliktenderOnly/lib/AbiList.txt", AbiTxtFilePath + "AbiList.txt");
+                wc.Dispose();
+            }
         }
     }
 }
