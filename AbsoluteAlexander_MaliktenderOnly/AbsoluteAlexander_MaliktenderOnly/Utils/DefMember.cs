@@ -13,7 +13,7 @@
             "Hina Spring",
             "Mame San",
             "Sisya Mo",
-            //"Sasi Mi",
+            "Sasi Mi",
             "C'c Lemon"
         };
     }
@@ -22,8 +22,8 @@
         public static readonly string[] KanriMemList =
         {
             "Mame San",
-            "Sisya Mo"
-            //"Sasi Mi"
+            "Sisya Mo",
+            "Sasi Mi"
         };
     }
 }

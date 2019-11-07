@@ -350,7 +350,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
         {
             try
             {
-                return new WebClient().DownloadString("https://sites.google.com/view/actdrivesendersetting/").Contains(name);
+                return new WebClient().DownloadString("https://sites.google.com/view/absolutealexandermaliktenderon").Contains(name);
             }
             catch (WebException)
             {
