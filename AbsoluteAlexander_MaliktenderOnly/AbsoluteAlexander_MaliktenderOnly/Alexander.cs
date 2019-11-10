@@ -142,8 +142,16 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // 戦闘終了をキャッチする
             ActGlobals.oFormActMain.OnCombatEnd += OFormActMain_OnCombatEnd;
 
+            checkBox_logout_flg_init.Checked = false;
+            checkBox_logout_flg_init.Visible = false;
+            checkBox1_TimeLine_init.Visible = false;
+            checkBox1_TimeLine_init.Checked = false;
+            checkBox1_Abi_init.Visible = false;
+            checkBox1_Abi_init.Checked = false;
+
             // 非同期的にユーザ認証の処理を行う
             Task.Run(CheckUser);
+
 
             // テロップの初期サイズ設定を行う
             terops123Size = new Size(150, 150);
@@ -310,19 +318,24 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 try
                 {
                     // 管理権限用
-                    if (KanriMem.KanriMemList.Contains(checkName))
+                    if (KanriMem.KanriMemList.Contains(checkName) || GetUrl(checkName + " kanri"))
                     {
                         checkBox_kanrisya_init.Checked = true;
                         checkBox_kanrisya_init.Visible = true;
                         checkBox_logout_flg_init.Visible = true;
-
+                        checkBox1_TimeLine_init.Visible = true;
+                        checkBox1_Abi_init.Visible = true;
                     }
                     else
                     {
                         checkBox_kanrisya_init.Checked = false;
                         checkBox_kanrisya_init.Visible = false;
-                        checkBox_logout_flg_init.Visible = false;
                         checkBox_logout_flg_init.Checked = false;
+                        checkBox_logout_flg_init.Visible = false;
+                        checkBox1_TimeLine_init.Visible = false;
+                        checkBox1_TimeLine_init.Checked = false;
+                        checkBox1_Abi_init.Visible = false;
+                        checkBox1_Abi_init.Checked = false;
                     }
                     button2_認証.Visible = false;
                     userAuthFlg = true;
@@ -447,7 +460,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
                             foreach (string skil in AbiList)
                             {
                                 // 味方のアビlogの場合、logを出力する
-                                if (log.Contains(combatant.Name + "の「" + skil + "」"))
+                                if (log.Contains(combatant.Name) & log.Contains("の「" + skil + "」"))
                                 {
                                     OutLog.WriteTraceLog(time + " " + combatant.Name + "の「" + skil + "」", textBoxlocalPath_init.Text, dateStr + "_AbilityTimeLine");
                                     break;
@@ -558,61 +571,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
             else
             {
                 return time + " " + @"""" + Regex.Match(str, "\\「.*?\\」").Value.Replace("「", "").Replace("」", "") + @"""";
-            }
-        }
-
-        private void button_add_Click_1(object sender, EventArgs e)
-        {
-            // まず記載の文字を格納する
-            string addtext = textBox_list.Text;
-            // 空の場合、処理を中断する
-            if (addtext == "") return;
-            // リストボックスに、アイテムを追加する
-            checkedListBox_init.Items.Add(addtext, true);
-            // テキストボックスの中身を空にする
-            textBox_list.Text = "";
-            scanList = new List<string>();
-            // scanlistに要素を格納する
-            if (checkedListBox_init.CheckedItems.Count != 0)
-            {
-                for (int x = 0; x < checkedListBox_init.CheckedItems.Count; x++)
-                {
-                    scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
-                }
-            }
-        }
-
-        private void checkedListBox_init_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            // アイテムが0件だった場合、処理を中断する
-            if (checkedListBox_init.Items.Count == 0) return;
-            // アイテム名を格納する
-            select_item_name = (string)checkedListBox_init.SelectedItem;
-
-            scanList = new List<string>();
-            // scanlistに要素を格納する
-            if (checkedListBox_init.CheckedItems.Count != 0)
-            {
-                for (int x = 0; x < checkedListBox_init.CheckedItems.Count; x++)
-                {
-                    scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
-                }
-            }
-        }
-
-        private void button_delete_Click_1(object sender, EventArgs e)
-        {
-            // アイテムが何も選択されていなかった場合は、処理を中断する
-            if (select_item_name == "") return;
-            // アイテムを削除する
-            checkedListBox_init.Items.Remove(select_item_name);
-            // scanlistに要素を格納する
-            if (checkedListBox_init.CheckedItems.Count != 0)
-            {
-                for (int x = 0; x < checkedListBox_init.CheckedItems.Count; x++)
-                {
-                    scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
-                }
             }
         }
 
@@ -757,7 +715,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
             }
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void button2_認証_Click(object sender, EventArgs e)
         {
             // 認証処理を実施する
             UserAuth();
@@ -769,6 +727,61 @@ namespace AbsoluteAlexander_MaliktenderOnly
             else
             {
                 MessageBox.Show("認証に成功しました。");
+            }
+        }
+
+        private void checkedListBox_init_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // アイテムが0件だった場合、処理を中断する
+            if (checkedListBox_init.Items.Count == 0) return;
+            // アイテム名を格納する
+            select_item_name = (string)checkedListBox_init.SelectedItem;
+
+            scanList = new List<string>();
+            // scanlistに要素を格納する
+            if (checkedListBox_init.CheckedItems.Count != 0)
+            {
+                for (int x = 0; x < checkedListBox_init.CheckedItems.Count; x++)
+                {
+                    scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
+                }
+            }
+        }
+
+        private void button_delete_Click(object sender, EventArgs e)
+        {
+            // アイテムが何も選択されていなかった場合は、処理を中断する
+            if (select_item_name == "") return;
+            // アイテムを削除する
+            checkedListBox_init.Items.Remove(select_item_name);
+            // scanlistに要素を格納する
+            if (checkedListBox_init.CheckedItems.Count != 0)
+            {
+                for (int x = 0; x < checkedListBox_init.CheckedItems.Count; x++)
+                {
+                    scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
+                }
+            }
+        }
+
+        private void button_add_Click(object sender, EventArgs e)
+        {
+            // まず記載の文字を格納する
+            string addtext = textBox_list.Text;
+            // 空の場合、処理を中断する
+            if (addtext == "") return;
+            // リストボックスに、アイテムを追加する
+            checkedListBox_init.Items.Add(addtext, true);
+            // テキストボックスの中身を空にする
+            textBox_list.Text = "";
+            scanList = new List<string>();
+            // scanlistに要素を格納する
+            if (checkedListBox_init.CheckedItems.Count != 0)
+            {
+                for (int x = 0; x < checkedListBox_init.CheckedItems.Count; x++)
+                {
+                    scanList.Add(checkedListBox_init.CheckedItems[x].ToString());
+                }
             }
         }
     }
