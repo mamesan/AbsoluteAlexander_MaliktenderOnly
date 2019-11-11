@@ -997,6 +997,7 @@
             this.textBox1_only_cond.Name = "textBox1_only_cond";
             this.textBox1_only_cond.Size = new System.Drawing.Size(399, 278);
             this.textBox1_only_cond.TabIndex = 57;
+            this.textBox1_only_cond.Visible = false;
             // 
             // checkBox1_Abi_init
             // 
@@ -1053,6 +1054,7 @@
             this.textBox_only_init.Name = "textBox_only_init";
             this.textBox_only_init.Size = new System.Drawing.Size(227, 28);
             this.textBox_only_init.TabIndex = 48;
+            this.textBox_only_init.Visible = false;
             // 
             // textBox_list
             // 
