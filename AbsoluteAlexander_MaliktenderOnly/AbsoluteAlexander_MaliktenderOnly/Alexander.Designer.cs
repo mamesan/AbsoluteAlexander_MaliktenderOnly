@@ -112,6 +112,8 @@
             this.checkedListBox_init = new System.Windows.Forms.CheckedListBox();
             this.textBoxlocalPath_init = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.textBox1_AbiVar_init = new System.Windows.Forms.TextBox();
+            this.textBox1_appVar_init = new System.Windows.Forms.TextBox();
             this.tab.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -960,6 +962,8 @@
             // non
             // 
             this.non.BackColor = System.Drawing.Color.LightGray;
+            this.non.Controls.Add(this.textBox1_appVar_init);
+            this.non.Controls.Add(this.textBox1_AbiVar_init);
             this.non.Controls.Add(this.button2_認証);
             this.non.Controls.Add(this.textBox1_only_cond);
             this.non.Controls.Add(this.checkBox1_Abi_init);
@@ -1112,6 +1116,22 @@
             this.label2.TabIndex = 46;
             this.label2.Text = "Path:";
             // 
+            // textBox1_AbiVar_init
+            // 
+            this.textBox1_AbiVar_init.Location = new System.Drawing.Point(468, 74);
+            this.textBox1_AbiVar_init.Name = "textBox1_AbiVar_init";
+            this.textBox1_AbiVar_init.Size = new System.Drawing.Size(13, 19);
+            this.textBox1_AbiVar_init.TabIndex = 59;
+            this.textBox1_AbiVar_init.Visible = false;
+            // 
+            // textBox1_appVar_init
+            // 
+            this.textBox1_appVar_init.Location = new System.Drawing.Point(468, 99);
+            this.textBox1_appVar_init.Name = "textBox1_appVar_init";
+            this.textBox1_appVar_init.Size = new System.Drawing.Size(13, 19);
+            this.textBox1_appVar_init.TabIndex = 59;
+            this.textBox1_appVar_init.Visible = false;
+            // 
             // Alexander
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1218,5 +1238,7 @@
         private System.Windows.Forms.CheckedListBox checkedListBox_init;
         private System.Windows.Forms.TextBox textBoxlocalPath_init;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox1_AbiVar_init;
+        private System.Windows.Forms.TextBox textBox1_appVar_init;
     }
 }
