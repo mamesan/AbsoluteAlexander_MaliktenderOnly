@@ -92,7 +92,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="lib\AbiList.txt" />
     <Content Include="lib\Advanced Combat Tracker.exe" />
     <Content Include="lib\FFXIV_ACT_Plugin.Common.dll" />
   </ItemGroup>

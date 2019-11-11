@@ -14,7 +14,7 @@
             "Mame San",
             "Sisya Mo",
             "Sasi Mi",
-            "C'c Lemon"
+            "C'c' Lemon"
         };
     }
     class KanriMem

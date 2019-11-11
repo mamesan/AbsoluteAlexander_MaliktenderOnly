@@ -183,10 +183,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
             // 戦闘開始フラグ
             combatFlg = true;
-
             // アビリティの一覧を取得する
             AbiList = CreateTimeLine.ReadFile.AbiList_create();
-
             PtList = ActHelper.GetPTList();
 
             // mobListを取得する

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,9 +20,9 @@ namespace AbsoluteAlexander_MaliktenderOnly.CreateTimeLine
             List<string> AbiList = new List<string>();
             try
             {
-                string path = "D:\\Actor_v2.0.4.2\\ACT";
+                string path = Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "Config\\"); 
 
-                StreamReader sr = new StreamReader(Path.Combine(@path + "\\lib\\AbiList.txt"), Encoding.GetEncoding("UTF-8"));
+                StreamReader sr = new StreamReader(Path.Combine(@path + "AbiList.txt"), Encoding.GetEncoding("UTF-8"));
 
                 while (sr.Peek() != -1)
                 {
@@ -35,6 +36,5 @@ namespace AbsoluteAlexander_MaliktenderOnly.CreateTimeLine
             catch { }
             return AbiList;
         }
-
     }
 }
