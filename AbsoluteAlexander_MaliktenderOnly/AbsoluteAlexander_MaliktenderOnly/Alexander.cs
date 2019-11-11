@@ -110,7 +110,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
             ACTInitSetting.LoadSettings(xmlSettings);
 
             // アビリティリストが存在していない場合は、ダウンロードを実施する
-            ACTInitSetting.CheckAbiText();
+            // ACTInitSetting.CheckAbiText();
 
 
 
@@ -149,6 +149,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
             checkBox1_Abi_init.Visible = false;
             checkBox1_Abi_init.Checked = false;
 
+
+
             // 非同期的にユーザ認証の処理を行う
             Task.Run(CheckUser);
 
@@ -184,8 +186,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // 戦闘開始フラグ
             combatFlg = true;
             // アビリティの一覧を取得する
-            AbiList = CreateTimeLine.ReadFile.AbiList_create();
-            PtList = ActHelper.GetPTList();
+            // AbiList = CreateTimeLine.ReadFile.AbiList_create();
+            // PtList = ActHelper.GetPTList();
 
             // mobListを取得する
             Moblist = ActHelper.CreatemobList();
@@ -214,10 +216,12 @@ namespace AbsoluteAlexander_MaliktenderOnly
             if (checkBox_kanrisya_init.Checked)
             {
                 // log出力フラグを立てる
+                /*
                 if (checkBox_logout_flg_init.Checked)
                 {
                     logoutFlg = true;
                 }
+                */
 
                 // scanlistに要素を格納する（座標取得用）
                 scanList = new List<string>();
@@ -320,9 +324,9 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     {
                         checkBox_kanrisya_init.Checked = true;
                         checkBox_kanrisya_init.Visible = true;
-                        checkBox_logout_flg_init.Visible = true;
+                        // checkBox_logout_flg_init.Visible = true;
                         checkBox1_TimeLine_init.Visible = true;
-                        checkBox1_Abi_init.Visible = true;
+                        // checkBox1_Abi_init.Visible = true;
                     }
                     else
                     {
@@ -446,7 +450,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
 
 
-                // -------------------------- アビリティファイルの出力処理 --------------------------
+                // -------------------------- アビリティファイルの出力処理(いったん廃止) --------------------------
+                /*
                 if (combatFlg && checkBox1_Abi_init.Checked)
                 {
                     string log = logInfo.logLine;
@@ -467,6 +472,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
                         }
                     }
                 }
+                */
                 // -------------------------- アビリティファイルの出力処理 --------------------------
 
 
@@ -515,11 +521,13 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
                     // -------------------------- log出力の処理開始 --------------------------
                     // log出力フラグ用の処理
-                    // 戦闘中のlog以外は取得しない
+                    // 戦闘中のlog以外は取得しない(いったん廃止)
+                    /*
                     if (logoutFlg && combatFlg)
                     {
                         OutLog.WriteTraceLog(logInfo.logLine, textBoxlocalPath_init.Text, dateStr + "_battle");
                     }
+                    */
                     // -------------------------- log出力の処理終了 --------------------------
 
                     // -------------------------- 座標取得の処理開始 --------------------------

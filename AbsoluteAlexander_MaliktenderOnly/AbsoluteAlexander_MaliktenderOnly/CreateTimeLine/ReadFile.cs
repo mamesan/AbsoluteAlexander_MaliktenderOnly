@@ -20,7 +20,7 @@ namespace AbsoluteAlexander_MaliktenderOnly.CreateTimeLine
             List<string> AbiList = new List<string>();
             try
             {
-                string path = Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "Config\\"); 
+                string path = Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "Config\\");
 
                 StreamReader sr = new StreamReader(Path.Combine(@path + "AbiList.txt"), Encoding.GetEncoding("UTF-8"));
 
@@ -29,7 +29,8 @@ namespace AbsoluteAlexander_MaliktenderOnly.CreateTimeLine
                     // コメントアウト対応
                     if (!sr.ReadLine().Contains("#"))
                     {
-                        AbiList.Add(sr.ReadLine());
+                        string str22 = sr.ReadLine();
+                        AbiList.Add(str22);
                     }
                 }
             }
