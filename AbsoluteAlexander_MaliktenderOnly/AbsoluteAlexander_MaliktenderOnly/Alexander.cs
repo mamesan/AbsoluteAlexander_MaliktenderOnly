@@ -110,7 +110,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
             ACTInitSetting.LoadSettings(xmlSettings);
 
             // アビリティリストが存在していない場合は、ダウンロードを実施する
-            // ACTInitSetting.CheckAbiText();
+            ACTInitSetting.CheckAbiText();
 
 
 
@@ -142,12 +142,9 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // 戦闘終了をキャッチする
             ActGlobals.oFormActMain.OnCombatEnd += OFormActMain_OnCombatEnd;
 
-            checkBox_logout_flg_init.Checked = false;
             checkBox_logout_flg_init.Visible = false;
             checkBox1_TimeLine_init.Visible = false;
-            checkBox1_TimeLine_init.Checked = false;
             checkBox1_Abi_init.Visible = false;
-            checkBox1_Abi_init.Checked = false;
 
 
 
@@ -186,8 +183,13 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // 戦闘開始フラグ
             combatFlg = true;
             // アビリティの一覧を取得する
-            // AbiList = CreateTimeLine.ReadFile.AbiList_create();
-            // PtList = ActHelper.GetPTList();
+            PtList = ActHelper.GetPTList();
+            List<string> AbiGetJobList = new List<string>();
+            foreach (Combatant combatant in PtList)
+            {
+                AbiGetJobList.Add(Job.Instance.GetJobName(combatant.Job));
+            }
+            AbiList = CreateTimeLine.ReadFile.AbiList_create(AbiGetJobList);
 
             // mobListを取得する
             Moblist = ActHelper.CreatemobList();
@@ -325,8 +327,9 @@ namespace AbsoluteAlexander_MaliktenderOnly
                         checkBox_kanrisya_init.Checked = true;
                         checkBox_kanrisya_init.Visible = true;
                         // checkBox_logout_flg_init.Visible = true;
+                        checkBox_logout_flg_init.Checked = false;
                         checkBox1_TimeLine_init.Visible = true;
-                        // checkBox1_Abi_init.Visible = true;
+                        checkBox1_Abi_init.Visible = true;
                     }
                     else
                     {
@@ -451,7 +454,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
 
                 // -------------------------- アビリティファイルの出力処理(いったん廃止) --------------------------
-                /*
                 if (combatFlg && checkBox1_Abi_init.Checked)
                 {
                     string log = logInfo.logLine;
@@ -472,7 +474,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
                         }
                     }
                 }
-                */
                 // -------------------------- アビリティファイルの出力処理 --------------------------
 
 
