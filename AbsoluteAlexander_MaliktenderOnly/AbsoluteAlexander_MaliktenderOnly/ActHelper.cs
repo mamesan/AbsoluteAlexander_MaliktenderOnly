@@ -132,7 +132,7 @@
                     }
 
                     var combatant = new Combatant();
-                    if ((int)item.CastTargetID == 0 && string.IsNullOrWhiteSpace((string)item.Name))
+                    if ((int)item.CastTargetID == 0 || string.IsNullOrWhiteSpace((string)item.Name))
                     {
                         continue;
                     }
