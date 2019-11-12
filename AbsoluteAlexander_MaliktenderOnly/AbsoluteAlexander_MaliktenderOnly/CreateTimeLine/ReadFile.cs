@@ -26,7 +26,7 @@ namespace AbsoluteAlexander_MaliktenderOnly.CreateTimeLine
         {
             List<string> AbiList = new List<string>();
             string path = Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "Config\\AbiList.json");
-            StreamReader sr = new StreamReader(@path, Encoding.GetEncoding("UTF -8"));
+            StreamReader sr = new StreamReader(@path, Encoding.GetEncoding("UTF-8"));
             var obj = JObject.Parse(@sr.ReadToEnd());
             foreach (string jobName in jobList)
             {

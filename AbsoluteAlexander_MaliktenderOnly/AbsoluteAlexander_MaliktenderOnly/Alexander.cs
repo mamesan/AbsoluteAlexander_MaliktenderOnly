@@ -220,12 +220,11 @@ namespace AbsoluteAlexander_MaliktenderOnly
             if (checkBox_kanrisya_init.Checked)
             {
                 // log出力フラグを立てる
-                /*
+
                 if (checkBox_logout_flg_init.Checked)
                 {
                     logoutFlg = true;
                 }
-                */
 
                 // scanlistに要素を格納する（座標取得用）
                 scanList = new List<string>();
@@ -328,7 +327,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     {
                         checkBox_kanrisya_init.Checked = true;
                         checkBox_kanrisya_init.Visible = true;
-                        // checkBox_logout_flg_init.Visible = true;
+                        checkBox_logout_flg_init.Visible = true;
                         checkBox_logout_flg_init.Checked = false;
                         checkBox1_TimeLine_init.Visible = true;
                         checkBox1_Abi_init.Visible = true;
@@ -434,8 +433,9 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
                 // -------------------------- 戦闘開始時の処理 --------------------------
                 // 戦闘開始のお知らせ
-                if (combatFlg && !initButtoleFlg)
+                if (combatFlg && !initButtoleFlg || logInfo.logLine.Contains("戦闘開始！"))
                 {
+                    combatFlg = true;
                     // 戦闘前の初期処理
                     battleInitSetting();
                 }
@@ -446,8 +446,9 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
                 // -------------------------- 戦闘終了時の処理 --------------------------
                 // 戦闘終了時
-                if (!combatFlg && initButtoleFlg)
+                if (!combatFlg && initButtoleFlg && logInfo.logLine.Contains("戦闘終了！"))
                 {
+                    combatFlg = false;
                     // 戦闘終了時の共通初期化処理
                     battoleEndInitSetting();
                 }
@@ -525,12 +526,10 @@ namespace AbsoluteAlexander_MaliktenderOnly
                     // -------------------------- log出力の処理開始 --------------------------
                     // log出力フラグ用の処理
                     // 戦闘中のlog以外は取得しない(いったん廃止)
-                    /*
                     if (logoutFlg && combatFlg)
                     {
                         OutLog.WriteTraceLog(logInfo.logLine, textBoxlocalPath_init.Text, dateStr + "_battle");
                     }
-                    */
                     // -------------------------- log出力の処理終了 --------------------------
 
                     // -------------------------- 座標取得の処理開始 --------------------------
