@@ -131,10 +131,10 @@ namespace AbsoluteAlexander_MaliktenderOnly
         public static void CheckAbiText()
         {
             string AbiTxtFilePath = Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "Config\\");
-            if (!File.Exists(AbiTxtFilePath + "AbiList.txt"))
+            if (!File.Exists(AbiTxtFilePath + "AbiList.json"))
             {
                 WebClient wc = new WebClient();
-                wc.DownloadFile("https://raw.githubusercontent.com/mamesan/AbsoluteAlexander_MaliktenderOnly/master/AbsoluteAlexander_MaliktenderOnly/AbsoluteAlexander_MaliktenderOnly/lib/AbiList.txt", AbiTxtFilePath + "AbiList.txt");
+                wc.DownloadFile("https://raw.githubusercontent.com/mamesan/AbsoluteAlexander_MaliktenderOnly/master/AbsoluteAlexander_MaliktenderOnly/AbsoluteAlexander_MaliktenderOnly/lib/AbiList.json", AbiTxtFilePath + "AbiList.json");
                 wc.Dispose();
             }
         }

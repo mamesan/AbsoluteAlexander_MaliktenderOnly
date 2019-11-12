@@ -112,8 +112,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // アビリティリストが存在していない場合は、ダウンロードを実施する
             ACTInitSetting.CheckAbiText();
 
-
-
             // コンボボックスの初期値を設定
             if (listBox_倍率_init.SelectedIndex == -1)
             {
@@ -187,7 +185,11 @@ namespace AbsoluteAlexander_MaliktenderOnly
             List<string> AbiGetJobList = new List<string>();
             foreach (Combatant combatant in PtList)
             {
-                AbiGetJobList.Add(Job.Instance.GetJobName(combatant.Job));
+                string jobName = Job.Instance.GetJobName(combatant.Job);
+                if (!AbiGetJobList.Contains(jobName))
+                {
+                    AbiGetJobList.Add(jobName);
+                }
             }
             AbiList = CreateTimeLine.ReadFile.AbiList_create(AbiGetJobList);
 

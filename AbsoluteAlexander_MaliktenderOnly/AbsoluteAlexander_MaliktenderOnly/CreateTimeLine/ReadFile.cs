@@ -25,7 +25,8 @@ namespace AbsoluteAlexander_MaliktenderOnly.CreateTimeLine
         public static List<string> AbiList_create(List<string> jobList)
         {
             List<string> AbiList = new List<string>();
-            StreamReader sr = new StreamReader(@"C:\Users\tendo\Documents\98_いろいろ\外\AbsoluteAlexander_MaliktenderOnly\AbsoluteAlexander_MaliktenderOnly\AbsoluteAlexander_MaliktenderOnly\lib\無題2.txt", Encoding.GetEncoding("UTF-8"));
+            string path = Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "Config\\AbiList.json");
+            StreamReader sr = new StreamReader(@path, Encoding.GetEncoding("UTF -8"));
             var obj = JObject.Parse(@sr.ReadToEnd());
             foreach (string jobName in jobList)
             {
