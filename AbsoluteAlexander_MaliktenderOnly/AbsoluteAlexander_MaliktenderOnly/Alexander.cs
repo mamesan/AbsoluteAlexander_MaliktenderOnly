@@ -32,13 +32,14 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private int time = 0;
         private string dateStr = "";
         private string select_item_name = "";
+        private string MyName = "";
 
         // リスト管理
         private List<string> scanList = new List<string>();
         private List<string> AbiList = new List<string>();
         private List<string> Moblist = new List<string>();
         private List<Combatant> PtList = new List<Combatant>();
-
+        private Dictionary<int, string> リミッターカットdic = new Dictionary<int, string>();
 
         // Terops123 初期化
         private Terops123 terops123 = new Terops123();
@@ -47,6 +48,10 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private Size terops123pictureBox2Size = new Size();
         private Size terops123pictureBox3Size = new Size();
         private Size terops123pictureBox4Size = new Size();
+        private Size terops123pictureBox5Size = new Size();
+        private Size terops123pictureBox6Size = new Size();
+        private Size terops123pictureBox7Size = new Size();
+        private Size terops123pictureBox8Size = new Size();
 
         // Terops123 初期化
         private TeropsABCD teropsABCD = new TeropsABCD();
@@ -156,6 +161,10 @@ namespace AbsoluteAlexander_MaliktenderOnly
             terops123pictureBox2Size = new Size(150, 150);
             terops123pictureBox3Size = new Size(150, 150);
             terops123pictureBox4Size = new Size(150, 150);
+            terops123pictureBox5Size = new Size(150, 150);
+            terops123pictureBox6Size = new Size(150, 150);
+            terops123pictureBox7Size = new Size(150, 150);
+            terops123pictureBox8Size = new Size(150, 150);
 
             teropsABCDSize = new Size(150, 150);
             teropsABCDpictureBoxASize = new Size(150, 150);
@@ -202,6 +211,18 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
             // 戦闘開始時の時間を記憶する
             dateStr = DateTime.Now.ToString("yyyyMMddhhmmss");
+
+            リミッターカットdic = new Dictionary<int, string>();
+            リミッターカットdic.Add(1, ":004F:");
+            リミッターカットdic.Add(2, ":0050:");
+            リミッターカットdic.Add(3, ":0051:");
+            リミッターカットdic.Add(4, ":0052:");
+            リミッターカットdic.Add(5, ":0053:");
+            リミッターカットdic.Add(6, ":0054:");
+            リミッターカットdic.Add(7, ":0055:");
+            リミッターカットdic.Add(8, ":0056:");
+
+            MyName = ActHelper.MyName();
 
             // フォームの初期処理
             InitForm();
@@ -265,11 +286,23 @@ namespace AbsoluteAlexander_MaliktenderOnly
             terops123.Location = SettingPoint(textBox_terop_X_init, textBox_terop_Y_init);
             BairituSetting1234();
             terops123.Hide();
+            terops123.pictureBox1.Visible = false;
+            terops123.pictureBox2.Visible = false;
+            terops123.pictureBox3.Visible = false;
+            terops123.pictureBox4.Visible = false;
+            terops123.pictureBox5.Visible = false;
+            terops123.pictureBox6.Visible = false;
+            terops123.pictureBox7.Visible = false;
+            terops123.pictureBox8.Visible = false;
 
             // teropsABCD 設定初期化
             teropsABCD.Location = SettingPoint(textBox4_リフト_X_init, textBox2_リフト_Y_init);
             BairituSettingABCD();
             teropsABCD.Hide();
+            teropsABCD.pictureBoxA.Visible = false;
+            teropsABCD.pictureBoxB.Visible = false;
+            teropsABCD.pictureBoxC.Visible = false;
+            teropsABCD.pictureBoxD.Visible = false;
         }
 
 
@@ -317,6 +350,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private void UserAuth()
         {
             string checkName = ActHelper.MyName();
+            MyName = checkName;
             // 対象者しか、機能を利用できなくする
             if (GetUrl(checkName) || DefMember.DefMemberList.Contains(checkName))
             {
@@ -433,9 +467,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
                 // -------------------------- 戦闘開始時の処理 --------------------------
                 // 戦闘開始のお知らせ
-                if (combatFlg && !initButtoleFlg || logInfo.logLine.Contains("戦闘開始！"))
+                if (combatFlg && !initButtoleFlg)
                 {
-                    combatFlg = true;
                     // 戦闘前の初期処理
                     battleInitSetting();
                 }
@@ -446,13 +479,64 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
                 // -------------------------- 戦闘終了時の処理 --------------------------
                 // 戦闘終了時
-                if (!combatFlg && initButtoleFlg && logInfo.logLine.Contains("戦闘終了！"))
+                if (!combatFlg && initButtoleFlg)
                 {
-                    combatFlg = false;
                     // 戦闘終了時の共通初期化処理
                     battoleEndInitSetting();
                 }
                 // -------------------------- 戦闘終了時の処理 --------------------------
+
+
+                // -------------------------- リミッターカットを判定する --------------------------
+                if (checkBoxrimita_check_init.Checked)
+                {
+                    if (logInfo.logLine.Contains(MyName))
+                    {
+                        foreach (KeyValuePair<int, string> kvp in リミッターカットdic)
+                        {
+                            if (logInfo.logLine.Contains(kvp.Value))
+                            {
+                                int MyNumber = kvp.Key;
+                                terops123.Show();
+                                switch (MyNumber)
+                                {
+                                    case 1:
+                                        terops123.pictureBox1.Visible = true;
+                                        break;
+                                    case 2:
+                                        terops123.pictureBox2.Visible = true;
+                                        break;
+                                    case 3:
+                                        terops123.pictureBox3.Visible = true;
+                                        break;
+                                    case 4:
+                                        terops123.pictureBox4.Visible = true;
+                                        break;
+                                    case 5:
+                                        terops123.pictureBox5.Visible = true;
+                                        break;
+                                    case 6:
+                                        terops123.pictureBox6.Visible = true;
+                                        break;
+                                    case 7:
+                                        terops123.pictureBox7.Visible = true;
+                                        break;
+                                    case 8:
+                                        terops123.pictureBox8.Visible = true;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
+
+
+                // -------------------------- リミッターカットを判定する --------------------------
+
 
 
 
@@ -554,6 +638,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
         }
 
 
+
+
         // ------------------------------------------------- 以下、log出力外イベントエリア -------------------------------------------------
 
         /// <summary>
@@ -628,6 +714,10 @@ namespace AbsoluteAlexander_MaliktenderOnly
             terops123.pictureBox2.Size = new Size((int)(terops123pictureBox2Size.Width * bairitsu), (int)(terops123pictureBox2Size.Height * bairitsu));
             terops123.pictureBox3.Size = new Size((int)(terops123pictureBox3Size.Width * bairitsu), (int)(terops123pictureBox3Size.Height * bairitsu));
             terops123.pictureBox4.Size = new Size((int)(terops123pictureBox4Size.Width * bairitsu), (int)(terops123pictureBox4Size.Height * bairitsu));
+            terops123.pictureBox5.Size = new Size((int)(terops123pictureBox5Size.Width * bairitsu), (int)(terops123pictureBox5Size.Height * bairitsu));
+            terops123.pictureBox6.Size = new Size((int)(terops123pictureBox6Size.Width * bairitsu), (int)(terops123pictureBox6Size.Height * bairitsu));
+            terops123.pictureBox7.Size = new Size((int)(terops123pictureBox7Size.Width * bairitsu), (int)(terops123pictureBox7Size.Height * bairitsu));
+            terops123.pictureBox8.Size = new Size((int)(terops123pictureBox8Size.Width * bairitsu), (int)(terops123pictureBox8Size.Height * bairitsu));
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
