@@ -166,11 +166,41 @@ namespace AbsoluteAlexander_MaliktenderOnly
             terops123pictureBox7Size = new Size(150, 150);
             terops123pictureBox8Size = new Size(150, 150);
 
+            terops123.pictureBox1.Visible = false;
+            terops123.pictureBox2.Visible = false;
+            terops123.pictureBox3.Visible = false;
+            terops123.pictureBox4.Visible = false;
+            terops123.pictureBox5.Visible = false;
+            terops123.pictureBox6.Visible = false;
+            terops123.pictureBox7.Visible = false;
+            terops123.pictureBox8.Visible = false;
+
+            terops123.pictureBox1.Visible = true;
+            terops123.pictureBox2.Visible = true;
+            terops123.pictureBox3.Visible = true;
+            terops123.pictureBox4.Visible = true;
+            terops123.pictureBox5.Visible = true;
+            terops123.pictureBox6.Visible = true;
+            terops123.pictureBox7.Visible = true;
+            terops123.pictureBox8.Visible = true;
+            terops123.Show();
+            terops123.Hide();
+
             teropsABCDSize = new Size(150, 150);
             teropsABCDpictureBoxASize = new Size(150, 150);
             teropsABCDpictureBoxBSize = new Size(150, 150);
             teropsABCDpictureBoxCSize = new Size(150, 150);
             teropsABCDpictureBoxDSize = new Size(150, 150);
+
+            teropsABCD.pictureBoxA.Visible = true;
+            teropsABCD.pictureBoxB.Visible = true;
+            teropsABCD.pictureBoxC.Visible = true;
+            teropsABCD.pictureBoxD.Visible = true;
+
+            teropsABCD.pictureBoxA.Visible = false;
+            teropsABCD.pictureBoxB.Visible = false;
+            teropsABCD.pictureBoxC.Visible = false;
+            teropsABCD.pictureBoxD.Visible = false;
             // フォームの初期処理
             InitForm();
         }
@@ -285,7 +315,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // terops123 設定初期化
             terops123.Location = SettingPoint(textBox_terop_X_init, textBox_terop_Y_init);
             BairituSetting1234();
-            terops123.Hide();
             terops123.pictureBox1.Visible = false;
             terops123.pictureBox2.Visible = false;
             terops123.pictureBox3.Visible = false;
@@ -294,15 +323,18 @@ namespace AbsoluteAlexander_MaliktenderOnly
             terops123.pictureBox6.Visible = false;
             terops123.pictureBox7.Visible = false;
             terops123.pictureBox8.Visible = false;
+            terops123.Show();
+            terops123.Hide();
 
             // teropsABCD 設定初期化
             teropsABCD.Location = SettingPoint(textBox4_リフト_X_init, textBox2_リフト_Y_init);
             BairituSettingABCD();
-            teropsABCD.Hide();
             teropsABCD.pictureBoxA.Visible = false;
             teropsABCD.pictureBoxB.Visible = false;
             teropsABCD.pictureBoxC.Visible = false;
             teropsABCD.pictureBoxD.Visible = false;
+            teropsABCD.Show();
+            teropsABCD.Hide();
         }
 
 
@@ -497,44 +529,55 @@ namespace AbsoluteAlexander_MaliktenderOnly
                             if (logInfo.logLine.Contains(kvp.Value))
                             {
                                 int MyNumber = kvp.Key;
+                                string TTSstr = "";
                                 terops123.Show();
                                 switch (MyNumber)
                                 {
                                     case 1:
                                         terops123.pictureBox1.Visible = true;
+                                        TTSstr = "みなみ";
                                         break;
                                     case 2:
                                         terops123.pictureBox2.Visible = true;
+                                        TTSstr = "きた";
                                         break;
                                     case 3:
                                         terops123.pictureBox3.Visible = true;
+                                        TTSstr = "みなみ";
                                         break;
                                     case 4:
                                         terops123.pictureBox4.Visible = true;
+                                        TTSstr = "きた";
                                         break;
                                     case 5:
                                         terops123.pictureBox5.Visible = true;
+                                        TTSstr = "みなみ";
                                         break;
                                     case 6:
                                         terops123.pictureBox6.Visible = true;
+                                        TTSstr = "きた";
                                         break;
                                     case 7:
                                         terops123.pictureBox7.Visible = true;
+                                        TTSstr = "みなみ";
                                         break;
                                     case 8:
                                         terops123.pictureBox8.Visible = true;
+                                        TTSstr = "きた";
                                         break;
                                     default:
                                         break;
                                 }
-                                break;
+                                ActGlobals.oFormActMain.TTS(MyNumber + "番、" + TTSstr);
+                                terops123.Show();
                             }
                         }
                     }
+                    if (logInfo.logLine.Contains(MyName))
+                    {
+
+                    }
                 }
-
-
-
                 // -------------------------- リミッターカットを判定する --------------------------
 
 
