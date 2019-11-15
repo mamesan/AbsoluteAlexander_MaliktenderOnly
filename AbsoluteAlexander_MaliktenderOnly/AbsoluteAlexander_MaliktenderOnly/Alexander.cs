@@ -39,7 +39,14 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private List<string> AbiList = new List<string>();
         private List<string> Moblist = new List<string>();
         private List<Combatant> PtList = new List<Combatant>();
+
+        // チェイサー用
+        private bool リミカ判定開始flg = false;
+        private int リミカMyNumber = 0;
         private Dictionary<int, string> リミッターカットdic = new Dictionary<int, string>();
+        private Dictionary<int, Dictionary<string, string>> チェイサー座標dic = new Dictionary<int, Dictionary<string, string>>();
+
+
 
         // Terops123 初期化
         private Terops123 terops123 = new Terops123();
@@ -242,6 +249,9 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // 戦闘開始時の時間を記憶する
             dateStr = DateTime.Now.ToString("yyyyMMddhhmmss");
 
+            リミカ判定開始flg = false;
+            リミカMyNumber = 0;
+
             リミッターカットdic = new Dictionary<int, string>();
             リミッターカットdic.Add(1, ":004F:");
             リミッターカットdic.Add(2, ":0050:");
@@ -251,6 +261,27 @@ namespace AbsoluteAlexander_MaliktenderOnly
             リミッターカットdic.Add(6, ":0054:");
             リミッターカットdic.Add(7, ":0055:");
             リミッターカットdic.Add(8, ":0056:");
+
+            チェイサー座標dic = new Dictionary<int, Dictionary<string, string>>();
+            Dictionary<string, string> チェイサー座標詳細dic = new Dictionary<string, string>();
+            // 北
+            チェイサー座標詳細dic.Add("100", "85.");
+            チェイサー座標dic.Add(1, チェイサー座標詳細dic);
+            // 北東
+            チェイサー座標詳細dic.Add("100", "85.");
+            チェイサー座標dic.Add(2, チェイサー座標詳細dic);
+            // 東
+            チェイサー座標詳細dic.Add("100", "85.");
+            チェイサー座標dic.Add(3, チェイサー座標詳細dic);
+            // 南東
+            チェイサー座標詳細dic.Add("100", "85.");
+            チェイサー座標dic.Add(4, チェイサー座標詳細dic);
+            // 南
+            チェイサー座標詳細dic.Add("100", "85.");
+            チェイサー座標dic.Add(5, チェイサー座標詳細dic);
+            // 南西
+            チェイサー座標詳細dic.Add("100", "85.");
+            チェイサー座標dic.Add(6, チェイサー座標詳細dic);
 
             MyName = ActHelper.MyName();
 
@@ -300,7 +331,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
             // 戦闘開始フラグ
             combatFlg = false;
 
-
+            リミカ判定開始flg = false;
 
             // フォームの初期処理
             InitForm();
@@ -471,6 +502,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
             FFXIV_ACT_Plugin.Common.Models.Combatant combatant = (FFXIV_ACT_Plugin.Common.Models.Combatant)Combatant;
             string MobName = combatant.Name;
             if (!Moblist.Contains(MobName)
+                && !string.IsNullOrWhiteSpace(MobName)
                 && combatant.type == 2
                 && combatant.OwnerID == 0)
             {
@@ -522,60 +554,81 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 // -------------------------- リミッターカットを判定する --------------------------
                 if (checkBoxrimita_check_init.Checked)
                 {
-                    if (logInfo.logLine.Contains(MyName))
+                    if (logInfo.logLine.Contains( "クルーズチェイサー:コードネーム「ブラスティー」！ 階差閉宇宙ヲ、脅カス敵ヲ発見……撃滅スル！"))
                     {
-                        foreach (KeyValuePair<int, string> kvp in リミッターカットdic)
-                        {
-                            if (logInfo.logLine.Contains(kvp.Value))
-                            {
-                                int MyNumber = kvp.Key;
-                                string TTSstr = "";
-                                terops123.Show();
-                                switch (MyNumber)
-                                {
-                                    case 1:
-                                        terops123.pictureBox1.Visible = true;
-                                        TTSstr = "みなみ";
-                                        break;
-                                    case 2:
-                                        terops123.pictureBox2.Visible = true;
-                                        TTSstr = "きた";
-                                        break;
-                                    case 3:
-                                        terops123.pictureBox3.Visible = true;
-                                        TTSstr = "みなみ";
-                                        break;
-                                    case 4:
-                                        terops123.pictureBox4.Visible = true;
-                                        TTSstr = "きた";
-                                        break;
-                                    case 5:
-                                        terops123.pictureBox5.Visible = true;
-                                        TTSstr = "みなみ";
-                                        break;
-                                    case 6:
-                                        terops123.pictureBox6.Visible = true;
-                                        TTSstr = "きた";
-                                        break;
-                                    case 7:
-                                        terops123.pictureBox7.Visible = true;
-                                        TTSstr = "みなみ";
-                                        break;
-                                    case 8:
-                                        terops123.pictureBox8.Visible = true;
-                                        TTSstr = "きた";
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                ActGlobals.oFormActMain.TTS(MyNumber + "番、" + TTSstr);
-                                terops123.Show();
-                            }
-                        }
+                        リミカ判定開始flg = true;
                     }
-                    if (logInfo.logLine.Contains(MyName))
+
+                    if (リミカ判定開始flg)
                     {
 
+                        if (logInfo.logLine.Contains(MyName) && リミカMyNumber != 0)
+                        {
+                            foreach (KeyValuePair<int, string> kvp in リミッターカットdic)
+                            {
+                                if (logInfo.logLine.Contains(kvp.Value))
+                                {
+                                    リミカMyNumber = kvp.Key;
+                                    string TTSstr = "";
+                                    terops123.Show();
+                                    switch (リミカMyNumber)
+                                    {
+                                        case 1:
+                                            terops123.pictureBox1.Visible = true;
+                                            TTSstr = "みなみ";
+                                            break;
+                                        case 2:
+                                            terops123.pictureBox2.Visible = true;
+                                            TTSstr = "きた";
+                                            break;
+                                        case 3:
+                                            terops123.pictureBox3.Visible = true;
+                                            TTSstr = "みなみ";
+                                            break;
+                                        case 4:
+                                            terops123.pictureBox4.Visible = true;
+                                            TTSstr = "きた";
+                                            break;
+                                        case 5:
+                                            terops123.pictureBox5.Visible = true;
+                                            TTSstr = "みなみ";
+                                            break;
+                                        case 6:
+                                            terops123.pictureBox6.Visible = true;
+                                            TTSstr = "きた";
+                                            break;
+                                        case 7:
+                                            terops123.pictureBox7.Visible = true;
+                                            TTSstr = "みなみ";
+                                            break;
+                                        case 8:
+                                            terops123.pictureBox8.Visible = true;
+                                            TTSstr = "きた";
+                                            break;
+                                        default:
+                                            リミカMyNumber = 0;
+                                            break;
+                                    }
+                                    ActGlobals.oFormActMain.TTS(リミカMyNumber + "番、" + TTSstr);
+                                    terops123.Show();
+                                }
+                            }
+                        }
+
+                        // ホークブラスターを確認する
+                        if (リミカMyNumber !=  0)
+                        {
+                            // リミカ用のmobListを取得する
+                            //List<Combatant> リミカMobList = ActHelper.GetMobCombatantList();
+
+                        }
+
+                        // 表示を消す
+                        if (logInfo.logLine.Contains("クルーズチェイサーの「アルファソード」"))
+                        {
+                            InitForm();
+                            リミカ判定開始flg = false;
+                        }
                     }
                 }
                 // -------------------------- リミッターカットを判定する --------------------------
@@ -622,6 +675,10 @@ namespace AbsoluteAlexander_MaliktenderOnly
                         {
                             // 技名のみ取得するようにする
                             // Unknownは、前回のログと重複していなければ全てタイムラインに記載をする
+                            if (log.Length - 18 == 0)
+                            {
+                                break;
+                            }
                             string tmp = log.Substring(18, log.Length - 18);
 
                             string str = CreatetimeLine(tmp);
@@ -649,7 +706,6 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 // -------------------------- 以下管理者領域 --------------------------
                 if (checkBox_kanrisya_init.Checked)
                 {
-
                     // -------------------------- log出力の処理開始 --------------------------
                     // log出力フラグ用の処理
                     // 戦闘中のlog以外は取得しない(いったん廃止)
