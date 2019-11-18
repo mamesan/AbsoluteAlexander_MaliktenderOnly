@@ -45,6 +45,19 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private int リミカMyNumber = 0;
         private Dictionary<int, string> リミッターカットdic = new Dictionary<int, string>();
         private Dictionary<int, Dictionary<string, string>> チェイサー座標dic = new Dictionary<int, Dictionary<string, string>>();
+        private int ホークブラスター回数 = 0;
+        private int ホークブラスターlog回数 = 0;
+
+        // ジャスティス用
+        private int CntPage = 0;
+        private bool ジャスティス判定開始flg = false;
+
+        // 時間停止カンペ用フラグ
+        private bool 時間停止kanpeflg = false;
+        private List<string> 接近禁止命令List = new List<string>();
+        private List<string> 接近強制命令List = new List<string>();
+        private List<string> 加重罰List = new List<string>();
+        private List<string> 無印List = new List<string>();
 
 
 
@@ -67,6 +80,22 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private Size teropsABCDpictureBoxBSize = new Size();
         private Size teropsABCDpictureBoxCSize = new Size();
         private Size teropsABCDpictureBoxDSize = new Size();
+
+        // Teropshork
+        private Teropshork teropshork = new Teropshork();
+        private Size teropshorkSize = new Size();
+        private Size teropshorkpictureBox北Size = new Size();
+        private Size teropshorkpictureBox北東Size = new Size();
+        private Size teropshorkpictureBox東Size = new Size();
+        private Size teropshorkpictureBox南東Size = new Size();
+        private Size teropshorkpictureBox南Size = new Size();
+        private Size teropshorkpictureBox南西Size = new Size();
+        private Size teropshorkpictureBox西Size = new Size();
+        private Size teropshorkpictureBox北西Size = new Size();
+
+        // TeropTimeLine
+        private TeropTimeLine teropTimeLine = new TeropTimeLine();
+
 
         // --------------------------------------- コンストラクタ ---------------------------------------
         public Alexander()
@@ -208,6 +237,64 @@ namespace AbsoluteAlexander_MaliktenderOnly
             teropsABCD.pictureBoxB.Visible = false;
             teropsABCD.pictureBoxC.Visible = false;
             teropsABCD.pictureBoxD.Visible = false;
+
+            teropshorkSize = new Size(150, 150);
+            teropshorkpictureBox北Size = new Size(150, 150);
+            teropshorkpictureBox北東Size = new Size(150, 150);
+            teropshorkpictureBox東Size = new Size(150, 150);
+            teropshorkpictureBox南東Size = new Size(150, 150);
+            teropshorkpictureBox南Size = new Size(150, 150);
+            teropshorkpictureBox南西Size = new Size(150, 150);
+            teropshorkpictureBox西Size = new Size(150, 150);
+            teropshorkpictureBox北西Size = new Size(150, 150);
+
+            teropshork.pictureBox北.Visible = true;
+            teropshork.pictureBox北東.Visible = true;
+            teropshork.pictureBox東.Visible = true;
+            teropshork.pictureBox南東.Visible = true;
+            teropshork.pictureBox南.Visible = true;
+            teropshork.pictureBox南西.Visible = true;
+            teropshork.pictureBox西.Visible = true;
+            teropshork.pictureBox北西.Visible = true;
+            teropshork.pictureBox北.Visible = false;
+            teropshork.pictureBox北東.Visible = false;
+            teropshork.pictureBox東.Visible = false;
+            teropshork.pictureBox南東.Visible = false;
+            teropshork.pictureBox南.Visible = false;
+            teropshork.pictureBox南西.Visible = false;
+            teropshork.pictureBox西.Visible = false;
+            teropshork.pictureBox北西.Visible = false;
+            teropshork.Show();
+            teropshork.Hide();
+
+
+            teropTimeLine.pictureBox1.Visible = true;
+            teropTimeLine.pictureBox2.Visible = true;
+            teropTimeLine.pictureBox3.Visible = true;
+            teropTimeLine.pictureBox4.Visible = true;
+            teropTimeLine.pictureBox5.Visible = true;
+            teropTimeLine.pictureBox6.Visible = true;
+            teropTimeLine.pictureBox7.Visible = true;
+            teropTimeLine.pictureBox8.Visible = true;
+            teropTimeLine.pictureBox9.Visible = true;
+            teropTimeLine.pictureBox10.Visible = true;
+            teropTimeLine.pictureBox11.Visible = true;
+            teropTimeLine.pictureBox12.Visible = true;
+            teropTimeLine.pictureBox1.Visible = false;
+            teropTimeLine.pictureBox2.Visible = false;
+            teropTimeLine.pictureBox3.Visible = false;
+            teropTimeLine.pictureBox4.Visible = false;
+            teropTimeLine.pictureBox5.Visible = false;
+            teropTimeLine.pictureBox6.Visible = false;
+            teropTimeLine.pictureBox7.Visible = false;
+            teropTimeLine.pictureBox8.Visible = false;
+            teropTimeLine.pictureBox9.Visible = false;
+            teropTimeLine.pictureBox10.Visible = false;
+            teropTimeLine.pictureBox11.Visible = false;
+            teropTimeLine.pictureBox12.Visible = false;
+            teropshork.Show();
+            teropshork.Hide();
+
             // フォームの初期処理
             InitForm();
         }
@@ -251,6 +338,9 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
             リミカ判定開始flg = false;
             リミカMyNumber = 0;
+            CntPage = 0;
+            ホークブラスターlog回数 = 0;
+            ホークブラスター回数 = 1;
 
             リミッターカットdic = new Dictionary<int, string>();
             リミッターカットdic.Add(1, ":004F:");
@@ -265,25 +355,34 @@ namespace AbsoluteAlexander_MaliktenderOnly
             チェイサー座標dic = new Dictionary<int, Dictionary<string, string>>();
             Dictionary<string, string> チェイサー座標詳細dic = new Dictionary<string, string>();
             // 北
-            チェイサー座標詳細dic.Add("100", "85.");
+            チェイサー座標詳細dic.Add("100", "115");
             チェイサー座標dic.Add(1, チェイサー座標詳細dic);
             // 北東
-            チェイサー座標詳細dic.Add("100", "85.");
+            チェイサー座標詳細dic = new Dictionary<string, string>();
+            チェイサー座標詳細dic.Add("110", "110");
             チェイサー座標dic.Add(2, チェイサー座標詳細dic);
             // 東
-            チェイサー座標詳細dic.Add("100", "85.");
+            チェイサー座標詳細dic = new Dictionary<string, string>();
+            チェイサー座標詳細dic.Add("115", "100");
             チェイサー座標dic.Add(3, チェイサー座標詳細dic);
             // 南東
-            チェイサー座標詳細dic.Add("100", "85.");
+            チェイサー座標詳細dic = new Dictionary<string, string>();
+            チェイサー座標詳細dic.Add("110", "89.");
             チェイサー座標dic.Add(4, チェイサー座標詳細dic);
-            // 南
-            チェイサー座標詳細dic.Add("100", "85.");
-            チェイサー座標dic.Add(5, チェイサー座標詳細dic);
-            // 南西
-            チェイサー座標詳細dic.Add("100", "85.");
-            チェイサー座標dic.Add(6, チェイサー座標詳細dic);
 
             MyName = ActHelper.MyName();
+
+            // 時間停止の初期化
+            時間停止kanpeflg = false;
+
+            接近禁止命令List = new List<string>();
+            接近強制命令List = new List<string>();
+            加重罰List = new List<string>();
+            無印List = new List<string>();
+            foreach (string name in Utils.DefMember.DefMemberList)
+            {
+                無印List.Add(name);
+            }
 
             // フォームの初期処理
             InitForm();
@@ -332,6 +431,14 @@ namespace AbsoluteAlexander_MaliktenderOnly
             combatFlg = false;
 
             リミカ判定開始flg = false;
+            ジャスティス判定開始flg = false;
+            CntPage = 0;
+
+            時間停止kanpeflg = false;
+            接近禁止命令List = new List<string>();
+            接近強制命令List = new List<string>();
+            加重罰List = new List<string>();
+            無印List = new List<string>();
 
             // フォームの初期処理
             InitForm();
@@ -358,6 +465,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
             terops123.Hide();
 
             // teropsABCD 設定初期化
+            /*
             teropsABCD.Location = SettingPoint(textBox4_リフト_X_init, textBox2_リフト_Y_init);
             BairituSettingABCD();
             teropsABCD.pictureBoxA.Visible = false;
@@ -366,6 +474,39 @@ namespace AbsoluteAlexander_MaliktenderOnly
             teropsABCD.pictureBoxD.Visible = false;
             teropsABCD.Show();
             teropsABCD.Hide();
+            */
+
+            // teropshork 設定初期化
+            teropshork.Location = SettingPoint(textBox_terop_X_init, textBox_terop_Y_init);
+            BairituSettinghork();
+            teropshork.pictureBox北.Visible = false;
+            teropshork.pictureBox北東.Visible = false;
+            teropshork.pictureBox東.Visible = false;
+            teropshork.pictureBox南東.Visible = false;
+            teropshork.pictureBox南.Visible = false;
+            teropshork.pictureBox南西.Visible = false;
+            teropshork.pictureBox西.Visible = false;
+            teropshork.pictureBox北西.Visible = false;
+            teropshork.Show();
+            teropshork.Hide();
+
+            teropTimeLine.Location = SettingPoint(textBox_terop_X_init, textBox_terop_Y_init);
+            teropTimeLine.pictureBox1.Visible = false;
+            teropTimeLine.pictureBox2.Visible = false;
+            teropTimeLine.pictureBox3.Visible = false;
+            teropTimeLine.pictureBox4.Visible = false;
+            teropTimeLine.pictureBox5.Visible = false;
+            teropTimeLine.pictureBox6.Visible = false;
+            teropTimeLine.pictureBox7.Visible = false;
+            teropTimeLine.pictureBox8.Visible = false;
+            teropTimeLine.pictureBox9.Visible = false;
+            teropTimeLine.pictureBox10.Visible = false;
+            teropTimeLine.pictureBox11.Visible = false;
+            teropTimeLine.pictureBox12.Visible = false;
+            teropTimeLine.Show();
+            teropTimeLine.Hide();
+
+
         }
 
 
@@ -554,15 +695,14 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 // -------------------------- リミッターカットを判定する --------------------------
                 if (checkBoxrimita_check_init.Checked)
                 {
-                    if (logInfo.logLine.Contains( "クルーズチェイサー:コードネーム「ブラスティー」！ 階差閉宇宙ヲ、脅カス敵ヲ発見……撃滅スル！"))
+                    if (logInfo.logLine.Contains("クルーズチェイサー:コードネーム「ブラスティー」！ 階差閉宇宙ヲ、脅カス敵ヲ発見……撃滅スル！"))
                     {
                         リミカ判定開始flg = true;
                     }
 
                     if (リミカ判定開始flg)
                     {
-
-                        if (logInfo.logLine.Contains(MyName) && リミカMyNumber != 0)
+                        if (logInfo.logLine.Contains(MyName) && リミカMyNumber == 0 && checkBoxrimita_check_init.Checked)
                         {
                             foreach (KeyValuePair<int, string> kvp in リミッターカットdic)
                             {
@@ -611,20 +751,131 @@ namespace AbsoluteAlexander_MaliktenderOnly
                                     }
                                     ActGlobals.oFormActMain.TTS(リミカMyNumber + "番、" + TTSstr);
                                     terops123.Show();
+                                    break;
                                 }
                             }
                         }
 
                         // ホークブラスターを確認する
-                        if (リミカMyNumber !=  0)
+                        if (リミカMyNumber != 0 && checkBox1_hork_init.Checked)
                         {
                             // リミカ用のmobListを取得する
-                            //List<Combatant> リミカMobList = ActHelper.GetMobCombatantList();
+                            List<Combatant> リミカMobList = ActHelper.GetMobCombatantList();
+                            List<Combatant> newList = new List<Combatant>();
+                            foreach (Combatant combatant in リミカMobList)
+                            {
+                                if (combatant.Name.Equals("クルーズチェイサー")
+                                    && combatant.CurrentHP == 44)
+                                {
+                                    newList.Add(combatant);
+                                }
+                            }
 
+                            foreach (KeyValuePair<int, Dictionary<string, string>> kvp in チェイサー座標dic)
+                            {
+                                foreach (Combatant combatant in newList)
+                                {
+                                    foreach (KeyValuePair<string, string> pair in kvp.Value)
+                                    {
+                                        string X = combatant.PosX.ToString().Substring(0, 3);
+                                        string Y = combatant.PosY.ToString().Substring(0, 3);
+
+                                        if (pair.Key.Equals(X) && pair.Value.Equals(Y))
+                                        {
+                                            string TTSstr = "";
+                                            int num = kvp.Key;
+                                            teropshork.Show();
+                                            switch (num)
+                                            {
+                                                // 1、5
+                                                case 1:
+                                                    if (リミカMyNumber == 1)
+                                                    {
+                                                        teropshork.pictureBox北.Visible = true;
+                                                        TTSstr = "えー";
+                                                    }
+                                                    else
+                                                    {
+                                                        teropshork.pictureBox南.Visible = true;
+                                                        TTSstr = "しー";
+                                                    }
+                                                    break;
+                                                // 2、6
+                                                case 2:
+                                                    if (リミカMyNumber == 2)
+                                                    {
+                                                        teropshork.pictureBox北東.Visible = true;
+                                                        TTSstr = "えーびー";
+                                                    }
+                                                    else
+                                                    {
+                                                        teropshork.pictureBox南西.Visible = true;
+                                                        TTSstr = "しーでー";
+                                                    }
+                                                    break;
+                                                // 3、7
+                                                case 3:
+                                                    if (リミカMyNumber == 3)
+                                                    {
+                                                        teropshork.pictureBox東.Visible = true;
+                                                        TTSstr = "びー";
+                                                    }
+                                                    else
+                                                    {
+                                                        teropshork.pictureBox西.Visible = true;
+                                                        TTSstr = "でー";
+                                                    }
+                                                    break;
+                                                // 4、8 
+                                                case 4:
+                                                    if (リミカMyNumber == 4)
+                                                    {
+                                                        teropshork.pictureBox南東.Visible = true;
+                                                        TTSstr = "びーしー";
+                                                    }
+                                                    else
+                                                    {
+                                                        teropshork.pictureBox北西.Visible = true;
+                                                        TTSstr = "えーでー";
+                                                    }
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            teropshork.Show();
+                                            ActGlobals.oFormActMain.TTS(TTSstr);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         }
 
+                        if (logInfo.logLine.Contains("クルーズチェイサー:4830:ホークブラスター"))
+                        {
+                            if (ホークブラスターlog回数 == 2 ||
+                                ホークブラスターlog回数 == 4 ||
+                                ホークブラスターlog回数 == 6 ||
+                                ホークブラスターlog回数 == 8 ||
+                                ホークブラスターlog回数 == 10 ||
+                                ホークブラスターlog回数 == 12 ||
+                                ホークブラスターlog回数 == 14 ||
+                                ホークブラスターlog回数 == 16 ||
+                                ホークブラスターlog回数 == 18 ||
+                                ホークブラスターlog回数 == 20)
+                            {
+                                ActGlobals.oFormActMain.TTS(ホークブラスター回数.ToString());
+                                ホークブラスター回数++;
+
+                                if (ホークブラスター回数 == 5)
+                                {
+                                    ホークブラスター回数 = 1;
+                                }
+                            }
+                            ホークブラスターlog回数++;
+                        }
                         // 表示を消す
-                        if (logInfo.logLine.Contains("クルーズチェイサーの「アルファソード」"))
+                        if (logInfo.logLine.Contains("ブルートジャスティスの「ジャスティスキック」"))
                         {
                             InitForm();
                             リミカ判定開始flg = false;
@@ -633,8 +884,85 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 }
                 // -------------------------- リミッターカットを判定する --------------------------
 
+                // -------------------------- 時間停止を判定する --------------------------
+                if (checkBox2_kanpe_init.Checked)
+                {
+                    if (logInfo.logLine.Contains("アレキサンダー・プライム:我はアレキサンダー……機械仕掛けの神なり……"))
+                    {
+                        時間停止kanpeflg = true;
+                    }
+                    // 時間停止の判定を行う
+                    if (時間停止kanpeflg)
+                    {
+                        string log = logInfo.logLine;
+                        // 接近禁止のlogを取得
+                        if (log.Contains("に「確定判決：接近禁止命令」の効果。"))
+                        {
+                            foreach (string name in DefMember.DefMemberList)
+                            {
+                                if (log.Contains(name))
+                                {
+                                    接近禁止命令List.Add(name);
+                                    無印List.Remove(name);
+                                    break;
+                                }
+                            }
+                        }
+                        // 接近強制命令のlogを取得
+                        if (log.Contains("に「確定判決：接近強制命令」の効果。"))
+                        {
+                            foreach (string name in DefMember.DefMemberList)
+                            {
+                                if (log.Contains(name))
+                                {
+                                    接近強制命令List.Add(name);
+                                    無印List.Remove(name);
+                                    break;
+                                }
+                            }
+                        }
+                        // 加重罰のlogを取得
+                        if (log.Contains("に「確定判決：加重罰」の効果。"))
+                        {
+                            foreach (string name in DefMember.DefMemberList)
+                            {
+                                if (log.Contains(name))
+                                {
+                                    加重罰List.Add(name);
+                                    無印List.Remove(name);
+                                    break;
+                                }
+                            }
+                        }
+                        // 全て出そろったら判定を行う
+                        if (加重罰List.Count == 2 &&
+                            接近禁止命令List.Count == 2 &&
+                            接近強制命令List.Count == 2 &&
+                            無印List.Count == 2)
+                        {
+                            if (加重罰List.Contains(MyName))
+                            {
+                                ActGlobals.oFormActMain.TTS("ジャスの");
+                            }
+                            else if (接近禁止命令List.Contains(MyName))
+                            {
+
+                            }
+                            else if (接近強制命令List.Contains(MyName))
+                            {
+
+                            }
+                            else if (無印List.Contains(MyName))
+                            {
+
+                            }
+                        }
+                    }
+
+                }
 
 
+                // -------------------------- 時間停止を判定する --------------------------
 
                 // -------------------------- アビリティファイルの出力処理(いったん廃止) --------------------------
                 if (combatFlg && checkBox1_Abi_init.Checked)
@@ -850,7 +1178,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
         {
             try
             {
-                teropsABCD.Location = SettingPoint(textBox4_リフト_X_init, textBox2_リフト_Y_init);
+                teropshork.Location = SettingPoint(textBox4_リフト_X_init, textBox2_リフト_Y_init);
             }
             catch
             { }
@@ -860,7 +1188,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
         {
             try
             {
-                teropsABCD.Location = SettingPoint(textBox4_リフト_X_init, textBox2_リフト_Y_init);
+                teropshork.Location = SettingPoint(textBox4_リフト_X_init, textBox2_リフト_Y_init);
             }
             catch
             { }
@@ -870,22 +1198,9 @@ namespace AbsoluteAlexander_MaliktenderOnly
         {
             try
             {
-                BairituSettingABCD();
+                BairituSettinghork();
             }
             catch { }
-        }
-        private void BairituSettingABCD()
-        {
-            textBox3_リフト_init.Text = comboBox1_リフト_init.Text;
-
-            double bairitsu = double.Parse(textBox3_リフト_init.Text.ToString().Replace("倍", ""));
-
-            teropsABCD.Size = new Size((int)(terops123Size.Width * bairitsu), (int)(teropsABCDSize.Height * bairitsu));
-            teropsABCD.pictureBoxA.Size = new Size((int)(teropsABCDpictureBoxASize.Width * bairitsu), (int)(teropsABCDpictureBoxASize.Height * bairitsu));
-            teropsABCD.pictureBoxB.Size = new Size((int)(teropsABCDpictureBoxBSize.Width * bairitsu), (int)(teropsABCDpictureBoxBSize.Height * bairitsu));
-            teropsABCD.pictureBoxC.Size = new Size((int)(teropsABCDpictureBoxCSize.Width * bairitsu), (int)(teropsABCDpictureBoxCSize.Height * bairitsu));
-            teropsABCD.pictureBoxD.Size = new Size((int)(teropsABCDpictureBoxDSize.Width * bairitsu), (int)(teropsABCDpictureBoxDSize.Height * bairitsu));
-
         }
 
         private void button1_リフト_init_Click(object sender, EventArgs e)
@@ -896,21 +1211,87 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 int Y = textBox2_リフト_Y_init.Text == "" ? 100 : int.Parse(textBox2_リフト_Y_init.Text);
                 Point point = new Point(X, Y);
                 // 位置を指定してしまう
-                teropsABCD.Location = point;
-
-                teropsABCD.Show();
+                teropshork.Location = point;
+                teropshork.Show();
 
                 textBox1_リフト_init.Text = "表示確認終了";
                 button1_リフト_init.Text = "表示確認終了";
             }
             else
             {
-                teropsABCD.Hide();
+                teropshork.Hide();
 
                 textBox1_リフト_init.Text = "表示位置確認";
                 button1_リフト_init.Text = "表示位置確認";
             }
         }
+
+
+        private void BairituSettinghork()
+        {
+            listBox_倍率_text_init.Text = listBox_倍率_init.Text;
+
+            double bairitsu = double.Parse(listBox_倍率_text_init.Text.ToString().Replace("倍", ""));
+
+            teropshork.Size = new Size((int)(teropshorkSize.Width * bairitsu), (int)(teropshorkSize.Height * bairitsu));
+            teropshork.pictureBox北.Size = new Size((int)(terops123pictureBox1Size.Width * bairitsu), (int)(terops123pictureBox1Size.Height * bairitsu));
+            teropshork.pictureBox北東.Size = new Size((int)(terops123pictureBox2Size.Width * bairitsu), (int)(terops123pictureBox2Size.Height * bairitsu));
+            teropshork.pictureBox東.Size = new Size((int)(terops123pictureBox3Size.Width * bairitsu), (int)(terops123pictureBox3Size.Height * bairitsu));
+            teropshork.pictureBox南東.Size = new Size((int)(terops123pictureBox4Size.Width * bairitsu), (int)(terops123pictureBox4Size.Height * bairitsu));
+            teropshork.pictureBox南.Size = new Size((int)(terops123pictureBox5Size.Width * bairitsu), (int)(terops123pictureBox5Size.Height * bairitsu));
+            teropshork.pictureBox南西.Size = new Size((int)(terops123pictureBox6Size.Width * bairitsu), (int)(terops123pictureBox6Size.Height * bairitsu));
+            teropshork.pictureBox西.Size = new Size((int)(terops123pictureBox7Size.Width * bairitsu), (int)(terops123pictureBox7Size.Height * bairitsu));
+            teropshork.pictureBox北西.Size = new Size((int)(terops123pictureBox8Size.Width * bairitsu), (int)(terops123pictureBox8Size.Height * bairitsu));
+        }
+
+
+
+        private void button2_ロックフラクチャー_init_Click(object sender, EventArgs e)
+        {
+            if (textBox5_ロックフラクチャー_init.Text == "表示位置確認")
+            {
+                int X = textBox8_ロックフラクチャー_X_init.Text == "" ? 100 : int.Parse(textBox8_ロックフラクチャー_X_init.Text);
+                int Y = textBox6_ロックフラクチャー_Y_init.Text == "" ? 100 : int.Parse(textBox6_ロックフラクチャー_Y_init.Text);
+                Point point = new Point(X, Y);
+                // 位置を指定してしまう
+                teropTimeLine.Location = point;
+
+                teropTimeLine.Show();
+
+                textBox5_ロックフラクチャー_init.Text = "表示確認終了";
+                button2_ロックフラクチャー_init.Text = "表示確認終了";
+            }
+            else
+            {
+                teropTimeLine.Hide();
+
+                textBox5_ロックフラクチャー_init.Text = "表示位置確認";
+                button2_ロックフラクチャー_init.Text = "表示位置確認";
+            }
+        }
+
+
+        private void textBox8_ロックフラクチャー_X_init_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                teropTimeLine.Location = SettingPoint(textBox8_ロックフラクチャー_X_init, textBox6_ロックフラクチャー_Y_init);
+            }
+            catch
+            { }
+        }
+
+
+        private void textBox6_ロックフラクチャー_Y_init_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                teropTimeLine.Location = SettingPoint(textBox8_ロックフラクチャー_X_init, textBox6_ロックフラクチャー_Y_init);
+            }
+            catch
+            { }
+        }
+
 
         private void button2_認証_Click(object sender, EventArgs e)
         {

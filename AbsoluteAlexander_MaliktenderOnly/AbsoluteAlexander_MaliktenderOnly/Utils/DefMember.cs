@@ -12,8 +12,6 @@
             "Ashe Highwind",
             "Hina Spring",
             "Mame San",
-            "Sisya Mo",
-            "Sasi Mi",
             "C'c' Lemon"
         };
     }

@@ -62,6 +62,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TeropTimeLine.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TeropTimeLine.designer.cs">
+      <DependentUpon>TeropTimeLine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Teropshork.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Teropshork.designer.cs">
+      <DependentUpon>Teropshork.cs</DependentUpon>
+    </Compile>
     <Compile Include="Terops123.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +106,12 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TeropTimeLine.resx">
+      <DependentUpon>TeropTimeLine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Teropshork.resx">
+      <DependentUpon>Teropshork.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Terops123.resx">
       <DependentUpon>Terops123.cs</DependentUpon>
