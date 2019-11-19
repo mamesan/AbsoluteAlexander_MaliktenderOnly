@@ -51,7 +51,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
         // ジャスティス用
         private int CntPage = 0;
         private bool ジャスティス判定開始flg = false;
-        private  Dictionary<string, int> PTNamedic = new Dictionary<string, int>();
+        private Dictionary<string, int> PTNamedic = new Dictionary<string, int>();
 
 
         // 時間停止カンペ用フラグ
@@ -387,7 +387,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
             }
 
             PTNamedic = new Dictionary<string, int>();
-            PTNamedic.Add("Toki Tokinoa", 1 );
+            PTNamedic.Add("Toki Tokinoa", 1);
             PTNamedic.Add("Ray Willpolis", 1);
             PTNamedic.Add("Hina Spring", 2);
             PTNamedic.Add("Mame San", 2);
@@ -674,452 +674,440 @@ namespace AbsoluteAlexander_MaliktenderOnly
         /// <param name="logInfo"></param>
         private void OFormActMain_OnLogLineRead(bool isImport, LogLineEventArgs logInfo)
         {
-            // ユーザ認証されていない場合は、処理を行わせないように処理を行う
-            if (userAuthFlg)
+            try
             {
-                // 18文字以下のログは読み捨てる
-                // なぜならば、タイムスタンプ＋ログタイプのみのログだから
-                if (logInfo.logLine.Length <= 18)
+
+
+                // ユーザ認証されていない場合は、処理を行わせないように処理を行う
+                if (userAuthFlg)
                 {
-                    return;
-                }
-
-                // -------------------------- 戦闘開始時の処理 --------------------------
-                // 戦闘開始のお知らせ
-                if (combatFlg && !initButtoleFlg)
-                {
-                    // 戦闘前の初期処理
-                    battleInitSetting();
-                }
-                // -------------------------- 戦闘開始時の処理 --------------------------
-
-
-
-
-                // -------------------------- 戦闘終了時の処理 --------------------------
-                // 戦闘終了時
-                if (!combatFlg && initButtoleFlg)
-                {
-                    // 戦闘終了時の共通初期化処理
-                    battoleEndInitSetting();
-                }
-                // -------------------------- 戦闘終了時の処理 --------------------------
-
-
-                // -------------------------- リミッターカットを判定する --------------------------
-                if (checkBoxrimita_check_init.Checked)
-                {
-                    try
+                    // 18文字以下のログは読み捨てる
+                    // なぜならば、タイムスタンプ＋ログタイプのみのログだから
+                    if (logInfo.logLine.Length <= 18)
                     {
+                        return;
+                    }
 
-                        if (logInfo.logLine.Contains("クルーズチェイサー:コードネーム「ブラスティー」！ 階差閉宇宙ヲ、脅カス敵ヲ発見……撃滅スル！"))
-                        {
-                            リミカ判定開始flg = true;
-                        }
+                    // -------------------------- 戦闘開始時の処理 --------------------------
+                    // 戦闘開始のお知らせ
+                    if (combatFlg && !initButtoleFlg)
+                    {
+                        // 戦闘前の初期処理
+                        battleInitSetting();
+                    }
+                    // -------------------------- 戦闘開始時の処理 --------------------------
 
-                        if (リミカ判定開始flg)
+
+
+
+                    // -------------------------- 戦闘終了時の処理 --------------------------
+                    // 戦闘終了時
+                    if (!combatFlg && initButtoleFlg)
+                    {
+                        // 戦闘終了時の共通初期化処理
+                        battoleEndInitSetting();
+                    }
+                    // -------------------------- 戦闘終了時の処理 --------------------------
+
+
+                    // -------------------------- リミッターカットを判定する --------------------------
+                    if (checkBoxrimita_check_init.Checked)
+                    {
+                        try
                         {
-                            if (logInfo.logLine.Contains(MyName) &&
-                                リミカMyNumber == 0)
+
+                            if (logInfo.logLine.Contains("クルーズチェイサー:コードネーム「ブラスティー」！ 階差閉宇宙ヲ、脅カス敵ヲ発見……撃滅スル！"))
                             {
-                                foreach (KeyValuePair<int, string> kvp in リミッターカットdic)
-                                {
-                                    if (logInfo.logLine.Contains(kvp.Value))
-                                    {
-                                        リミカMyNumber = kvp.Key;
-                                        //string TTSstr = "";
-                                        //terops123.Show();
-                                        /*
-                                        switch (リミカMyNumber)
-                                        {
-                                            case 1:
-                                                terops123.pictureBox1.Visible = true;
-                                                TTSstr = "みなみ";
-                                                break;
-                                            case 2:
-                                                terops123.pictureBox2.Visible = true;
-                                                TTSstr = "きた";
-                                                break;
-                                            case 3:
-                                                terops123.pictureBox3.Visible = true;
-                                                TTSstr = "みなみ";
-                                                break;
-                                            case 4:
-                                                terops123.pictureBox4.Visible = true;
-                                                TTSstr = "きた";
-                                                break;
-                                            case 5:
-                                                terops123.pictureBox5.Visible = true;
-                                                TTSstr = "みなみ";
-                                                break;
-                                            case 6:
-                                                terops123.pictureBox6.Visible = true;
-                                                TTSstr = "きた";
-                                                break;
-                                            case 7:
-                                                terops123.pictureBox7.Visible = true;
-                                                TTSstr = "みなみ";
-                                                break;
-                                            case 8:
-                                                terops123.pictureBox8.Visible = true;
-                                                TTSstr = "きた";
-                                                break;
-                                            default:
-                                                リミカMyNumber = 0;
-                                                break;
-                                        }
-                                        */
-                                        //ActGlobals.oFormActMain.TTS(リミカMyNumber + "番、" + TTSstr);
-                                        //terops123.Show();
-                                        break;
-                                    }
-                                }
+                                リミカ判定開始flg = true;
                             }
 
-                            // ホークブラスターを確認する
-                            if (リミカMyNumber != 0)
+                            if (リミカ判定開始flg)
                             {
-                                // リミカ用のmobListを取得する
-                                List<Combatant> リミカMobList = ActHelper.GetMobCombatantList();
-                                List<Combatant> newList = new List<Combatant>();
-                                foreach (Combatant combatant in リミカMobList)
+                                if (logInfo.logLine.Contains(MyName) &&
+                                    リミカMyNumber == 0)
                                 {
-                                    if (combatant.Name.Equals("クルーズチェイサー")
-                                        && combatant.CurrentHP == 44)
+
+                                    foreach (KeyValuePair<int, string> kvp in リミッターカットdic)
                                     {
-                                        newList.Add(combatant);
+                                        if (logInfo.logLine.Contains(kvp.Value))
+                                        {
+                                            リミカMyNumber = kvp.Key;
+                                            //string TTSstr = "";
+                                            //terops123.Show();
+                                            /*
+                                            switch (リミカMyNumber)
+                                            {
+                                                case 1:
+                                                    terops123.pictureBox1.Visible = true;
+                                                    TTSstr = "みなみ";
+                                                    break;
+                                                case 2:
+                                                    terops123.pictureBox2.Visible = true;
+                                                    TTSstr = "きた";
+                                                    break;
+                                                case 3:
+                                                    terops123.pictureBox3.Visible = true;
+                                                    TTSstr = "みなみ";
+                                                    break;
+                                                case 4:
+                                                    terops123.pictureBox4.Visible = true;
+                                                    TTSstr = "きた";
+                                                    break;
+                                                case 5:
+                                                    terops123.pictureBox5.Visible = true;
+                                                    TTSstr = "みなみ";
+                                                    break;
+                                                case 6:
+                                                    terops123.pictureBox6.Visible = true;
+                                                    TTSstr = "きた";
+                                                    break;
+                                                case 7:
+                                                    terops123.pictureBox7.Visible = true;
+                                                    TTSstr = "みなみ";
+                                                    break;
+                                                case 8:
+                                                    terops123.pictureBox8.Visible = true;
+                                                    TTSstr = "きた";
+                                                    break;
+                                                default:
+                                                    リミカMyNumber = 0;
+                                                    break;
+                                            }
+                                            */
+                                            //ActGlobals.oFormActMain.TTS(リミカMyNumber + "番、" + TTSstr);
+                                            //terops123.Show();
+                                            break;
+                                        }
                                     }
                                 }
 
-                                foreach (KeyValuePair<int, Dictionary<string, string>> kvp in チェイサー座標dic)
+                                // ホークブラスターを確認する
+                                if (リミカMyNumber != 0)
                                 {
-                                    foreach (Combatant combatant in newList)
-                                    {
-                                        foreach (KeyValuePair<string, string> pair in kvp.Value)
-                                        {
-                                            string X = combatant.PosX.ToString().Substring(0, 3);
-                                            string Y = combatant.PosY.ToString().Substring(0, 3);
+                                    // リミカ用のmobListを取得する
+                                    List<Combatant> リミカMobList = ActHelper.GetMobCombatantList();
+                                    FileOutPut.GetMobInfo("リミカ確認用", textBoxlocalPath_init.Text);
+                                    List<Combatant> newList = new List<Combatant>();
 
-                                            if (pair.Key.Equals(X) && pair.Value.Equals(Y))
+
+                                    foreach (Combatant combatant in リミカMobList)
+                                    {
+                                        if ("クルーズチェイサー".Equals(combatant.Name)
+                                            && combatant.CurrentHP == 44)
+                                        {
+                                            newList.Add(combatant);
+                                        }
+                                    }
+
+                                    foreach (KeyValuePair<int, Dictionary<string, string>> kvp in チェイサー座標dic)
+                                    {
+                                        foreach (Combatant combatant in newList)
+                                        {
+                                            foreach (KeyValuePair<string, string> pair in kvp.Value)
                                             {
-                                                string TTSstr = "";
-                                                int num = kvp.Key;
-                                                teropshork.Show();
-                                                switch (num)
+                                                string X = combatant.PosX.ToString().Substring(0, 3);
+                                                string Y = combatant.PosY.ToString().Substring(0, 3);
+
+                                                if (pair.Key.Equals(X) && pair.Value.Equals(Y))
                                                 {
-                                                    // 1、5
-                                                    case 1:
-                                                        if (リミカMyNumber == 1)
-                                                        {
-                                                            teropshork.pictureBox北.Visible = true;
-                                                            TTSstr = "えー";
-                                                        }
-                                                        else
-                                                        {
-                                                            teropshork.pictureBox南.Visible = true;
-                                                            TTSstr = "しー";
-                                                        }
-                                                        break;
-                                                    // 2、6
-                                                    case 2:
-                                                        if (リミカMyNumber == 2)
-                                                        {
-                                                            teropshork.pictureBox北東.Visible = true;
-                                                            TTSstr = "えーびー";
-                                                        }
-                                                        else
-                                                        {
-                                                            teropshork.pictureBox南西.Visible = true;
-                                                            TTSstr = "しーでー";
-                                                        }
-                                                        break;
-                                                    // 3、7
-                                                    case 3:
-                                                        if (リミカMyNumber == 3)
-                                                        {
-                                                            teropshork.pictureBox東.Visible = true;
-                                                            TTSstr = "びー";
-                                                        }
-                                                        else
-                                                        {
-                                                            teropshork.pictureBox西.Visible = true;
-                                                            TTSstr = "でー";
-                                                        }
-                                                        break;
-                                                    // 4、8 
-                                                    case 4:
-                                                        if (リミカMyNumber == 4)
-                                                        {
-                                                            teropshork.pictureBox南東.Visible = true;
-                                                            TTSstr = "びーしー";
-                                                        }
-                                                        else
-                                                        {
-                                                            teropshork.pictureBox北西.Visible = true;
-                                                            TTSstr = "えーでー";
-                                                        }
-                                                        break;
-                                                    default:
-                                                        break;
+                                                    string TTSstr = "";
+                                                    int num = kvp.Key;
+                                                    teropshork.Show();
+                                                    switch (num)
+                                                    {
+                                                        // 1、5
+                                                        case 1:
+                                                            if (リミカMyNumber == 3 || リミカMyNumber == 4 || リミカMyNumber == 7 || リミカMyNumber == 8)
+                                                            {
+                                                                teropshork.pictureBox北.Visible = true;
+                                                                TTSstr = "えー";
+                                                            }
+                                                            else
+                                                            {
+                                                                teropshork.pictureBox南.Visible = true;
+                                                                TTSstr = "しー";
+                                                            }
+                                                            break;
+                                                        // 2、6
+                                                        case 2:
+                                                            if (リミカMyNumber == 3 || リミカMyNumber == 4 || リミカMyNumber == 7 || リミカMyNumber == 8)
+                                                            {
+                                                                teropshork.pictureBox北東.Visible = true;
+                                                                TTSstr = "えーびー";
+                                                            }
+                                                            else
+                                                            {
+                                                                teropshork.pictureBox南西.Visible = true;
+                                                                TTSstr = "しーでー";
+                                                            }
+                                                            break;
+                                                        // 3、7
+                                                        case 3:
+                                                            if (リミカMyNumber == 3 || リミカMyNumber == 4 || リミカMyNumber == 7 || リミカMyNumber == 8)
+                                                            {
+                                                                teropshork.pictureBox東.Visible = true;
+                                                                TTSstr = "びー";
+                                                            }
+                                                            else
+                                                            {
+                                                                teropshork.pictureBox西.Visible = true;
+                                                                TTSstr = "でー";
+                                                            }
+                                                            break;
+                                                        // 4、8 
+                                                        case 4:
+                                                            if (リミカMyNumber == 3 || リミカMyNumber == 4 || リミカMyNumber == 7 || リミカMyNumber == 8)
+                                                            {
+                                                                teropshork.pictureBox南東.Visible = true;
+                                                                TTSstr = "びーしー";
+                                                            }
+                                                            else
+                                                            {
+                                                                teropshork.pictureBox北西.Visible = true;
+                                                                TTSstr = "えーでー";
+                                                            }
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                    teropshork.Show();
+                                                    ActGlobals.oFormActMain.TTS(TTSstr);
+                                                    break;
                                                 }
-                                                teropshork.Show();
-                                                ActGlobals.oFormActMain.TTS(TTSstr);
-                                                break;
                                             }
                                         }
                                     }
                                 }
-                            }
-
-                            /*
-                            if (logInfo.logLine.Contains("クルーズチェイサー:4830:ホークブラスター"))
-                            {
-                                if (ホークブラスターlog回数 == 2 ||
-                                    ホークブラスターlog回数 == 4 ||
-                                    ホークブラスターlog回数 == 6 ||
-                                    ホークブラスターlog回数 == 8 ||
-                                    ホークブラスターlog回数 == 10 ||
-                                    ホークブラスターlog回数 == 12 ||
-                                    ホークブラスターlog回数 == 14 ||
-                                    ホークブラスターlog回数 == 16 ||
-                                    ホークブラスターlog回数 == 18 ||
-                                    ホークブラスターlog回数 == 20)
+                                // 表示を消す
+                                if (logInfo.logLine.Contains("ブルートジャスティスの「ジャスティスキック」"))
                                 {
-                                    ActGlobals.oFormActMain.TTS(ホークブラスター回数.ToString());
-                                    ホークブラスター回数++;
+                                    リミカ判定開始flg = false;
+                                    リミカMyNumber = 0;
+                                    InitForm();
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            // 全てのExceptionを握りつぶす
+                            //　処理中断
+                            リミカ判定開始flg = false;
+                            リミカMyNumber = 0;
+                            InitForm();
+                            OutLog.WriteTraceLog(e.Message, textBoxlocalPath_init.Text, dateStr + "_errorリミカ処理");
+                        }
+                    }
+                    // -------------------------- リミッターカットを判定する --------------------------
 
-                                    if (ホークブラスター回数 == 5)
+                    // -------------------------- 時間停止を判定する --------------------------
+                    if (checkBox2_kanpe_init.Checked)
+                    {
+                        if (logInfo.logLine.Contains("アレキサンダー・プライム:我はアレキサンダー……機械仕掛けの神なり……"))
+                        {
+                            時間停止kanpeflg = true;
+                        }
+                        // 時間停止の判定を行う
+                        if (時間停止kanpeflg)
+                        {
+                            string log = logInfo.logLine;
+                            // 接近禁止のlogを取得
+                            if (log.Contains("に「確定判決：接近禁止命令」の効果。"))
+                            {
+                                foreach (string name in DefMember.DefMemberList)
+                                {
+                                    if (log.Contains(name))
                                     {
-                                        ホークブラスター回数 = 1;
+                                        接近禁止命令List.Add(name);
+                                        無印List.Remove(name);
+                                        break;
                                     }
                                 }
-                                ホークブラスターlog回数++;
                             }
-                            */
-                            // 表示を消す
-                            if (logInfo.logLine.Contains("ブルートジャスティスの「ジャスティスキック」"))
+                            // 接近強制命令のlogを取得
+                            if (log.Contains("に「確定判決：接近強制命令」の効果。"))
                             {
-                                リミカ判定開始flg = false;
-                                リミカMyNumber = 0;
-                                InitForm();
+                                foreach (string name in DefMember.DefMemberList)
+                                {
+                                    if (log.Contains(name))
+                                    {
+                                        接近強制命令List.Add(name);
+                                        無印List.Remove(name);
+                                        break;
+                                    }
+                                }
+                            }
+                            // 加重罰のlogを取得
+                            if (log.Contains("に「確定判決：加重罰」の効果。"))
+                            {
+                                foreach (string name in DefMember.DefMemberList)
+                                {
+                                    if (log.Contains(name))
+                                    {
+                                        加重罰List.Add(name);
+                                        無印List.Remove(name);
+                                        break;
+                                    }
+                                }
+                            }
+                            // 全て出そろったら判定を行う
+                            if (加重罰List.Count == 2 &&
+                                接近禁止命令List.Count == 2 &&
+                                接近強制命令List.Count == 2 &&
+                                無印List.Count == 2)
+                            {
+                                if (加重罰List.Contains(MyName))
+                                {
+                                    ActGlobals.oFormActMain.TTS("ジャスティスの外周に立つ");
+                                }
+                                else if (接近禁止命令List.Contains(MyName))
+                                {
+                                    // チェック
+                                    // DPSの場合
+                                    if (PTNamedic[MyName] == 3)
+                                    {
+                                        ActGlobals.oFormActMain.TTS("みぎがわにいく");
+                                    }
+                                    else
+                                    {
+                                        ActGlobals.oFormActMain.TTS("ひだりがわにいく");
+                                    }
+                                }
+                                else if (接近強制命令List.Contains(MyName))
+                                {
+                                    // チェック
+                                    // DPSの場合
+                                    if (PTNamedic[MyName] == 3)
+                                    {
+                                        ActGlobals.oFormActMain.TTS("みぎぼすのしたがわ");
+                                    }
+                                    else
+                                    {
+                                        ActGlobals.oFormActMain.TTS("みぎぼすのうえがわ");
+                                    }
+                                }
+                                else if (無印List.Contains(MyName))
+                                {
+                                    // チェック
+                                    // DPSの場合
+                                    if (PTNamedic[MyName] == 3)
+                                    {
+                                        ActGlobals.oFormActMain.TTS("ひだりぼすのうえがわ");
+                                    }
+                                    else
+                                    {
+                                        ActGlobals.oFormActMain.TTS("ひだりぼすのしたがわ");
+                                    }
+
+                                }
                             }
                         }
                     }
-                    catch (Exception e)
-                    {
-                        // 全てのExceptionを握りつぶす
-                        //　処理中断
-                        リミカ判定開始flg = false;
-                        リミカMyNumber = 0;
-                        InitForm();
-                    }
-                }
-                // -------------------------- リミッターカットを判定する --------------------------
+                    // -------------------------- 時間停止を判定する --------------------------
 
-                // -------------------------- 時間停止を判定する --------------------------
-                if (checkBox2_kanpe_init.Checked)
-                {
-                    if (logInfo.logLine.Contains("アレキサンダー・プライム:我はアレキサンダー……機械仕掛けの神なり……"))
-                    {
-                        時間停止kanpeflg = true;
-                    }
-                    // 時間停止の判定を行う
-                    if (時間停止kanpeflg)
+                    // -------------------------- アビリティファイルの出力処理(いったん廃止) --------------------------
+                    if (combatFlg && checkBox1_Abi_init.Checked)
                     {
                         string log = logInfo.logLine;
-                        // 接近禁止のlogを取得
-                        if (log.Contains("に「確定判決：接近禁止命令」の効果。"))
+                        // 味方の名前+の「が付いている場合、処理にかける
+                        foreach (Combatant combatant in PtList)
                         {
-                            foreach (string name in DefMember.DefMemberList)
+                            if (log.Contains(combatant.Name) && log.Contains("の「") && !log.Contains("が切れた"))
                             {
-                                if (log.Contains(name))
+                                foreach (string skil in AbiList)
                                 {
-                                    接近禁止命令List.Add(name);
-                                    無印List.Remove(name);
-                                    break;
+                                    // 味方のアビlogの場合、logを出力する
+                                    if (log.Contains(combatant.Name) & log.Contains("の「" + skil + "」"))
+                                    {
+                                        OutLog.WriteTraceLog(time + " " + combatant.Name + "の「" + skil + "」", textBoxlocalPath_init.Text, dateStr + "_AbilityTimeLine");
+                                        break;
+                                    }
                                 }
-                            }
-                        }
-                        // 接近強制命令のlogを取得
-                        if (log.Contains("に「確定判決：接近強制命令」の効果。"))
-                        {
-                            foreach (string name in DefMember.DefMemberList)
-                            {
-                                if (log.Contains(name))
-                                {
-                                    接近強制命令List.Add(name);
-                                    無印List.Remove(name);
-                                    break;
-                                }
-                            }
-                        }
-                        // 加重罰のlogを取得
-                        if (log.Contains("に「確定判決：加重罰」の効果。"))
-                        {
-                            foreach (string name in DefMember.DefMemberList)
-                            {
-                                if (log.Contains(name))
-                                {
-                                    加重罰List.Add(name);
-                                    無印List.Remove(name);
-                                    break;
-                                }
-                            }
-                        }
-                        // 全て出そろったら判定を行う
-                        if (加重罰List.Count == 2 &&
-                            接近禁止命令List.Count == 2 &&
-                            接近強制命令List.Count == 2 &&
-                            無印List.Count == 2)
-                        {
-                            if (加重罰List.Contains(MyName))
-                            {
-                                ActGlobals.oFormActMain.TTS("ジャスティスの外周に立つ");
-                            }
-                            else if (接近禁止命令List.Contains(MyName))
-                            {
-                                // チェック
-                                // DPSの場合
-                                if (PTNamedic[MyName] == 3)
-                                {
-                                    ActGlobals.oFormActMain.TTS("みぎがわにいく");
-                                }else
-                                {
-                                    ActGlobals.oFormActMain.TTS("ひだりがわにいく");
-                                }
-                            }
-                            else if (接近強制命令List.Contains(MyName))
-                            {
-                                // チェック
-                                // DPSの場合
-                                if (PTNamedic[MyName] == 3)
-                                {
-                                ActGlobals.oFormActMain.TTS("みぎぼすのしたがわ");
-                                }
-                                else
-                                {
-                                ActGlobals.oFormActMain.TTS("みぎぼすのうえがわ");
-                                }
-                            }
-                            else if (無印List.Contains(MyName))
-                            {
-                                // チェック
-                                // DPSの場合
-                                if (PTNamedic[MyName] == 3)
-                                {
-                                 ActGlobals.oFormActMain.TTS("ひだりぼすのうえがわ");
-                                }
-                                else
-                                {
-                                ActGlobals.oFormActMain.TTS("ひだりぼすのしたがわ");
-                                }
-
                             }
                         }
                     }
-                }
-                // -------------------------- 時間停止を判定する --------------------------
+                    // -------------------------- アビリティファイルの出力処理 --------------------------
 
-                // -------------------------- アビリティファイルの出力処理(いったん廃止) --------------------------
-                if (combatFlg && checkBox1_Abi_init.Checked)
-                {
-                    string log = logInfo.logLine;
-                    // 味方の名前+の「が付いている場合、処理にかける
-                    foreach (Combatant combatant in PtList)
+
+                    // -------------------------- MobTimeLineファイルの出力処理 --------------------------
+                    if (combatFlg && checkBox1_TimeLine_init.Checked)
                     {
-                        if (log.Contains(combatant.Name) && log.Contains("の「") && !log.Contains("が切れた"))
+                        string log = logInfo.logLine;
+                        // 技名のみ取得するようにする
+                        foreach (string mobName in Moblist)
                         {
-                            foreach (string skil in AbiList)
+                            // 取得するlogを厳選する
+                            if (log.Contains(mobName)
+                            && (log.Contains("」の構え。")
+                            || log.Contains(":Unknown")
+                            || log.Contains("」を唱えた。")))
                             {
-                                // 味方のアビlogの場合、logを出力する
-                                if (log.Contains(combatant.Name) & log.Contains("の「" + skil + "」"))
+                                // 技名のみ取得するようにする
+                                // Unknownは、前回のログと重複していなければ全てタイムラインに記載をする
+                                if (log.Length - 18 == 0)
                                 {
-                                    OutLog.WriteTraceLog(time + " " + combatant.Name + "の「" + skil + "」", textBoxlocalPath_init.Text, dateStr + "_AbilityTimeLine");
+                                    break;
+                                }
+                                string tmp = log.Substring(18, log.Length - 18);
+
+                                string str = CreatetimeLine(tmp);
+                                // logが、構えの場合sync を行う
+                                if (log.Contains("」の構え。"))
+                                {
+                                    str += " sync /" + mobName + "は" + CreatetimeLine_wName(tmp) + "の構え。/ window 5,5";
+                                }
+                                else if (log.Contains("」を唱えた。"))
+                                {
+                                    str += " sync /" + mobName + "は" + CreatetimeLine_wName(tmp) + "を唱えた。/ window 5,5";
+                                }
+                                // 10文字以下の場合は書き込まない
+                                if (str.Length > 15)
+                                {
+                                    OutLog.WriteTraceLog(str, textBoxlocalPath_init.Text, dateStr + "_MobTimeLine");
                                     break;
                                 }
                             }
                         }
                     }
-                }
-                // -------------------------- アビリティファイルの出力処理 --------------------------
+                    // -------------------------- MobTimeLineファイルの出力処理 --------------------------
 
 
-                // -------------------------- MobTimeLineファイルの出力処理 --------------------------
-                if (combatFlg && checkBox1_TimeLine_init.Checked)
-                {
-                    string log = logInfo.logLine;
-                    // 技名のみ取得するようにする
-                    foreach (string mobName in Moblist)
+                    // -------------------------- 以下管理者領域 --------------------------
+                    if (checkBox_kanrisya_init.Checked)
                     {
-                        // 取得するlogを厳選する
-                        if (log.Contains(mobName)
-                        && (log.Contains("」の構え。")
-                        || log.Contains(":Unknown")
-                        || log.Contains("」を唱えた。")))
+                        // -------------------------- log出力の処理開始 --------------------------
+                        // log出力フラグ用の処理
+                        // 戦闘中のlog以外は取得しない(いったん廃止)
+                        if (logoutFlg && combatFlg)
                         {
-                            // 技名のみ取得するようにする
-                            // Unknownは、前回のログと重複していなければ全てタイムラインに記載をする
-                            if (log.Length - 18 == 0)
-                            {
-                                break;
-                            }
-                            string tmp = log.Substring(18, log.Length - 18);
-
-                            string str = CreatetimeLine(tmp);
-                            // logが、構えの場合sync を行う
-                            if (log.Contains("」の構え。"))
-                            {
-                                str += " sync /" + mobName + "は" + CreatetimeLine_wName(tmp) + "の構え。/ window 5,5";
-                            }
-                            else if (log.Contains("」を唱えた。"))
-                            {
-                                str += " sync /" + mobName + "は" + CreatetimeLine_wName(tmp) + "を唱えた。/ window 5,5";
-                            }
-                            // 10文字以下の場合は書き込まない
-                            if (str.Length > 15)
-                            {
-                                OutLog.WriteTraceLog(str, textBoxlocalPath_init.Text, dateStr + "_MobTimeLine");
-                                break;
-                            }
+                            OutLog.WriteTraceLog(logInfo.logLine, textBoxlocalPath_init.Text, dateStr + "_battle");
                         }
-                    }
-                }
-                // -------------------------- MobTimeLineファイルの出力処理 --------------------------
+                        // -------------------------- log出力の処理終了 --------------------------
 
-
-                // -------------------------- 以下管理者領域 --------------------------
-                if (checkBox_kanrisya_init.Checked)
-                {
-                    // -------------------------- log出力の処理開始 --------------------------
-                    // log出力フラグ用の処理
-                    // 戦闘中のlog以外は取得しない(いったん廃止)
-                    if (logoutFlg && combatFlg)
-                    {
-                        OutLog.WriteTraceLog(logInfo.logLine, textBoxlocalPath_init.Text, dateStr + "_battle");
-                    }
-                    // -------------------------- log出力の処理終了 --------------------------
-
-                    // -------------------------- 座標取得の処理開始 --------------------------
-                    // 対象のログが流れた際は、座標を取得する（座標取得はデフォルト設定）
-                    if (!string.IsNullOrWhiteSpace(textBoxlocalPath_init.Text))
-                    {
-                        foreach (string scanstr in scanList)
+                        // -------------------------- 座標取得の処理開始 --------------------------
+                        // 対象のログが流れた際は、座標を取得する（座標取得はデフォルト設定）
+                        if (!string.IsNullOrWhiteSpace(textBoxlocalPath_init.Text))
                         {
-                            if (logInfo.logLine.Contains(scanstr)) FileOutPut.GetMobInfo(scanstr, textBoxlocalPath_init.Text);
+                            foreach (string scanstr in scanList)
+                            {
+                                if (logInfo.logLine.Contains(scanstr)) FileOutPut.GetMobInfo(scanstr, textBoxlocalPath_init.Text);
+                            }
+                            if (logInfo.logLine.Contains("座標取得!")) FileOutPut.GetMobInfo("座標取得", textBoxlocalPath_init.Text);
                         }
-                        if (logInfo.logLine.Contains("座標取得!")) FileOutPut.GetMobInfo("座標取得", textBoxlocalPath_init.Text);
-                    }
-                    // -------------------------- 座標取得の処理終了 --------------------------
+                        // -------------------------- 座標取得の処理終了 --------------------------
 
-                    // -------------------------- 座標取得の処理テキストボックス運用開始 --------------------------
-                    // 空なら何もしない
-                    if (!string.IsNullOrWhiteSpace(textBox_only_init.Text)) textBox1_only_cond.Text = FileOutPut.createMobInfoString(FileOutPut.createCombartList());
-                    // -------------------------- 座標取得の処理テキストボックス運用終了 --------------------------
+                        // -------------------------- 座標取得の処理テキストボックス運用開始 --------------------------
+                        // 空なら何もしない
+                        if (!string.IsNullOrWhiteSpace(textBox_only_init.Text)) textBox1_only_cond.Text = FileOutPut.createMobInfoString(FileOutPut.createCombartList());
+                        // -------------------------- 座標取得の処理テキストボックス運用終了 --------------------------
+                    }
+                    // -------------------------- 以下管理者領域 --------------------------
                 }
-                // -------------------------- 以下管理者領域 --------------------------
+            }
+            catch (Exception e)
+            {
+                OutLog.WriteTraceLog(e.Message, textBoxlocalPath_init.Text, dateStr + "_errorAlllog");
             }
         }
-
 
 
 
