@@ -51,6 +51,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
         // ジャスティス用
         private int CntPage = 0;
         private bool ジャスティス判定開始flg = false;
+        private  Dictionary<string, int> PTNamedic = new Dictionary<string, int>();
+
 
         // 時間停止カンペ用フラグ
         private bool 時間停止kanpeflg = false;
@@ -383,6 +385,18 @@ namespace AbsoluteAlexander_MaliktenderOnly
             {
                 無印List.Add(name);
             }
+
+            PTNamedic = new Dictionary<string, int>();
+            PTNamedic.Add("Toki Tokinoa", 1 );
+            PTNamedic.Add("Ray Willpolis", 1);
+            PTNamedic.Add("Hina Spring", 2);
+            PTNamedic.Add("Mame San", 2);
+            PTNamedic.Add("Ren Aizen", 3);
+            PTNamedic.Add("Fifflearn Cook", 3);
+            PTNamedic.Add("Ashe Highwind", 3);
+            PTNamedic.Add("C'c' Lemon", 3);
+
+
 
             // フォームの初期処理
             InitForm();
@@ -942,26 +956,50 @@ namespace AbsoluteAlexander_MaliktenderOnly
                         {
                             if (加重罰List.Contains(MyName))
                             {
-                                ActGlobals.oFormActMain.TTS("ジャスの");
+                                ActGlobals.oFormActMain.TTS("ジャスティスの外周に立つ");
                             }
                             else if (接近禁止命令List.Contains(MyName))
                             {
-
+                                // チェック
+                                // DPSの場合
+                                if (PTNamedic[MyName] == 3)
+                                {
+                                    ActGlobals.oFormActMain.TTS("みぎがわにいく");
+                                }else
+                                {
+                                    ActGlobals.oFormActMain.TTS("ひだりがわにいく");
+                                }
                             }
                             else if (接近強制命令List.Contains(MyName))
                             {
-
+                                // チェック
+                                // DPSの場合
+                                if (PTNamedic[MyName] == 3)
+                                {
+                                ActGlobals.oFormActMain.TTS("みぎぼすのしたがわ");
+                                }
+                                else
+                                {
+                                ActGlobals.oFormActMain.TTS("みぎぼすのうえがわ");
+                                }
                             }
                             else if (無印List.Contains(MyName))
                             {
+                                // チェック
+                                // DPSの場合
+                                if (PTNamedic[MyName] == 3)
+                                {
+                                 ActGlobals.oFormActMain.TTS("ひだりぼすのうえがわ");
+                                }
+                                else
+                                {
+                                ActGlobals.oFormActMain.TTS("ひだりぼすのしたがわ");
+                                }
 
                             }
                         }
                     }
-
                 }
-
-
                 // -------------------------- 時間停止を判定する --------------------------
 
                 // -------------------------- アビリティファイルの出力処理(いったん廃止) --------------------------
