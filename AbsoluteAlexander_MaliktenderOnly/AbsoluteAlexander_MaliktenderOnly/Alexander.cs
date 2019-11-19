@@ -345,14 +345,14 @@ namespace AbsoluteAlexander_MaliktenderOnly
             ホークブラスター回数 = 1;
 
             リミッターカットdic = new Dictionary<int, string>();
-            リミッターカットdic.Add(1, ":004F:");
-            リミッターカットdic.Add(2, ":0050:");
-            リミッターカットdic.Add(3, ":0051:");
-            リミッターカットdic.Add(4, ":0052:");
-            リミッターカットdic.Add(5, ":0053:");
-            リミッターカットdic.Add(6, ":0054:");
-            リミッターカットdic.Add(7, ":0055:");
-            リミッターカットdic.Add(8, ":0056:");
+            リミッターカットdic.Add(1, ":004F:0000:");
+            リミッターカットdic.Add(2, ":0050:0000:");
+            リミッターカットdic.Add(3, ":0051:0000:");
+            リミッターカットdic.Add(4, ":0052:0000:");
+            リミッターカットdic.Add(5, ":0053:0000:");
+            リミッターカットdic.Add(6, ":0054:0000:");
+            リミッターカットdic.Add(7, ":0055:0000:");
+            リミッターカットdic.Add(8, ":0056:0000:");
 
             チェイサー座標dic = new Dictionary<int, Dictionary<string, string>>();
             Dictionary<string, string> チェイサー座標詳細dic = new Dictionary<string, string>();
@@ -716,15 +716,17 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
                     if (リミカ判定開始flg)
                     {
-                        if (logInfo.logLine.Contains(MyName) && リミカMyNumber == 0 && checkBoxrimita_check_init.Checked)
+                        if (logInfo.logLine.Contains(MyName) &&
+                            リミカMyNumber == 0)
                         {
                             foreach (KeyValuePair<int, string> kvp in リミッターカットdic)
                             {
                                 if (logInfo.logLine.Contains(kvp.Value))
                                 {
                                     リミカMyNumber = kvp.Key;
-                                    string TTSstr = "";
-                                    terops123.Show();
+                                    //string TTSstr = "";
+                                    //terops123.Show();
+                                    /*
                                     switch (リミカMyNumber)
                                     {
                                         case 1:
@@ -763,15 +765,16 @@ namespace AbsoluteAlexander_MaliktenderOnly
                                             リミカMyNumber = 0;
                                             break;
                                     }
-                                    ActGlobals.oFormActMain.TTS(リミカMyNumber + "番、" + TTSstr);
-                                    terops123.Show();
+                                    */
+                                    //ActGlobals.oFormActMain.TTS(リミカMyNumber + "番、" + TTSstr);
+                                    //terops123.Show();
                                     break;
                                 }
                             }
                         }
 
                         // ホークブラスターを確認する
-                        if (リミカMyNumber != 0 && checkBox1_hork_init.Checked)
+                        if (リミカMyNumber != 0)
                         {
                             // リミカ用のmobListを取得する
                             List<Combatant> リミカMobList = ActHelper.GetMobCombatantList();
@@ -865,6 +868,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
                             }
                         }
 
+                        /*
                         if (logInfo.logLine.Contains("クルーズチェイサー:4830:ホークブラスター"))
                         {
                             if (ホークブラスターlog回数 == 2 ||
@@ -888,11 +892,13 @@ namespace AbsoluteAlexander_MaliktenderOnly
                             }
                             ホークブラスターlog回数++;
                         }
+                        */
                         // 表示を消す
                         if (logInfo.logLine.Contains("ブルートジャスティスの「ジャスティスキック」"))
                         {
-                            InitForm();
                             リミカ判定開始flg = false;
+                            リミカMyNumber = 0;
+                            InitForm();
                         }
                     }
                 }
