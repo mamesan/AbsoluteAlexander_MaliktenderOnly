@@ -709,197 +709,209 @@ namespace AbsoluteAlexander_MaliktenderOnly
                 // -------------------------- リミッターカットを判定する --------------------------
                 if (checkBoxrimita_check_init.Checked)
                 {
-                    if (logInfo.logLine.Contains("クルーズチェイサー:コードネーム「ブラスティー」！ 階差閉宇宙ヲ、脅カス敵ヲ発見……撃滅スル！"))
+                    try
                     {
-                        リミカ判定開始flg = true;
-                    }
 
-                    if (リミカ判定開始flg)
-                    {
-                        if (logInfo.logLine.Contains(MyName) &&
-                            リミカMyNumber == 0)
+                        if (logInfo.logLine.Contains("クルーズチェイサー:コードネーム「ブラスティー」！ 階差閉宇宙ヲ、脅カス敵ヲ発見……撃滅スル！"))
                         {
-                            foreach (KeyValuePair<int, string> kvp in リミッターカットdic)
-                            {
-                                if (logInfo.logLine.Contains(kvp.Value))
-                                {
-                                    リミカMyNumber = kvp.Key;
-                                    //string TTSstr = "";
-                                    //terops123.Show();
-                                    /*
-                                    switch (リミカMyNumber)
-                                    {
-                                        case 1:
-                                            terops123.pictureBox1.Visible = true;
-                                            TTSstr = "みなみ";
-                                            break;
-                                        case 2:
-                                            terops123.pictureBox2.Visible = true;
-                                            TTSstr = "きた";
-                                            break;
-                                        case 3:
-                                            terops123.pictureBox3.Visible = true;
-                                            TTSstr = "みなみ";
-                                            break;
-                                        case 4:
-                                            terops123.pictureBox4.Visible = true;
-                                            TTSstr = "きた";
-                                            break;
-                                        case 5:
-                                            terops123.pictureBox5.Visible = true;
-                                            TTSstr = "みなみ";
-                                            break;
-                                        case 6:
-                                            terops123.pictureBox6.Visible = true;
-                                            TTSstr = "きた";
-                                            break;
-                                        case 7:
-                                            terops123.pictureBox7.Visible = true;
-                                            TTSstr = "みなみ";
-                                            break;
-                                        case 8:
-                                            terops123.pictureBox8.Visible = true;
-                                            TTSstr = "きた";
-                                            break;
-                                        default:
-                                            リミカMyNumber = 0;
-                                            break;
-                                    }
-                                    */
-                                    //ActGlobals.oFormActMain.TTS(リミカMyNumber + "番、" + TTSstr);
-                                    //terops123.Show();
-                                    break;
-                                }
-                            }
+                            リミカ判定開始flg = true;
                         }
 
-                        // ホークブラスターを確認する
-                        if (リミカMyNumber != 0)
+                        if (リミカ判定開始flg)
                         {
-                            // リミカ用のmobListを取得する
-                            List<Combatant> リミカMobList = ActHelper.GetMobCombatantList();
-                            List<Combatant> newList = new List<Combatant>();
-                            foreach (Combatant combatant in リミカMobList)
+                            if (logInfo.logLine.Contains(MyName) &&
+                                リミカMyNumber == 0)
                             {
-                                if (combatant.Name.Equals("クルーズチェイサー")
-                                    && combatant.CurrentHP == 44)
+                                foreach (KeyValuePair<int, string> kvp in リミッターカットdic)
                                 {
-                                    newList.Add(combatant);
+                                    if (logInfo.logLine.Contains(kvp.Value))
+                                    {
+                                        リミカMyNumber = kvp.Key;
+                                        //string TTSstr = "";
+                                        //terops123.Show();
+                                        /*
+                                        switch (リミカMyNumber)
+                                        {
+                                            case 1:
+                                                terops123.pictureBox1.Visible = true;
+                                                TTSstr = "みなみ";
+                                                break;
+                                            case 2:
+                                                terops123.pictureBox2.Visible = true;
+                                                TTSstr = "きた";
+                                                break;
+                                            case 3:
+                                                terops123.pictureBox3.Visible = true;
+                                                TTSstr = "みなみ";
+                                                break;
+                                            case 4:
+                                                terops123.pictureBox4.Visible = true;
+                                                TTSstr = "きた";
+                                                break;
+                                            case 5:
+                                                terops123.pictureBox5.Visible = true;
+                                                TTSstr = "みなみ";
+                                                break;
+                                            case 6:
+                                                terops123.pictureBox6.Visible = true;
+                                                TTSstr = "きた";
+                                                break;
+                                            case 7:
+                                                terops123.pictureBox7.Visible = true;
+                                                TTSstr = "みなみ";
+                                                break;
+                                            case 8:
+                                                terops123.pictureBox8.Visible = true;
+                                                TTSstr = "きた";
+                                                break;
+                                            default:
+                                                リミカMyNumber = 0;
+                                                break;
+                                        }
+                                        */
+                                        //ActGlobals.oFormActMain.TTS(リミカMyNumber + "番、" + TTSstr);
+                                        //terops123.Show();
+                                        break;
+                                    }
                                 }
                             }
 
-                            foreach (KeyValuePair<int, Dictionary<string, string>> kvp in チェイサー座標dic)
+                            // ホークブラスターを確認する
+                            if (リミカMyNumber != 0)
                             {
-                                foreach (Combatant combatant in newList)
+                                // リミカ用のmobListを取得する
+                                List<Combatant> リミカMobList = ActHelper.GetMobCombatantList();
+                                List<Combatant> newList = new List<Combatant>();
+                                foreach (Combatant combatant in リミカMobList)
                                 {
-                                    foreach (KeyValuePair<string, string> pair in kvp.Value)
+                                    if (combatant.Name.Equals("クルーズチェイサー")
+                                        && combatant.CurrentHP == 44)
                                     {
-                                        string X = combatant.PosX.ToString().Substring(0, 3);
-                                        string Y = combatant.PosY.ToString().Substring(0, 3);
+                                        newList.Add(combatant);
+                                    }
+                                }
 
-                                        if (pair.Key.Equals(X) && pair.Value.Equals(Y))
+                                foreach (KeyValuePair<int, Dictionary<string, string>> kvp in チェイサー座標dic)
+                                {
+                                    foreach (Combatant combatant in newList)
+                                    {
+                                        foreach (KeyValuePair<string, string> pair in kvp.Value)
                                         {
-                                            string TTSstr = "";
-                                            int num = kvp.Key;
-                                            teropshork.Show();
-                                            switch (num)
+                                            string X = combatant.PosX.ToString().Substring(0, 3);
+                                            string Y = combatant.PosY.ToString().Substring(0, 3);
+
+                                            if (pair.Key.Equals(X) && pair.Value.Equals(Y))
                                             {
-                                                // 1、5
-                                                case 1:
-                                                    if (リミカMyNumber == 1)
-                                                    {
-                                                        teropshork.pictureBox北.Visible = true;
-                                                        TTSstr = "えー";
-                                                    }
-                                                    else
-                                                    {
-                                                        teropshork.pictureBox南.Visible = true;
-                                                        TTSstr = "しー";
-                                                    }
-                                                    break;
-                                                // 2、6
-                                                case 2:
-                                                    if (リミカMyNumber == 2)
-                                                    {
-                                                        teropshork.pictureBox北東.Visible = true;
-                                                        TTSstr = "えーびー";
-                                                    }
-                                                    else
-                                                    {
-                                                        teropshork.pictureBox南西.Visible = true;
-                                                        TTSstr = "しーでー";
-                                                    }
-                                                    break;
-                                                // 3、7
-                                                case 3:
-                                                    if (リミカMyNumber == 3)
-                                                    {
-                                                        teropshork.pictureBox東.Visible = true;
-                                                        TTSstr = "びー";
-                                                    }
-                                                    else
-                                                    {
-                                                        teropshork.pictureBox西.Visible = true;
-                                                        TTSstr = "でー";
-                                                    }
-                                                    break;
-                                                // 4、8 
-                                                case 4:
-                                                    if (リミカMyNumber == 4)
-                                                    {
-                                                        teropshork.pictureBox南東.Visible = true;
-                                                        TTSstr = "びーしー";
-                                                    }
-                                                    else
-                                                    {
-                                                        teropshork.pictureBox北西.Visible = true;
-                                                        TTSstr = "えーでー";
-                                                    }
-                                                    break;
-                                                default:
-                                                    break;
+                                                string TTSstr = "";
+                                                int num = kvp.Key;
+                                                teropshork.Show();
+                                                switch (num)
+                                                {
+                                                    // 1、5
+                                                    case 1:
+                                                        if (リミカMyNumber == 1)
+                                                        {
+                                                            teropshork.pictureBox北.Visible = true;
+                                                            TTSstr = "えー";
+                                                        }
+                                                        else
+                                                        {
+                                                            teropshork.pictureBox南.Visible = true;
+                                                            TTSstr = "しー";
+                                                        }
+                                                        break;
+                                                    // 2、6
+                                                    case 2:
+                                                        if (リミカMyNumber == 2)
+                                                        {
+                                                            teropshork.pictureBox北東.Visible = true;
+                                                            TTSstr = "えーびー";
+                                                        }
+                                                        else
+                                                        {
+                                                            teropshork.pictureBox南西.Visible = true;
+                                                            TTSstr = "しーでー";
+                                                        }
+                                                        break;
+                                                    // 3、7
+                                                    case 3:
+                                                        if (リミカMyNumber == 3)
+                                                        {
+                                                            teropshork.pictureBox東.Visible = true;
+                                                            TTSstr = "びー";
+                                                        }
+                                                        else
+                                                        {
+                                                            teropshork.pictureBox西.Visible = true;
+                                                            TTSstr = "でー";
+                                                        }
+                                                        break;
+                                                    // 4、8 
+                                                    case 4:
+                                                        if (リミカMyNumber == 4)
+                                                        {
+                                                            teropshork.pictureBox南東.Visible = true;
+                                                            TTSstr = "びーしー";
+                                                        }
+                                                        else
+                                                        {
+                                                            teropshork.pictureBox北西.Visible = true;
+                                                            TTSstr = "えーでー";
+                                                        }
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                                teropshork.Show();
+                                                ActGlobals.oFormActMain.TTS(TTSstr);
+                                                break;
                                             }
-                                            teropshork.Show();
-                                            ActGlobals.oFormActMain.TTS(TTSstr);
-                                            break;
                                         }
                                     }
                                 }
                             }
-                        }
 
-                        /*
-                        if (logInfo.logLine.Contains("クルーズチェイサー:4830:ホークブラスター"))
-                        {
-                            if (ホークブラスターlog回数 == 2 ||
-                                ホークブラスターlog回数 == 4 ||
-                                ホークブラスターlog回数 == 6 ||
-                                ホークブラスターlog回数 == 8 ||
-                                ホークブラスターlog回数 == 10 ||
-                                ホークブラスターlog回数 == 12 ||
-                                ホークブラスターlog回数 == 14 ||
-                                ホークブラスターlog回数 == 16 ||
-                                ホークブラスターlog回数 == 18 ||
-                                ホークブラスターlog回数 == 20)
+                            /*
+                            if (logInfo.logLine.Contains("クルーズチェイサー:4830:ホークブラスター"))
                             {
-                                ActGlobals.oFormActMain.TTS(ホークブラスター回数.ToString());
-                                ホークブラスター回数++;
-
-                                if (ホークブラスター回数 == 5)
+                                if (ホークブラスターlog回数 == 2 ||
+                                    ホークブラスターlog回数 == 4 ||
+                                    ホークブラスターlog回数 == 6 ||
+                                    ホークブラスターlog回数 == 8 ||
+                                    ホークブラスターlog回数 == 10 ||
+                                    ホークブラスターlog回数 == 12 ||
+                                    ホークブラスターlog回数 == 14 ||
+                                    ホークブラスターlog回数 == 16 ||
+                                    ホークブラスターlog回数 == 18 ||
+                                    ホークブラスターlog回数 == 20)
                                 {
-                                    ホークブラスター回数 = 1;
+                                    ActGlobals.oFormActMain.TTS(ホークブラスター回数.ToString());
+                                    ホークブラスター回数++;
+
+                                    if (ホークブラスター回数 == 5)
+                                    {
+                                        ホークブラスター回数 = 1;
+                                    }
                                 }
+                                ホークブラスターlog回数++;
                             }
-                            ホークブラスターlog回数++;
+                            */
+                            // 表示を消す
+                            if (logInfo.logLine.Contains("ブルートジャスティスの「ジャスティスキック」"))
+                            {
+                                リミカ判定開始flg = false;
+                                リミカMyNumber = 0;
+                                InitForm();
+                            }
                         }
-                        */
-                        // 表示を消す
-                        if (logInfo.logLine.Contains("ブルートジャスティスの「ジャスティスキック」"))
-                        {
-                            リミカ判定開始flg = false;
-                            リミカMyNumber = 0;
-                            InitForm();
-                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // 全てのExceptionを握りつぶす
+                        //　処理中断
+                        リミカ判定開始flg = false;
+                        リミカMyNumber = 0;
+                        InitForm();
                     }
                 }
                 // -------------------------- リミッターカットを判定する --------------------------
