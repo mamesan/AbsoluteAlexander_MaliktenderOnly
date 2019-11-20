@@ -177,7 +177,8 @@
                     }
 
                     var combatant = new Combatant();
-                    if ((byte)item.type == 2)
+                    if ((byte)item.type == 2 || 
+                        string.IsNullOrWhiteSpace((string)item.Name))
                     {
                         continue;
                     }
@@ -223,7 +224,8 @@
                     var combatant = new Combatant();
                     // jobIDが0の人はすべて除外する
                     if (((int)item.Job == 0
-                        || (byte)item.type != 1)
+                        || (byte)item.type != 1
+                        || string.IsNullOrWhiteSpace((string)item.Name))
                         )
                     {
                         continue;

@@ -61,6 +61,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private List<string> 加重罰List = new List<string>();
         private List<string> 無印List = new List<string>();
 
+        // 時空潜行カンペ用フラグ
+        private bool 時空潜行flg = false;
 
 
         // Terops123 初期化
@@ -94,6 +96,15 @@ namespace AbsoluteAlexander_MaliktenderOnly
         private Size teropshorkpictureBox南西Size = new Size();
         private Size teropshorkpictureBox西Size = new Size();
         private Size teropshorkpictureBox北西Size = new Size();
+
+
+        // Terops上下右左
+        private Terops上下右左 terops上下右左 = new Terops上下右左();
+        private Size terops上下右左size = new Size();
+        private Size terops上下右左pictureBox上Size = new Size();
+        private Size terops上下右左pictureBox右Size = new Size();
+        private Size terops上下右左pictureBox下Size = new Size();
+        private Size terops上下右左pictureBox左Size = new Size();
 
         // TeropTimeLine
         private TeropTimeLine teropTimeLine = new TeropTimeLine();
@@ -297,6 +308,23 @@ namespace AbsoluteAlexander_MaliktenderOnly
             teropshork.Show();
             teropshork.Hide();
 
+            terops上下右左size = new Size(315, 190);
+            terops上下右左pictureBox上Size = new Size(150, 150);
+            terops上下右左pictureBox右Size = new Size(150, 150);
+            terops上下右左pictureBox下Size = new Size(150, 150);
+            terops上下右左pictureBox左Size = new Size(150, 150);
+
+            terops上下右左.pictureBox上.Visible = true;
+            terops上下右左.pictureBox右.Visible = true;
+            terops上下右左.pictureBox下.Visible = true;
+            terops上下右左.pictureBox左.Visible = true;
+            terops上下右左.pictureBox上.Visible = false;
+            terops上下右左.pictureBox右.Visible = false;
+            terops上下右左.pictureBox下.Visible = false;
+            terops上下右左.pictureBox左.Visible = false;
+            terops上下右左.Show();
+            terops上下右左.Hide();
+
             // フォームの初期処理
             InitForm();
         }
@@ -376,6 +404,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
 
             // 時間停止の初期化
             時間停止kanpeflg = false;
+            時空潜行flg = false;
+
 
             接近禁止命令List = new List<string>();
             接近強制命令List = new List<string>();
@@ -449,6 +479,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
             CntPage = 0;
 
             時間停止kanpeflg = false;
+            時空潜行flg = false;
             接近禁止命令List = new List<string>();
             接近強制命令List = new List<string>();
             加重罰List = new List<string>();
@@ -519,6 +550,14 @@ namespace AbsoluteAlexander_MaliktenderOnly
             teropTimeLine.pictureBox12.Visible = false;
             teropTimeLine.Show();
             teropTimeLine.Hide();
+
+            // terops上下右左用
+            terops上下右左.pictureBox上.Visible = false;
+            terops上下右左.pictureBox右.Visible = false;
+            terops上下右左.pictureBox下.Visible = false;
+            terops上下右左.pictureBox左.Visible = false;
+            terops上下右左.Show();
+            terops上下右左.Hide();
 
 
         }
@@ -955,6 +994,7 @@ namespace AbsoluteAlexander_MaliktenderOnly
                                 接近強制命令List.Count == 2 &&
                                 無印List.Count == 2)
                             {
+                                terops上下右左.Show();
                                 if (加重罰List.Contains(MyName))
                                 {
                                     ActGlobals.oFormActMain.TTS("ジャスティスの外周に立つ");
@@ -966,10 +1006,12 @@ namespace AbsoluteAlexander_MaliktenderOnly
                                     if (PTNamedic[MyName] == 3)
                                     {
                                         ActGlobals.oFormActMain.TTS("みぎがわにいく");
+                                        terops上下右左.pictureBox右.Visible = true;
                                     }
                                     else
                                     {
                                         ActGlobals.oFormActMain.TTS("ひだりがわにいく");
+                                        terops上下右左.pictureBox左.Visible = true;
                                     }
                                 }
                                 else if (接近強制命令List.Contains(MyName))
@@ -979,10 +1021,14 @@ namespace AbsoluteAlexander_MaliktenderOnly
                                     if (PTNamedic[MyName] == 3)
                                     {
                                         ActGlobals.oFormActMain.TTS("みぎぼすのしたがわ");
+                                        terops上下右左.pictureBox下.Visible = true;
+                                        terops上下右左.pictureBox右.Visible = true;
                                     }
                                     else
                                     {
                                         ActGlobals.oFormActMain.TTS("みぎぼすのうえがわ");
+                                        terops上下右左.pictureBox上.Visible = true;
+                                        terops上下右左.pictureBox右.Visible = true;
                                     }
                                 }
                                 else if (無印List.Contains(MyName))
@@ -992,10 +1038,14 @@ namespace AbsoluteAlexander_MaliktenderOnly
                                     if (PTNamedic[MyName] == 3)
                                     {
                                         ActGlobals.oFormActMain.TTS("ひだりぼすのうえがわ");
+                                        terops上下右左.pictureBox上.Visible = true;
+                                        terops上下右左.pictureBox左.Visible = true;
                                     }
                                     else
                                     {
                                         ActGlobals.oFormActMain.TTS("ひだりぼすのしたがわ");
+                                        terops上下右左.pictureBox下.Visible = true;
+                                        terops上下右左.pictureBox左.Visible = true;
                                     }
 
                                 }
@@ -1003,6 +1053,20 @@ namespace AbsoluteAlexander_MaliktenderOnly
                         }
                     }
                     // -------------------------- 時間停止を判定する --------------------------
+
+                    // -------------------------- 時空潜行を判定する --------------------------
+                    if (logInfo.logLine.Contains("アレキサンダー・プライムは「時空潜行のマーチ」の構え。"))
+                    {
+                        時空潜行flg = true;
+                    }
+
+                    if (時空潜行flg)
+                    {
+
+                    }
+
+                    // -------------------------- 時空潜行を判定する --------------------------
+
 
                     // -------------------------- アビリティファイルの出力処理(いったん廃止) --------------------------
                     if (combatFlg && checkBox1_Abi_init.Checked)
@@ -1337,6 +1401,13 @@ namespace AbsoluteAlexander_MaliktenderOnly
         }
 
 
+
+
+
+
+
+
+        //
         private void button2_認証_Click(object sender, EventArgs e)
         {
             // 認証処理を実施する
