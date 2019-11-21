@@ -911,6 +911,8 @@ namespace AbsoluteAlexander_MaliktenderOnly
                                                     }
                                                     teropshork.Show();
                                                     ActGlobals.oFormActMain.TTS(TTSstr);
+                                                    リミカ判定開始flg = false;
+                                                    リミカMyNumber = 0;
                                                     break;
                                                 }
                                             }
